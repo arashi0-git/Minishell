@@ -3,6 +3,10 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <signal.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
 
 #define REDIR_IN 0;
 #define REDIR_OUT 1;
@@ -23,7 +27,7 @@ typedef struct t_token{
 
 typedef struct s_command{
     char **args;
-    t=redir *redirect;
+    t_redir *redirect;
     struct s_command *next;
 } t_command;
 
