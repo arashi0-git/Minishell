@@ -13,7 +13,17 @@ void free_env(t_env *env){
     }
 }
 
-int ft_setenv(t_env **env, const char *name, const char *value){
+char *get_env(t_env *env, const char *name){
+    size_t len = ft_strlen(name);
+    while(env){
+        if(ft_strncmp(env->key, name, len)==0&&env->key[len]=='\0')
+            return(env->value);
+        env = env->next;
+    }
+    return(NULL);
+}
+
+int set_env(t_env **env, const char *name, const char *value){
     t_env *current = *env;
     size_t len = ft_strlen(name);
     while(current){
