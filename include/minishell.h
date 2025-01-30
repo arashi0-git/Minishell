@@ -23,7 +23,7 @@ typedef struct s_shell{
     int interactive;
 } t_shell;
 
-typedef struct t_token{
+typedef struct s_token{
     char *value;
     int type;
     struct s_token *next;
