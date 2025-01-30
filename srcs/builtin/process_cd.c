@@ -11,5 +11,8 @@ int exec_cd(char **args){
         perror("cd: getcwd");
         return(1);
     }
+    if(!path){
+        target = getenv(*env, "HOME");
+    }
 }
 
