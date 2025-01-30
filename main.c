@@ -48,6 +48,7 @@ init_shell(t_shell *shell, char **env){
         perror("failed to initialize environment");
         exit(1);
     }
+    shell->pwd = getcwd(NULL, 0);
     shell->exit_status = 0;
     shell->interactive = isatty(STDIN_FILENO);
     if(shell->interactive)
