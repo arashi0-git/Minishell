@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 11:09:19 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/01/08 12:11:29 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/01 11:30:04 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,6 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	*ft_strtrim(char const *s1, char const *set);
 size_t	ft_count_words(char const *s, char c);
 char	**split_free(char **tab);
+char	*ft_strndup(char *str, size_t n);
+
 #endif
