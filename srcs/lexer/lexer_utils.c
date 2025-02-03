@@ -1,0 +1,139 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/02 16:10:31 by aryamamo          #+#    #+#             */
+/*   Updated: 2025/02/03 13:41:42 by aryamamo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static char	*process_quote(char **p)
+{
+	char	quote;
+	char	*start;
+	int		len;
+	char	*token;
+
+	start = *p;
+	quote = **p;
+	(*p)++;
+	while (**p && **p != quote)
+		(*p)++;
+	if (**p == quote)
+		(*p)++;
+	len = *p - start;
+	token = malloc(len + 1);
+	if (!token)
+		exit(1);
+	// error_exit("quote token malloc failed\n");
+	strncpy(token, start, len); // ft_
+	token[len] = '\0';
+	return (token);
+}
+
+static char	*process_redir(char **p)
+{
+	char	*start;
+	char	c;
+	int		len;
+	char	*token;
+
+	start = *p;
+	c = **p;
+	(*p)++;
+	if (**p == c)
+		(*p)++;
+	len = *p - start;
+	token = malloc(len + 1);
+	if (!token)
+		exit(1);
+	// error_exit("redir token malloc failed");
+	strncpy(token, start, len); // ft_
+	token[len] = '\0';
+	return (token);
+}
+
+static char	*process_pipe(char **p)
+{
+	char	*token;
+
+	token = malloc(2);
+	if (!token)
+		exit(1);
+	// error_exit("pipe token malloc failed");
+	token[0] = **p;
+	token[1] = '\0';
+	(*p)++;
+	return (token);
+}
+
+static char	*process_word(char **p)
+{
+	char	*start;
+	int		len;
+	char	*token;
+
+	start = *p;
+	while (**p && !ft_isspace((unsigned char)**p) && **p != '\'' && **p != '"'
+		&& **p != '>' && **p != '<' && **p != '|') // ft_
+		(*p)++;
+	len = *p - start;
+	token = malloc(len + 1);
+	if (!token)
+		exit(1);
+	// error_exit("word token malloc failed");
+	strncpy(token, start, len); // ft_
+	token[len] = '\0';
+	return (token);
+}
+
+char	*get_token(char **p)
+{
+	while (**p && ft_isspace((unsigned char)**p))
+		(*p)++;
+	if (**p == '\0')
+		return (NULL);
+	if (**p == '\'' || **p == '"')
+		return (process_quote(p));
+	else if (**p == '<' || **p == '>')
+		return (process_redir(p));
+	else if (**p == '|')
+		return (process_pipe(p));
+	else
+		return (process_word(p));
+}
+
+// void	print_tokens(char **tokens)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (tokens[i])
+// 	{
+// 		printf("Token[%d]: [%s]\n", i, tokens[i]);
+// 		i++;
+// 	}
+// }
+
+// int	main(void)
+// {
+// 	char input[] = "cat < file1 | grep \"a'hello' b\" | wc -l >> file2";
+// 	char **tokens = token_split(input);
+
+// 	print_tokens(tokens);
+
+// 	// メモリ解放
+// 	int i = 0;
+// 	while (tokens[i])
+// 	{
+// 		free(tokens[i]);
+// 		i++;
+// 	}
+// 	free(tokens);
+// 	return (0);
+// }
