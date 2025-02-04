@@ -1,6 +1,5 @@
 #include "../../include/minishell.h"
 
-
 int process_pwd(void)
 {
     char *str;
@@ -10,6 +9,7 @@ int process_pwd(void)
     if (str == NULL)
         return (1);
     ft_putendl_fd(str, STDOUT_FILENO);
+    free(str);
     return (0);
 }
 /*
