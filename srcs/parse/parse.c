@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 14:27:11 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/04 14:34:34 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:26:51 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,31 +55,72 @@ void	free_list(t_node *head)
 	}
 }
 
+void	process_pipe(t_node *list)
+{
+	t_node	*curr;
+
+	printf("process_pipe に渡されたリスト: ");
+	curr = list;
+	while (curr != NULL)
+	{
+		printf("%s ", curr->word);
+		curr = curr->next;
+	}
+	printf("\n");
+}
+
 int	main(void)
 {
 	t_node	*head;
 	t_node	*current;
-	int		found;
+	t_node	*new_head;
+	t_node	*new_end;
+	t_node	*new_node;
 
-	found = 0;
+	new_head = NULL;
+	new_end = NULL;
 	head = create_node("hello");
 	head->next = create_node("world");
-	head->next->next = create_node("aaa");
+	head->next->next = create_node("|");
 	head->next->next->next = create_node("Test");
+	head->next->next->next->next = create_node("111");
+	head->next->next->next->next->next = create_node("|");
+	head->next->next->next->next->next->next = create_node("222");
+	head->next->next->next->next->next->next->next = create_node("333");
 	current = head;
 	while (current != NULL)
 	{
 		if (strcmp(current->word, "|") == 0)
 		{
-			found = 1;
-			break ;
+			if (new_head != NULL)
+			{
+				process_pipe(new_head);
+				free_list(new_head);
+				new_head = NULL;
+				new_end = NULL;
+			}
 		}
-		printf("%s ", current->word);
+		else
+		{
+			new_node = create_node(current->word);
+			if (new_head == NULL)
+			{
+				new_head = new_node;
+				new_end = new_node;
+			}
+			else
+			{
+				new_end->next = new_node;
+				new_end = new_node;
+			}
+		}
 		current = current->next;
 	}
-	printf("\n");
-	if (!found)
-		printf("Not found '|'\n");
+	if (new_head != NULL)
+	{
+		process_pipe(new_head);
+		free_list(new_head);
+	}
 	free_list(head);
 	return (0);
 }
