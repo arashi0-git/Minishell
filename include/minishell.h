@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
+/*   Updated: 2025/02/04 10:30:14 by aryamamo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -7,6 +19,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -18,52 +31,46 @@
 # define REDIR_HEREDOC 3
 # define PATH_MAX 4096
 
-typedef struct s_shell
+/*---tokenize---*/
+typedef enum token_type
 {
-	char				**env;
-	char				*pwd;
-	int					exit_status;
-	int					interactive;
-}						t_shell;
+	TOKEN_COMMAND,
+	TOKEN_PIPE,
+	TOKEN_REDIR
+}					tokentype;
+
+typedef enum
+{
+	REDIRECT_IN,
+	REDIRECT_OUT,
+	REDIRECT_APPEND,
+	REDIRECT_HEREDOC
+}					RedirectType;
 
 typedef struct s_token
 {
-	char				*value;
-	int					type;
-	struct s_token		*next;
-}						t_token;
+	char			*word;
+	tokentype		type;
+	RedirectType	redirType;
+	struct s_token	*next;
+}					t_token;
 
-typedef struct s_redir
-{
-	int					type;
-	char				*file;
-	struct t_redir		*next;
-}						t_redir;
+/*---parser struct---*/
 
-typedef struct s_command
+typedef enum node_kind
 {
-	char				**args;
-	t_redir				*redirect;
-	struct s_command	*next;
-}						t_command;
+	ND_SIMPLE_CMD
+}					t_node_kind;
 
-typedef struct s_env
+typedef struct s_node
 {
-	char				*key;
-	char				*value;
-	struct s_env		*next;
-}						t_env;
+	t_token			*args;
+	t_node_kind		kind;
+	t_node			*next;
+}					t_node;
 
-typedef struct s_builtin
-{
-	char				*name;
-	int					(*func)(char **args, t_shell *shell);
-}						t_builtin;
-
-typedef struct s_pipe
-{
-	int					fd[2];
-	struct s_pipe		*next;
-}						t_pipe;
+/*---tokenize func---*/
+t_token				*tokenize_list(char *line);
+char				*get_token(char **p, tokentype *token_type);
 
 #endif
