@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 14:27:11 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/03 17:42:40 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/04 10:45:24 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	append_token(t_token **tokens, t_token *token)
 
 t_node	*parse(t_token *token)
 {
-	t_node *node;
+	t_node	*node;
+
 	node = new_node(ND_SIMPLE_CMD);
 	while (token)
 	{
