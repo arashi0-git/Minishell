@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:40:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/04 17:20:56 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/04 17:49:58 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -348,6 +348,24 @@ int	add_arg(t_cmd *cmd, const char *arg)
 	cmd->args[cmd->argc] = NULL;
 	return (0);
 }
+static t_cmd	*create_new_commmand(t_cmd **cmd_list, t_cmd **current_cmd)
+{
+	t_cmd	*new_cmd_ptr;
+	t_cmd	*tail;
+
+	new_cmd_ptr = new_cmd();
+	if (!*free_cmd_list)
+		*cmd_list = new_cmd_ptr;
+	else
+	{
+		tail = *cmd_list;
+		while (tail->next)
+			tail = tail->next;
+		tail->next = new_cmd_ptr;
+	}
+	*current_cmd = new_cmd_ptr;
+	return (new_cmd_ptr);
+}
 
 t_cmd	*parse_tokens(t_token *tokens)
 {
@@ -520,7 +538,7 @@ void	free_cmd_list(t_cmd *cmd_list)
 /* --- テスト用 main --- */
 int	main(void)
 {
-	char input[] = "cat < file1 | grep 'hello world' | wc -l << file2";
+	char input[] = "cat -e ls  grep 'hello world'  wc -l << file2";
 	t_token *token_list;
 	t_cmd *cmd_list;
 
