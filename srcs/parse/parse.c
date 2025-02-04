@@ -6,61 +6,80 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 14:27:11 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/04 10:45:24 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:34:34 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+// #include "../../include/minishell.h"
 
-t_node	*new_node(t_node_kind kind)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct s_node
 {
-	t_node	*node;
+	char			*word;
+	struct s_node	*next;
+}					t_node;
 
-	node = ft_calloc(1, sizeof(*node));
-	if (!node)
+t_node	*create_node(const char *word)
+{
+	t_node	*new_node;
+
+	new_node = malloc(sizeof(t_node));
+	if (!new_node)
 	{
-		printf("error calloc of parse node\n");
-		return (NULL);
+		perror("malloc node failed");
+		exit(EXIT_FAILURE);
 	}
-	node->kind = kind;
-	return (node);
+	new_node->word = strdup(word);
+	if (new_node->word == NULL)
+	{
+		perror("strdup failed");
+		exit(EXIT_FAILURE);
+	}
+	new_node->next = NULL;
+	return (new_node);
 }
 
-t_token	*tokendup(t_token *token)
+void	free_list(t_node *head)
 {
-	char	*word;
+	t_node	*tmp;
 
-	word = ft_strdup(token->word);
-	if (word == NULL)
+	while (head != NULL)
 	{
-		printf("strdup error of token");
-		return (NULL);
+		tmp = head;
+		head = head->next;
+		free(tmp->word);
+		free(tmp);
 	}
-	return (new_token(word, token->type));
 }
 
-void	append_token(t_token **tokens, t_token *token)
+int	main(void)
 {
-	if (*tokens == NULL)
-	{
-		*tokens = token;
-		return ;
-	}
-	append_token(&(*tokens)->next, token);
-}
+	t_node	*head;
+	t_node	*current;
+	int		found;
 
-t_node	*parse(t_token *token)
-{
-	t_node	*node;
-
-	node = new_node(ND_SIMPLE_CMD);
-	while (token)
+	found = 0;
+	head = create_node("hello");
+	head->next = create_node("world");
+	head->next->next = create_node("aaa");
+	head->next->next->next = create_node("Test");
+	current = head;
+	while (current != NULL)
 	{
-		if (token->type == TOKEN_COMMAND)
-			append_token(&node->args, tokendup(token));
-		else
-			todo("Implement parser");
-		token = token->next;
+		if (strcmp(current->word, "|") == 0)
+		{
+			found = 1;
+			break ;
+		}
+		printf("%s ", current->word);
+		current = current->next;
 	}
-	return (node);
+	printf("\n");
+	if (!found)
+		printf("Not found '|'\n");
+	free_list(head);
+	return (0);
 }
