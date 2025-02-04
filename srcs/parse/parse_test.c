@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:40:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/04 17:49:58 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/04 18:00:09 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,6 +365,35 @@ static t_cmd	*create_new_commmand(t_cmd **cmd_list, t_cmd **current_cmd)
 	}
 	*current_cmd = new_cmd_ptr;
 	return (new_cmd_ptr);
+}
+
+static int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
+{
+	t_token	*redir;
+
+	redir = *curr_ptr;
+	*curr_ptr = (*curr_ptr)->next;
+	if (!*curr_ptr || (*curr_ptr)->type != TOKEN_COMMAND)
+	{
+		printf("Syntax error: redirection missing target\n");
+		return (-1);
+	}
+	if (redir->redirType == REDIRECT_IN || redir->redirType == REDIRECT_HEREDOC)
+	{
+		cmd->infile = malloc(strlen((*curr_ptr)->value) + 1);
+		if (!cmd->infile)
+		{
+			printf("malloc infile failed\n");
+			return (-1);
+		}
+		strcpy(cmd->infile, (*curr_ptr)->value);
+	}
+	else if (redir->redirType == REDIRECT_OUT
+		|| redir->redirType == REDIRECT_APPEND)
+	{
+		cmd->outfile = malloc(strlen((*curr_ptr)->value) + 1);
+		if ()
+	}
 }
 
 t_cmd	*parse_tokens(t_token *tokens)
