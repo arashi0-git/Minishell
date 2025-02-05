@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:06:22 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/03 23:16:46 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/05 21:51:48 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	exec_echo(char **args)
 
 	i = 1;
 	newline = 1;
-	if (args[i] && ft_strncmp(args[i], "-n", 2) == 0)
+	if (args[i] && ft_strncmp(args[i], "-n", 3) == 0)
 	{
 		newline = 0;
 		i++;
@@ -36,8 +36,7 @@ int	exec_echo(char **args)
 	return (0);
 }
 
-/*
-// テスト用の関数
+
 void test_echo(char **args, char *test_name, char *expected_output) {
     // 出力をキャプチャするためのファイルディスクリプタ
     int original_stdout;
@@ -71,6 +70,17 @@ void test_echo(char **args, char *test_name, char *expected_output) {
     printf("Result  : %s\n\n", strcmp(buffer, expected_output) == 0 ? "PASS" : "FAIL");
 }
 
+int	main(int argc, char **argv)
+{
+	(void)argc;
+	if (!argv || !argv[0])
+		return (1);
+	int ret;
+	ret = exec_echo(&argv[0]);
+	return (ret);
+}
+
+/*
 int main() {
     // 基本的なテストケース
     printf("basic echo\n");
@@ -78,7 +88,7 @@ int main() {
     test_echo(test1, "Basic echo", "hello\n");
     
     // -n オプションのテスト
-    char *test2[] = {"echo", "-n", "hello", NULL};
+    char *test2[] = {"echo", "-naaaaa", "hello", NULL};
     test_echo(test2, "Echo with -n", "hello");
     
     // 複数の引数
