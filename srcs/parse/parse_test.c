@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:40:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/07 11:59:31 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/07 13:45:47 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,7 +308,7 @@ t_cmd	*new_cmd(void)
 	cmd->args = malloc(sizeof(char *) * cmd->max_args);
 	if (!cmd->args)
 	{
-		pintf("malloc args failed\n");
+		printf("malloc args failed\n");
 		exit(EXIT_FAILURE);
 	}
 	cmd->argc = 0;
@@ -319,32 +319,36 @@ t_cmd	*new_cmd(void)
 	return (cmd);
 }
 
-int	add_arg(t_cmd *cmd, const char *arg)
+static int	resize_args(t_cmd *cmd)
 {
 	int		i;
-	char	**new_args;
 	int		new_size;
+	char	**new_args;
 
-	if (cmd->argc + 1 >= cmd->max_args)
+	i = 0;
+	new_size = cmd->max_args + 2;
+	new_args = malloc(sizeof(char *) * new_size);
+	if (new_args == NULL)
 	{
-		new_size = cmd->max_args + 2;
-		new_args = malloc(sizeof(char *) * new_size);
-		if (!new_args)
-		{
-			printf("malloc new_args failed\n");
-			return (-1);
-		}
-		for (i = 0; i < cmd->argc; i++)
-		{
-			new_args[i] = cmd->args[i];
-		}
-		new_args[cmd->argc] = NULL;
-		free(cmd->args);
-		cmd->args = new_args;
-		cmd->max_args = new_size;
+		printf("malloc new_args failed\n");
+		return (-1);
 	}
+	while (i < cmd->argc)
+	{
+		new_args[i] = cmd->args[i];
+		i++;
+	}
+	new_args[cmd->argc] = NULL;
+	free(cmd->args);
+	cmd->args = new_args;
+	cmd->max_args = new_size;
+	return (0);
+}
+
+static int	copy_arg_to_cmd(t_cmd *cmd, const char *arg)
+{
 	cmd->args[cmd->argc] = malloc(strlen(arg) + 1);
-	if (!cmd->args[cmd->argc])
+	if (cmd->args[cmd->argc] == NULL)
 	{
 		printf("malloc for arg copy failed\n");
 		return (-1);
@@ -354,7 +358,18 @@ int	add_arg(t_cmd *cmd, const char *arg)
 	cmd->args[cmd->argc] = NULL;
 	return (0);
 }
-static t_cmd	*create_new_command(t_cmd **cmd_list, t_cmd **current_cmd)
+
+int	add_arg(t_cmd *cmd, const char *arg)
+{
+	if (cmd->argc + 1 >= cmd->max_args)
+	{
+		if (resize_args(cmd) != 0)
+			return (-1);
+	}
+	return (copy_arg_to_cmd(cmd, arg));
+}
+
+t_cmd	*create_new_command(t_cmd **cmd_list, t_cmd **current_cmd)
 {
 	t_cmd	*new_cmd_ptr;
 	t_cmd	*tail;
@@ -402,7 +417,7 @@ static int	handle_output_redirection(t_cmd *cmd, t_token *target,
 	return (0);
 }
 
-static int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
+int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
 {
 	int		ret;
 	t_token	*redir;
@@ -458,6 +473,26 @@ static int	handle_command_token(t_cmd *cmd, t_token *token)
 	return (0);
 }
 
+static int	process_token(t_token **curr_ptr, t_cmd **cmd_list,
+		t_cmd **current_cmd)
+{
+	if (!*current_cmd)
+		create_new_command(cmd_list, current_cmd);
+	if ((*curr_ptr)->type == TOKEN_PIPE)
+		*current_cmd = NULL;
+	else if ((*curr_ptr)->type == TOKEN_REDIR)
+	{
+		if (handle_redirection(*current_cmd, curr_ptr) != 0)
+			return (-1);
+	}
+	else if ((*curr_ptr)->type == TOKEN_COMMAND)
+	{
+		if (handle_command_token(*current_cmd, *curr_ptr) != 0)
+			return (-1);
+	}
+	return (0);
+}
+
 t_cmd	*parse_tokens(t_token *tokens)
 {
 	t_cmd	*cmd_list;
@@ -469,20 +504,8 @@ t_cmd	*parse_tokens(t_token *tokens)
 	curr = tokens;
 	while (curr)
 	{
-		if (!current_cmd)
-			create_new_command(&cmd_list, &current_cmd);
-		if (curr->type == TOKEN_PIPE)
-			current_cmd = NULL;
-		else if (curr->type == TOKEN_REDIR)
-		{
-			if (handle_redirection(current_cmd, &curr) != 0)
-				return (cmd_list);
-		}
-		else if (curr->type == TOKEN_COMMAND)
-		{
-			if (handle_command_token(current_cmd, curr) != 0)
-				exit(1);
-		}
+		if (process_token(&curr, &cmd_list, &current_cmd) != 0)
+			exit(1);
 		curr = curr->next;
 	}
 	return (cmd_list);

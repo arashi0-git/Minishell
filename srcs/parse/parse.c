@@ -5,122 +5,94 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/02 14:27:11 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/04 15:26:51 by aryamamo         ###   ########.fr       */
+/*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
+/*   Updated: 2025/02/07 13:52:10 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../../include/minishell.h"
+#include "../../include/minishell.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-typedef struct s_node
+t_cmd	*create_new_command(t_cmd **cmd_list, t_cmd **current_cmd)
 {
-	char			*word;
-	struct s_node	*next;
-}					t_node;
+	t_cmd	*new_cmd_ptr;
+	t_cmd	*tail;
 
-t_node	*create_node(const char *word)
-{
-	t_node	*new_node;
-
-	new_node = malloc(sizeof(t_node));
-	if (!new_node)
+	new_cmd_ptr = new_cmd();
+	if (!*cmd_list)
+		*cmd_list = new_cmd_ptr;
+	else
 	{
-		perror("malloc node failed");
-		exit(EXIT_FAILURE);
+		tail = *cmd_list;
+		while (tail->next)
+			tail = tail->next;
+		tail->next = new_cmd_ptr;
 	}
-	new_node->word = strdup(word);
-	if (new_node->word == NULL)
-	{
-		perror("strdup failed");
-		exit(EXIT_FAILURE);
-	}
-	new_node->next = NULL;
-	return (new_node);
+	*current_cmd = new_cmd_ptr;
+	return (new_cmd_ptr);
 }
 
-void	free_list(t_node *head)
+static int	handle_command_token(t_cmd *cmd, t_token *token)
 {
-	t_node	*tmp;
-
-	while (head != NULL)
+	if (!cmd->command)
 	{
-		tmp = head;
-		head = head->next;
-		free(tmp->word);
-		free(tmp);
+		cmd->command = malloc(strlen(token->value) + 1);
+		if (!cmd->command)
+		{
+			printf("malloc command failed\n");
+			return (-1);
+		}
+		strcpy(cmd->command, token->value);
+		if (add_arg(cmd, token->value) != 0)
+		{
+			printf("add_arg failed\n");
+			return (-1);
+		}
 	}
+	else
+	{
+		if (add_arg(cmd, token->value) != 0)
+		{
+			printf("add_arg failed\n");
+			return (-1);
+		}
+	}
+	return (0);
 }
 
-void	process_pipe(t_node *list)
+static int	process_token(t_token **curr_ptr, t_cmd **cmd_list,
+		t_cmd **current_cmd)
 {
-	t_node	*curr;
-
-	printf("process_pipe に渡されたリスト: ");
-	curr = list;
-	while (curr != NULL)
+	if (!*current_cmd)
+		create_new_command(cmd_list, current_cmd);
+	if ((*curr_ptr)->type == TOKEN_PIPE)
+		*current_cmd = NULL;
+	else if ((*curr_ptr)->type == TOKEN_REDIR)
 	{
-		printf("%s ", curr->word);
+		if (handle_redirection(*current_cmd, curr_ptr) != 0)
+			return (-1);
+	}
+	else if ((*curr_ptr)->type == TOKEN_COMMAND)
+	{
+		if (handle_command_token(*current_cmd, *curr_ptr) != 0)
+			return (-1);
+	}
+	return (0);
+}
+
+t_cmd	*parse_tokens(t_token *tokens)
+{
+	t_cmd	*cmd_list;
+	t_cmd	*current_cmd;
+	t_token	*curr;
+
+	cmd_list = NULL;
+	current_cmd = NULL;
+	curr = tokens;
+	while (curr)
+	{
+		if (process_token(&curr, &cmd_list, &current_cmd) != 0)
+			exit(1);
 		curr = curr->next;
 	}
-	printf("\n");
-}
-
-int	main(void)
-{
-	t_node	*head;
-	t_node	*current;
-	t_node	*new_head;
-	t_node	*new_end;
-	t_node	*new_node;
-
-	new_head = NULL;
-	new_end = NULL;
-	head = create_node("hello");
-	head->next = create_node("world");
-	head->next->next = create_node("|");
-	head->next->next->next = create_node("Test");
-	head->next->next->next->next = create_node("111");
-	head->next->next->next->next->next = create_node("|");
-	head->next->next->next->next->next->next = create_node("222");
-	head->next->next->next->next->next->next->next = create_node("333");
-	current = head;
-	while (current != NULL)
-	{
-		if (strcmp(current->word, "|") == 0)
-		{
-			if (new_head != NULL)
-			{
-				process_pipe(new_head);
-				free_list(new_head);
-				new_head = NULL;
-				new_end = NULL;
-			}
-		}
-		else
-		{
-			new_node = create_node(current->word);
-			if (new_head == NULL)
-			{
-				new_head = new_node;
-				new_end = new_node;
-			}
-			else
-			{
-				new_end->next = new_node;
-				new_end = new_node;
-			}
-		}
-		current = current->next;
-	}
-	if (new_head != NULL)
-	{
-		process_pipe(new_head);
-		free_list(new_head);
-	}
-	free_list(head);
-	return (0);
+	return (cmd_list);
 }

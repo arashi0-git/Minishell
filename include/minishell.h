@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/04 10:30:14 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/07 13:54:25 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef enum
 
 typedef struct s_token
 {
-	char			*word;
+	char			*value;
 	tokentype		type;
 	RedirectType	redirType;
 	struct s_token	*next;
@@ -57,20 +57,26 @@ typedef struct s_token
 
 /*---parser struct---*/
 
-typedef enum node_kind
+typedef struct s_cmd
 {
-	ND_SIMPLE_CMD
-}					t_node_kind;
-
-typedef struct s_node
-{
-	t_token			*args;
-	t_node_kind		kind;
-	t_node			*next;
-}					t_node;
+	char			*command;
+	char			**args;
+	int				argc;
+	int				max_args;
+	char			*infile;
+	char			*outfile;
+	int				append;
+	struct s_cmd	*next;
+}					t_cmd;
 
 /*---tokenize func---*/
 t_token				*tokenize_list(char *line);
 char				*get_token(char **p, tokentype *token_type);
+
+/*---parse func---*/
+t_cmd				*parse_tokens(t_token *tokens);
+int					handle_redirection(t_cmd *cmd, t_token **curr_ptr);
+int					add_arg(t_cmd *cmd, const char *arg);
+t_cmd				*new_cmd(void);
 
 #endif

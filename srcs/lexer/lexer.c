@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 16:54:52 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/04 10:31:04 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/07 13:44:52 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_token	*new_token_node(char *value, tokentype type,
 	if (!node)
 		exit(1);
 	// error_exit("node malloc failed");
-	node->word = value;
+	node->value = value;
 	node->type = type;
 	node->redirType = redirType;
 	node->next = NULL;
