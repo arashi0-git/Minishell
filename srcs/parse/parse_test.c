@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:40:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/04 18:00:09 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/07 11:59:31 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,7 +304,13 @@ t_cmd	*new_cmd(void)
 		exit(EXIT_FAILURE);
 	}
 	cmd->command = NULL;
-	cmd->args = NULL;
+	cmd->max_args = 4;
+	cmd->args = malloc(sizeof(char *) * cmd->max_args);
+	if (!cmd->args)
+	{
+		pintf("malloc args failed\n");
+		exit(EXIT_FAILURE);
+	}
 	cmd->argc = 0;
 	cmd->outfile = NULL;
 	cmd->infile = NULL;
@@ -348,13 +354,13 @@ int	add_arg(t_cmd *cmd, const char *arg)
 	cmd->args[cmd->argc] = NULL;
 	return (0);
 }
-static t_cmd	*create_new_commmand(t_cmd **cmd_list, t_cmd **current_cmd)
+static t_cmd	*create_new_command(t_cmd **cmd_list, t_cmd **current_cmd)
 {
 	t_cmd	*new_cmd_ptr;
 	t_cmd	*tail;
 
 	new_cmd_ptr = new_cmd();
-	if (!*free_cmd_list)
+	if (!*cmd_list)
 		*cmd_list = new_cmd_ptr;
 	else
 	{
@@ -367,33 +373,89 @@ static t_cmd	*create_new_commmand(t_cmd **cmd_list, t_cmd **current_cmd)
 	return (new_cmd_ptr);
 }
 
+static int	handle_input_redirection(t_cmd *cmd, t_token *target)
+{
+	cmd->infile = malloc(strlen(target->value) + 1);
+	if (!cmd->infile)
+	{
+		printf("malloc infile failed\n");
+		return (-1);
+	}
+	strcpy(cmd->infile, target->value);
+	return (0);
+}
+
+static int	handle_output_redirection(t_cmd *cmd, t_token *target,
+		RedirectType redirType)
+{
+	cmd->outfile = malloc(strlen(target->value) + 1);
+	if (cmd->outfile == NULL)
+	{
+		printf("malloc outfile failed\n");
+		return (-1);
+	}
+	strcpy(cmd->outfile, target->value);
+	if (redirType == REDIRECT_APPEND)
+		cmd->append = 1;
+	else
+		cmd->append = 0;
+	return (0);
+}
+
 static int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
 {
+	int		ret;
 	t_token	*redir;
 
 	redir = *curr_ptr;
 	*curr_ptr = (*curr_ptr)->next;
-	if (!*curr_ptr || (*curr_ptr)->type != TOKEN_COMMAND)
+	if (*curr_ptr == NULL || (*curr_ptr)->type != TOKEN_COMMAND)
 	{
 		printf("Syntax error: redirection missing target\n");
 		return (-1);
 	}
 	if (redir->redirType == REDIRECT_IN || redir->redirType == REDIRECT_HEREDOC)
 	{
-		cmd->infile = malloc(strlen((*curr_ptr)->value) + 1);
-		if (!cmd->infile)
-		{
-			printf("malloc infile failed\n");
-			return (-1);
-		}
-		strcpy(cmd->infile, (*curr_ptr)->value);
+		ret = handle_input_redirection(cmd, *curr_ptr);
+		if (!ret != 0)
+			return (ret);
 	}
 	else if (redir->redirType == REDIRECT_OUT
 		|| redir->redirType == REDIRECT_APPEND)
 	{
-		cmd->outfile = malloc(strlen((*curr_ptr)->value) + 1);
-		if ()
+		ret = handle_output_redirection(cmd, *curr_ptr, redir->redirType);
+		if (ret != 0)
+			return (ret);
 	}
+	return (0);
+}
+
+static int	handle_command_token(t_cmd *cmd, t_token *token)
+{
+	if (!cmd->command)
+	{
+		cmd->command = malloc(strlen(token->value) + 1);
+		if (!cmd->command)
+		{
+			printf("malloc command failed\n");
+			return (-1);
+		}
+		strcpy(cmd->command, token->value);
+		if (add_arg(cmd, token->value) != 0)
+		{
+			printf("add_arg failed\n");
+			return (-1);
+		}
+	}
+	else
+	{
+		if (add_arg(cmd, token->value) != 0)
+		{
+			printf("add_arg failed\n");
+			return (-1);
+		}
+	}
+	return (0);
 }
 
 t_cmd	*parse_tokens(t_token *tokens)
@@ -401,9 +463,6 @@ t_cmd	*parse_tokens(t_token *tokens)
 	t_cmd	*cmd_list;
 	t_cmd	*current_cmd;
 	t_token	*curr;
-	t_cmd	*new_command;
-	t_cmd	*tail;
-	t_token	*redir;
 
 	cmd_list = NULL;
 	current_cmd = NULL;
@@ -411,98 +470,18 @@ t_cmd	*parse_tokens(t_token *tokens)
 	while (curr)
 	{
 		if (!current_cmd)
-		{
-			new_command = new_cmd();
-			if (!cmd_list)
-				cmd_list = new_command;
-			else
-			{
-				tail = cmd_list;
-				while (tail->next)
-					tail = tail->next;
-				tail->next = new_command;
-			}
-			current_cmd = new_command;
-		}
+			create_new_command(&cmd_list, &current_cmd);
 		if (curr->type == TOKEN_PIPE)
 			current_cmd = NULL;
 		else if (curr->type == TOKEN_REDIR)
 		{
-			redir = curr;
-			curr = curr->next;
-			if (!curr || curr->type != TOKEN_COMMAND)
-			{
-				printf("Syntax error: redirection missing target\n");
+			if (handle_redirection(current_cmd, &curr) != 0)
 				return (cmd_list);
-			}
-			if (redir->redirType == REDIRECT_IN)
-			{
-				current_cmd->infile = malloc(strlen(curr->value) + 1);
-				if (!current_cmd->infile)
-				{
-					printf("malloc infile failed\n");
-					return (cmd_list);
-				}
-				strcpy(current_cmd->infile, curr->value);
-			}
-			else if (redir->redirType == REDIRECT_OUT)
-			{
-				current_cmd->outfile = malloc(strlen(curr->value) + 1);
-				if (!current_cmd->outfile)
-				{
-					printf("malloc outfile failed\n");
-					return (cmd_list);
-				}
-				strcpy(current_cmd->outfile, curr->value);
-				current_cmd->append = 0;
-			}
-			else if (redir->redirType == REDIRECT_APPEND)
-			{
-				current_cmd->outfile = malloc(strlen(curr->value) + 1);
-				if (!current_cmd->outfile)
-				{
-					printf("malloc outfile failed\n");
-					return (cmd_list);
-				}
-				strcpy(current_cmd->outfile, curr->value);
-				current_cmd->append = 1;
-			}
-			else if (redir->redirType == REDIRECT_HEREDOC)
-			{
-				current_cmd->infile = malloc(strlen(curr->value) + 1);
-				if (!current_cmd->infile)
-				{
-					printf("malloc infile failed\n");
-					return (cmd_list);
-				}
-				strcpy(current_cmd->infile, curr->value);
-			}
 		}
 		else if (curr->type == TOKEN_COMMAND)
 		{
-			if (!current_cmd->command)
-			{
-				current_cmd->command = malloc(strlen(curr->value) + 1);
-				if (!current_cmd->command)
-				{
-					printf("mallic command failed\n");
-					return (cmd_list);
-				}
-				strcpy(current_cmd->command, curr->value);
-				if (add_arg(current_cmd, curr->value) != 0)
-				{
-					printf("add_arg failed\n");
-					exit(1);
-				}
-			}
-			else
-			{
-				if (add_arg(current_cmd, curr->value) != 0)
-				{
-					printf("add_arg failed\n");
-					exit(1);
-				}
-			}
+			if (handle_command_token(current_cmd, curr) != 0)
+				exit(1);
 		}
 		curr = curr->next;
 	}
@@ -567,20 +546,18 @@ void	free_cmd_list(t_cmd *cmd_list)
 /* --- テスト用 main --- */
 int	main(void)
 {
-	char input[] = "cat -e ls  grep 'hello world'  wc -l << file2";
-	t_token *token_list;
-	t_cmd *cmd_list;
+	char	input[] = "cat -e ls | grep 'hello world' | wc -l << file2";
+	t_token	*token_list;
+	t_cmd	*cmd_list;
 
 	/* 1. トークン化 */
 	token_list = tokenize_list(input);
 	printf("=== Token List ===\n");
 	print_token_list(token_list);
-
 	/* 2. パース */
 	cmd_list = parse_tokens(token_list);
 	printf("\n=== Parsed Commands ===\n");
 	print_cmd_list(cmd_list);
-
 	/* 後始末 */
 	free_cmd_list(cmd_list);
 	free_token_list(token_list);
