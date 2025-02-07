@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/07 13:54:25 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:01:40 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,14 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
+/*---env struct---*/
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
+
 /*---tokenize func---*/
 t_token				*tokenize_list(char *line);
 char				*get_token(char **p, tokentype *token_type);
@@ -78,5 +86,8 @@ t_cmd				*parse_tokens(t_token *tokens);
 int					handle_redirection(t_cmd *cmd, t_token **curr_ptr);
 int					add_arg(t_cmd *cmd, const char *arg);
 t_cmd				*new_cmd(void);
+
+/*---env func---*/
+t_env				*init_env(char **env);
 
 #endif
