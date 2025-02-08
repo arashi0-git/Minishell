@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:49:25 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/08 12:38:22 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:43:06 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,26 @@
 
 static int	handle_input_redirection(t_cmd *cmd, t_token *target)
 {
-	cmd->infile = malloc(strlen(target->value) + 1);
+	cmd->infile = malloc(ft_strlen(target->value) + 1);
 	if (!cmd->infile)
 	{
 		printf("malloc infile failed\n");
-		return (-1);
+		return (NULL);
 	}
-	strcpy(cmd->infile, target->value);
+	ft_strcpy(cmd->infile, target->value);
 	return (0);
 }
 
 static int	handle_output_redirection(t_cmd *cmd, t_token *target,
 		RedirectType redirType)
 {
-	cmd->outfile = malloc(strlen(target->value) + 1);
+	cmd->outfile = malloc(ft_strlen(target->value) + 1);
 	if (cmd->outfile == NULL)
 	{
 		printf("malloc outfile failed\n");
-		return (-1);
+		return (NULL);
 	}
-	strcpy(cmd->outfile, target->value);
+	ft_strcpy(cmd->outfile, target->value);
 	if (redirType == REDIRECT_APPEND)
 		cmd->append = 1;
 	else
@@ -51,7 +51,7 @@ int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
 	if (*curr_ptr == NULL || (*curr_ptr)->type != TOKEN_COMMAND)
 	{
 		printf("Syntax error: redirection missing target\n");
-		return (-1);
+		return (NULL);
 	}
 	if (redir->redirType == REDIRECT_IN || redir->redirType == REDIRECT_HEREDOC)
 	{

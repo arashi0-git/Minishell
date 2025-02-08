@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:51:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/07 13:51:46 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:43:34 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ t_cmd	*new_cmd(void)
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 	{
-		perror("malloc cmd failed");
-		exit(EXIT_FAILURE);
+		printf("malloc cmd failed\n");
+		return (NULL);
 	}
 	cmd->command = NULL;
 	cmd->max_args = 4;
@@ -28,7 +28,7 @@ t_cmd	*new_cmd(void)
 	if (!cmd->args)
 	{
 		printf("malloc args failed\n");
-		exit(EXIT_FAILURE);
+		return (NULL);
 	}
 	cmd->argc = 0;
 	cmd->outfile = NULL;
@@ -50,7 +50,7 @@ static int	resize_args(t_cmd *cmd)
 	if (new_args == NULL)
 	{
 		printf("malloc new_args failed\n");
-		return (-1);
+		return (NULL);
 	}
 	while (i < cmd->argc)
 	{
@@ -66,13 +66,13 @@ static int	resize_args(t_cmd *cmd)
 
 static int	copy_arg_to_cmd(t_cmd *cmd, const char *arg)
 {
-	cmd->args[cmd->argc] = malloc(strlen(arg) + 1);
+	cmd->args[cmd->argc] = malloc(ft_strlen(arg) + 1);
 	if (cmd->args[cmd->argc] == NULL)
 	{
 		printf("malloc for arg copy failed\n");
-		return (-1);
+		return (NULL);
 	}
-	strcpy(cmd->args[cmd->argc], arg);
+	ft_strcpy(cmd->args[cmd->argc], arg);
 	cmd->argc++;
 	cmd->args[cmd->argc] = NULL;
 	return (0);
@@ -83,7 +83,7 @@ int	add_arg(t_cmd *cmd, const char *arg)
 	if (cmd->argc + 1 >= cmd->max_args)
 	{
 		if (resize_args(cmd) != 0)
-			return (-1);
+			return (NULL);
 	}
 	return (copy_arg_to_cmd(cmd, arg));
 }

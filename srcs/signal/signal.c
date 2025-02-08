@@ -6,14 +6,17 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:43:51 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/08 12:46:45 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/08 14:13:05 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+// #include "../../include/minishell.h"
+#include <readline/history.h>
+#include <readline/readline.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 void	handle_sigint(int sig)

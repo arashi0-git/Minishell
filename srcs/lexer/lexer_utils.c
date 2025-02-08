@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:10:31 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/08 12:54:00 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:47:02 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ static char	*process_quote(char **p)
 	len = *p - start;
 	token = malloc(len + 1);
 	if (!token)
-		exit(1);
-	// error_exit("quote token malloc failed\n");
+		return (NULL);
 	ft_strlcpy(token, start, len);
 	token[len] = '\0';
 	return (token);
@@ -56,8 +55,10 @@ static char	*process_redir(char **p)
 	len = *p - start;
 	token = malloc(len + 1);
 	if (!token)
-		exit(1);
-	// error_exit("redir token malloc failed");
+	{
+		printf("redirect malloc failed\n");
+		return (NULL);
+	}
 	ft_strlcpy(token, start, len);
 	token[len] = '\0';
 	return (token);
@@ -69,9 +70,10 @@ static char	*process_pipe(char **p)
 
 	token = malloc(2);
 	if (!token)
-		exit(1);
-	// error_exit("pipe token malloc failed");
-	return (NULL);
+	{
+		printf("token malloc failed\n");
+		return (NULL);
+	}
 	token[0] = **p;
 	token[1] = '\0';
 	(*p)++;
@@ -86,13 +88,15 @@ static char	*process_word(char **p)
 
 	start = *p;
 	while (**p && !ft_isspace((unsigned char)**p) && **p != '\'' && **p != '"'
-		&& **p != '>' && **p != '<' && **p != '|') // ft_
+		&& **p != '>' && **p != '<' && **p != '|')
 		(*p)++;
 	len = *p - start;
 	token = malloc(len + 1);
 	if (!token)
-		exit(1);
-	// error_exit("word token malloc failed");
+	{
+		printf("token malloc failed\n");
+		return (NULL);
+	}
 	ft_strlcpy(token, start, len);
 	token[len] = '\0';
 	return (token);

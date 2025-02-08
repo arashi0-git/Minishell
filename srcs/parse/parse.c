@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/08 12:53:38 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:44:28 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,17 @@ static int	handle_command_token(t_cmd *cmd, t_token *token)
 {
 	if (!cmd->command)
 	{
-		cmd->command = malloc(strlen(token->value) + 1);
+		cmd->command = malloc(ft_strlen(token->value) + 1);
 		if (!cmd->command)
 		{
 			printf("malloc command failed\n");
-			return (-1);
+			return (NULL);
 		}
-		strcpy(cmd->command, token->value);
+		ft_strcpy(cmd->command, token->value);
 		if (add_arg(cmd, token->value) != 0)
 		{
 			printf("add_arg failed\n");
-			return (-1);
+			return (NULL);
 		}
 	}
 	else
@@ -53,7 +53,7 @@ static int	handle_command_token(t_cmd *cmd, t_token *token)
 		if (add_arg(cmd, token->value) != 0)
 		{
 			printf("add_arg failed\n");
-			return (-1);
+			return (NULL);
 		}
 	}
 	return (0);
@@ -69,12 +69,12 @@ static int	process_token(t_token **curr_ptr, t_cmd **cmd_list,
 	else if ((*curr_ptr)->type == TOKEN_REDIR)
 	{
 		if (handle_redirection(*current_cmd, curr_ptr) != 0)
-			return (-1);
+			return (NULL);
 	}
 	else if ((*curr_ptr)->type == TOKEN_COMMAND)
 	{
 		if (handle_command_token(*current_cmd, *curr_ptr) != 0)
-			return (-1);
+			return (NULL);
 	}
 	return (0);
 }
@@ -91,7 +91,7 @@ t_cmd	*parse_tokens(t_token *tokens)
 	while (curr)
 	{
 		if (process_token(&curr, &cmd_list, &current_cmd) != 0)
-			exit(1);
+			return (NULL);
 		curr = curr->next;
 	}
 	return (cmd_list);
