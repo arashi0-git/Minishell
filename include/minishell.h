@@ -89,12 +89,14 @@ typedef struct s_redir
 	struct t_redir		*next;
 }						t_redir;
 
+/*二重定義のため、一旦コメントアウトしました
 typedef struct s_command
 {
 	char				**args;
 	t_redir				*redirect;
 	struct s_command	*next;
 }						t_command;
+*/
 
 typedef struct s_env
 {

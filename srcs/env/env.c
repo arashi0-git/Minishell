@@ -6,7 +6,11 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:05:25 by aryamamo          #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2025/02/06 22:25:31 by retoriya         ###   ########.fr       */
+=======
+/*   Updated: 2025/02/08 16:59:07 by retoriya         ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,40 +44,45 @@ char	*get_env(t_env *env, const char *name)
 	return (NULL);
 }
 
-int	set_env(t_env **env, const char *name, const char *value)
+static t_env*  set_env_helper(const char *key, const char *value, bool is_exported)
+{
+    t_env *new_env;
+
+    new_env = malloc(sizeof(t_env));
+    if (!new_env)
+        return (NULL);
+    new_env->key = ft_strdup(key);
+    new_env->value = ft_strdup(value);
+    if (!new_env->key || !new_env->value)
+    {
+        free_env(new_env);
+        return (NULL);
+    }
+   new_env->is_exported = is_exported;
+   return (new_env);
+}
+
+int	set_env(t_env **env, const char *key, const char *value, bool is_exported)
 {
 	t_env	*current;
-	size_t	len;
-	t_env	*new_env;
+    t_env   *new_env;
 
 	current = *env;
-	len = ft_strlen(name);
-	while (current)
-	{
-		if (ft_strncmp(current->key, name, len) == 0
-			&& current->key[len] == '\0')
-		{
-			free(current->value);
-			current->value = ft_strdup(value);
-			if (!current->value)
-				return (1);
-			return (0);
-		}
-		current = current->next;
-	}
-	new_env = malloc(sizeof(t_env));
-	if (!new_env)
-		return (1);
-	new_env->key = ft_strdup(name);
-	new_env->value = ft_strdup(value);
-	if (!new_env->key || !new_env->value)
-	{
-		free_env(*env);
-		return (1);
-	}
-	new_env->next = *env;
-	*env = new_env;
-	return (0);
+	while (current && ft_strncmp(current->key, key, ft_strlen(key)) != 0)
+            current = current->next;
+    if (current)
+    {
+        free(current->value);
+        current->value = ft_strdup(value);
+        if (current->value == NULL)
+            return (1);
+        current->exported = exported;
+        return (0);
+    }
+    new_env = set_env_helper(key, value, is_exported);
+    new_env->next = *env;
+    *env = new_env;
+    return (0);
 }
 
 t_env	*init_env(char **env)
