@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/07 17:01:40 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/08 12:54:19 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,8 @@ t_cmd				*new_cmd(void);
 /*---env func---*/
 t_env				*init_env(char **env);
 
+/*---tokenize---*/
+char				**token_split(char *str);
+int					count_tokens(char *str);
+char				*get_token(char **p);
 #endif
