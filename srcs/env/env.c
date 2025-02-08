@@ -44,7 +44,7 @@ char	*get_env(t_env *env, const char *name)
 	return (NULL);
 }
 
-static t_env*  set_env_helper(const char *key, const char *value, bool is_exported)
+static t_env*  set_env_helper(const char *key, const char *value)
 {
     t_env *new_env;
 
@@ -58,11 +58,10 @@ static t_env*  set_env_helper(const char *key, const char *value, bool is_export
         free_env(new_env);
         return (NULL);
     }
-   new_env->is_exported = is_exported;
    return (new_env);
 }
 
-int	set_env(t_env **env, const char *key, const char *value, bool is_exported)
+int	set_env(t_env **env, const char *key, const char *value)
 {
 	t_env	*current;
     t_env   *new_env;
@@ -76,10 +75,9 @@ int	set_env(t_env **env, const char *key, const char *value, bool is_exported)
         current->value = ft_strdup(value);
         if (current->value == NULL)
             return (1);
-        current->exported = exported;
         return (0);
     }
-    new_env = set_env_helper(key, value, is_exported);
+    new_env = set_env_helper(key, value);
     new_env->next = *env;
     *env = new_env;
     return (0);
