@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/08 16:27:16 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/08 17:20:12 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	process_input(t_shell *shell, char *input)
 {
 	t_token	*token_list;
 	t_cmd	*cmd_list;
+	t_cmd	*cmd;
 
 	token_list = tokenize_list(input);
 	if (!token_list)
