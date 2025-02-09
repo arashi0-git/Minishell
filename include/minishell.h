@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/08 16:22:15 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/09 17:23:15 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,14 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
+/*---expand struct---*/
+typedef struct s_expand
+{
+	char			*out;
+	size_t			i;
+	size_t			out_index;
+}					t_expand;
+
 /*---env struct---*/
 typedef struct s_env
 {
@@ -108,4 +116,16 @@ void				set_signal_handlers(void);
 /*---builtin func---*/
 int					is_builtin(char **args);
 int					exec_builtin(char **args, t_shell *shell);
+
+/*---expand func---*/
+int					process_dollar_others(const char *str, t_shell *shell,
+						size_t *i, size_t *len);
+int					process_dollar_question(const char *str, t_shell *shell,
+						size_t *i, size_t *len);
+int					process_quote(const char *str, t_shell *shell, size_t *i,
+						size_t *len);
+int					process_dollar_length(const char *str, t_shell *shell,
+						size_t *i, size_t *len);
+int					process_expansion_char(const char *str, t_shell *shell,
+						char *out, size_t *i, size_t *out_index);
 #endif
