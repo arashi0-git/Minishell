@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/06 17:15:23 by aryamamo          #+#    #+#              #
-#    Updated: 2025/02/06 22:13:47 by retoriya         ###   ########.fr        #
+#    Updated: 2025/02/09 14:52:15 by retoriya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,8 @@ SRC = ft_strlen.c \
 	ft_putstr_fd.c \
 	ft_putendl_fd.c \
 	ft_putnbr_fd.c\
-	ft_strndup.c
+	ft_strndup.c\
+	ft_strcmp.c
 	
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
