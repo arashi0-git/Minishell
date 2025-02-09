@@ -6,7 +6,7 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:18:21 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/09 19:27:50 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/09 20:25:16 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,17 @@ static void	update_env_variable(char *args, t_env **env)
     free(args_copy);
 }
 
-int	exec_export(char **args, t_shell *shell)
+int	exec_export(char **cmd_and_args, t_shell *shell)
 {
 	int	i;
 
-	if (!args[1])
+	if (!cmd_and_args[1])
 		return (print_sorted_env(shell->env));
 	i = 1;
-	while (args[i])
+	while (cmd_and_args[i])
 	{
-		if (is_valid_identifier(args[i]))
-			update_env_variable(args[i], &shell->env);
+		if (is_valid_identifier(cmd_and_args[i]))
+			update_env_variable(cmd_and_args[i], &shell->env);
 		i++;
 	}
 	return (0);

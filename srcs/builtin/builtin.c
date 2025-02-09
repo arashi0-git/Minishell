@@ -33,9 +33,11 @@ int	exec_builtin(char **args, t_shell *shell)
 
 int	is_builtin(char **args)
 {
-	const char *commands[] = {"exit", "cd", "pwd", "env", "export", "unset",
-		"echo", NULL};
-	int i = 0;
+	const char	*commands[] = {"exit", "cd", "pwd", "env", "export", "unset",
+			"echo", NULL};
+	int			i;
+
+	i = 0;
 	if (args[0] == NULL)
 		return (0);
 	while (commands[i])
@@ -46,5 +48,3 @@ int	is_builtin(char **args)
 	}
 	return (0);
 }
-
-
