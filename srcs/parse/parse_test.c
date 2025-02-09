@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:40:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/07 13:45:47 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/09 15:05:23 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -569,16 +569,58 @@ void	free_cmd_list(t_cmd *cmd_list)
 /* --- テスト用 main --- */
 int	main(void)
 {
-	char	input[] = "cat -e ls | grep 'hello world' | wc -l << file2";
+	t_shell	shell;
 	t_token	*token_list;
 	t_cmd	*cmd_list;
+	t_token	*tok;
+	char	input[] = "echo 'Hello,
+			World' \"$HOME/Desktop\" $USER $? | grep Desktop";
+	char	*expanded;
 
+	/* シェルの初期化（exit_status 例: 0） */
+	shell.exit_status = 0;
+	/* サンプル入力：
+		*  例：echo コマンドで変数展開を含む引数を指定し、パイプで別コマンドに渡す
+		*  シングルクォート内は展開されず、ダブルクォート内や非引用部は展開される
+		*/
+	printf("Original input: %s\n", input);
 	/* 1. トークン化 */
 	token_list = tokenize_list(input);
-	printf("=== Token List ===\n");
+	if (!token_list)
+	{
+		write(STDERR_FILENO, "Tokenization error\n", 19);
+		return (1);
+	}
+	/* 2. 各トークンに対して変数展開を実施（TOKEN_COMMAND と TOKEN_REDIR に適用） */
+	tok = token_list;
+	while (tok)
+	{
+		if (tok->type == TOKEN_COMMAND || tok->type == TOKEN_REDIR)
+		{
+			expanded = expand(tok->value, &shell);
+			if (!expanded)
+			{
+				write(STDERR_FILENO, "Expansion error\n", 16);
+				free_token_list(token_list);
+				return (1);
+			}
+			free(tok->value);
+			tok->value = expanded;
+		}
+		tok = tok->next;
+	}
+	/* 展開後のトークンリストを表示 */
+	printf("=== Token List after Expansion ===\n");
 	print_token_list(token_list);
-	/* 2. パース */
+	/* 3. パース処理 */
 	cmd_list = parse_tokens(token_list);
+	if (!cmd_list)
+	{
+		write(STDERR_FILENO, "Parsing error\n", 14);
+		free_token_list(token_list);
+		return (1);
+	}
+	/* パース結果を表示 */
 	printf("\n=== Parsed Commands ===\n");
 	print_cmd_list(cmd_list);
 	/* 後始末 */
