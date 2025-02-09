@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/01 11:05:25 by aryamamo          #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2025/02/06 22:25:31 by retoriya         ###   ########.fr       */
-=======
-/*   Updated: 2025/02/08 16:59:07 by retoriya         ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Created: 2025/02/09 14:53:31 by retoriya          #+#    #+#             */
+/*   Updated: 2025/02/09 18:51:57 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,43 +40,47 @@ char	*get_env(t_env *env, const char *name)
 	return (NULL);
 }
 
-static t_env*  set_env_helper(const char *key, const char *value)
+static t_env	*set_env_helper(const char *key, const char *value)
 {
-    t_env *new_env;
+	t_env	*new_env;
 
-    new_env = malloc(sizeof(t_env));
-    if (!new_env)
-        return (NULL);
-    new_env->key = ft_strdup(key);
-    new_env->value = ft_strdup(value);
-    if (!new_env->key || !new_env->value)
-    {
-        free_env(new_env);
-        return (NULL);
-    }
-   return (new_env);
+	new_env = malloc(sizeof(t_env));
+	if (!new_env)
+		return (NULL);
+	new_env->key = ft_strdup(key);
+	new_env->value = ft_strdup(value);
+	if (!new_env->key || !new_env->value)
+	{
+		free_env(new_env);
+		return (NULL);
+	}
+	return (new_env);
 }
 
 int	set_env(t_env **env, const char *key, const char *value)
 {
 	t_env	*current;
-    t_env   *new_env;
+	t_env	*new_env;
 
+	if (!env || !key)
+		return (1);
 	current = *env;
-	while (current && ft_strncmp(current->key, key, ft_strlen(key)) != 0)
-            current = current->next;
-    if (current)
-    {
-        free(current->value);
-        current->value = ft_strdup(value);
-        if (current->value == NULL)
-            return (1);
-        return (0);
-    }
-    new_env = set_env_helper(key, value);
-    new_env->next = *env;
-    *env = new_env;
-    return (0);
+	while (current && ft_strcmp(current->key, key) != 0)
+		current = current->next;
+	if (current)
+	{
+		free(current->value);
+		current->value = ft_strdup(value);
+		if (current->value == NULL)
+			return (1);
+		return (0);
+	}
+	new_env = set_env_helper(key, value);
+	if (!new_env)
+		return (1);
+	new_env->next = *env;
+	*env = new_env;
+	return (0);
 }
 
 t_env	*init_env(char **env)
@@ -111,7 +111,8 @@ t_env	*init_env(char **env)
 }
 
 /*
- //libft をmake & env/でcc -Wall -Wextra -Werror env.c -I../../include -L../../libft -lft でテスト可能
+ //libft をmake & env/でcc -Wall -Wextra -Werror env.c -I../../include
+	-L../../libft -lft でテスト可能
 int	main(int argc, char *argv[], char **envp)
 {
 	t_env	*env_list;
