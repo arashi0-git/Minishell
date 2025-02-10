@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 14:03:27 by aryamamo          #+#    #+#              #
-#    Updated: 2025/02/10 14:30:36 by aryamamo         ###   ########.fr        #
+#    Updated: 2025/02/10 14:47:51 by aryamamo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,6 @@ LIBFT = $(LIBFTDIR)/libft.a
 OBJDIR = ./OBJ
 OBJ = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
-OBJ = $(SRCS:.c=.o)
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror 
