@@ -6,11 +6,13 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:43:51 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 16:23:40 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:37:03 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+extern t_shell	*g_shell;
 
 void	handle_sigint(int sig)
 {
@@ -19,6 +21,8 @@ void	handle_sigint(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	if (g_shell != NULL)
+		g_shell->exit_status = 130;
 }
 void	set_signal_handlers(void)
 {

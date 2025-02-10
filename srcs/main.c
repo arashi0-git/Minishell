@@ -6,11 +6,13 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:05:10 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 16:22:41 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:36:12 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+t_shell	*g_shell = NULL;
 
 void	free_shell(t_shell *shell)
 {
@@ -71,6 +73,7 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	init_shell(&shell, envp);
+	g_shell = &shell;
 	set_signal_handlers();
 	minishell(&shell);
 	free_shell(&shell);
