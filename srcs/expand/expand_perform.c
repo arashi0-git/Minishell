@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 16:54:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 13:13:43 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:29:34 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static int	expand_single_quote(const char *str, t_expand *exp)
 	exp->i++;
 	return (0);
 }
+
 static int	expand_double_quote(const char *str, t_shell *shell, t_expand *exp)
 {
 	exp->i++;

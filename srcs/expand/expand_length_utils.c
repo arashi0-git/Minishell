@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:20:54 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 13:21:22 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:29:50 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ int	process_dollar_question(t_shell *shell, size_t *i, size_t *len)
 
 int	process_dollar_others(const char *str, size_t *i, size_t *len)
 {
-	size_t var_start;
-	size_t var_len;
-	char *var_name;
-	char *value;
+	size_t	var_start;
+	size_t	var_len;
+	char	*var_name;
+	char	*value;
 
 	(*i)++;
 	var_start = *i;
