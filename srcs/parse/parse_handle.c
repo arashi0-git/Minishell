@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:49:25 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 14:40:44 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:49:14 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	handle_input_redirection(t_cmd *cmd, t_token *target)
 		printf("malloc infile failed\n");
 		return (-1);
 	}
-	ft_strlcpy(cmd->infile, target->value, ft_strlen(target->value));
+	ft_strcpy(cmd->infile, target->value);
 	return (0);
 }
 
@@ -33,7 +33,7 @@ static int	handle_output_redirection(t_cmd *cmd, t_token *target,
 		printf("malloc outfile failed\n");
 		return (-1);
 	}
-	ft_strlcpy(cmd->outfile, target->value, ft_strlen(target->value));
+	ft_strcpy(cmd->outfile, target->value);
 	if (redirType == REDIRECT_APPEND)
 		cmd->append = 1;
 	else

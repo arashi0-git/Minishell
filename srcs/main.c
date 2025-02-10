@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:05:10 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 14:32:53 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:08:28 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	init_shell(&shell, envp);
-	set_signal_handlers();
+	set_signal_handlers(&shell);
 	minishell(&shell);
 	free_shell(&shell);
 	return (0);

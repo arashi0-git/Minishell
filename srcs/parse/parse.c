@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 14:39:24 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:56:07 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	handle_command_token(t_cmd *cmd, t_token *token)
 			printf("malloc command failed\n");
 			return (-1);
 		}
-		ft_strlcpy(cmd->command, token->value, ft_strlen(token->value));
+		ft_strcpy(cmd->command, token->value);
 		if (add_arg(cmd, token->value) != 0)
 		{
 			printf("add_arg failed\n");

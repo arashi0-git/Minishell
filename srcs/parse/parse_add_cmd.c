@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:51:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 14:42:30 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:55:56 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	copy_arg_to_cmd(t_cmd *cmd, const char *arg)
 		printf("malloc for arg copy failed\n");
 		return (-1);
 	}
-	ft_strlcpy(cmd->args[cmd->argc], arg, ft_strlen(arg));
+	ft_strcpy(cmd->args[cmd->argc], arg);
 	cmd->argc++;
 	cmd->args[cmd->argc] = NULL;
 	return (0);

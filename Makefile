@@ -6,13 +6,14 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 14:03:27 by aryamamo          #+#    #+#              #
-#    Updated: 2025/02/10 14:47:51 by aryamamo         ###   ########.fr        #
+#    Updated: 2025/02/10 16:05:24 by aryamamo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ./minishell
 SRCDIR = ./srcs
 SRCS = $(SRCDIR)/main.c\
+		$(SRCDIR)/signal/signal.c\
 		$(SRCDIR)/process/process_input.c\
 		$(SRCDIR)/env/env.c\
 		$(SRCDIR)/lexer/lexer.c\
@@ -26,6 +27,8 @@ SRCS = $(SRCDIR)/main.c\
 		$(SRCDIR)/expand/expand_perform.c\
 		$(SRCDIR)/expand/expand_perform_utils.c\
 
+##リリンク確認！
+
 LIBFTDIR = ./libft
 LIBFT = $(LIBFTDIR)/libft.a
 
@@ -34,14 +37,16 @@ OBJ = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror
+
+LDFLAG = -lreadline
 
 RM = rm -f
 
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $@
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(LDFLAG) -o $@
 
 $(LIBFT):
 	make -C $(LIBFTDIR)

@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:10:31 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 13:54:06 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:02:19 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*process_quote(char **p)
 	}
 	if (**p == quote)
 		(*p)++;
-	len = *p - start;
+	len = *p - start + 1;
 	token = malloc(len + 1);
 	if (!token)
 		return (NULL);
@@ -52,7 +52,7 @@ static char	*process_redir(char **p)
 	(*p)++;
 	if (**p == c)
 		(*p)++;
-	len = *p - start;
+	len = *p - start + 1;
 	token = malloc(len + 1);
 	if (!token)
 	{
@@ -90,7 +90,7 @@ static char	*process_word(char **p)
 	while (**p && !ft_isspace((unsigned char)**p) && **p != '\'' && **p != '"'
 		&& **p != '>' && **p != '<' && **p != '|')
 		(*p)++;
-	len = *p - start;
+	len = *p - start + 1;
 	token = malloc(len + 1);
 	if (!token)
 	{
