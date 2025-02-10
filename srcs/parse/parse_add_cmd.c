@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:51:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/08 15:43:34 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:55:18 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	resize_args(t_cmd *cmd)
 	if (new_args == NULL)
 	{
 		printf("malloc new_args failed\n");
-		return (NULL);
+		return (-1);
 	}
 	while (i < cmd->argc)
 	{
@@ -70,7 +70,7 @@ static int	copy_arg_to_cmd(t_cmd *cmd, const char *arg)
 	if (cmd->args[cmd->argc] == NULL)
 	{
 		printf("malloc for arg copy failed\n");
-		return (NULL);
+		return (-1);
 	}
 	ft_strcpy(cmd->args[cmd->argc], arg);
 	cmd->argc++;
@@ -83,7 +83,7 @@ int	add_arg(t_cmd *cmd, const char *arg)
 	if (cmd->argc + 1 >= cmd->max_args)
 	{
 		if (resize_args(cmd) != 0)
-			return (NULL);
+			return (-1);
 	}
 	return (copy_arg_to_cmd(cmd, arg));
 }

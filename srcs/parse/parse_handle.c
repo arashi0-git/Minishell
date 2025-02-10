@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:49:25 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/08 15:43:06 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:54:51 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	handle_input_redirection(t_cmd *cmd, t_token *target)
 	if (!cmd->infile)
 	{
 		printf("malloc infile failed\n");
-		return (NULL);
+		return (-1);
 	}
 	ft_strcpy(cmd->infile, target->value);
 	return (0);
@@ -31,7 +31,7 @@ static int	handle_output_redirection(t_cmd *cmd, t_token *target,
 	if (cmd->outfile == NULL)
 	{
 		printf("malloc outfile failed\n");
-		return (NULL);
+		return (-1);
 	}
 	ft_strcpy(cmd->outfile, target->value);
 	if (redirType == REDIRECT_APPEND)
@@ -51,12 +51,12 @@ int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
 	if (*curr_ptr == NULL || (*curr_ptr)->type != TOKEN_COMMAND)
 	{
 		printf("Syntax error: redirection missing target\n");
-		return (NULL);
+		return (-1);
 	}
 	if (redir->redirType == REDIRECT_IN || redir->redirType == REDIRECT_HEREDOC)
 	{
 		ret = handle_input_redirection(cmd, *curr_ptr);
-		if (!ret != 0)
+		if (ret != 0)
 			return (ret);
 	}
 	else if (redir->redirType == REDIRECT_OUT

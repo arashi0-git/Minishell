@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/08 15:44:28 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:53:23 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ static int	handle_command_token(t_cmd *cmd, t_token *token)
 		if (!cmd->command)
 		{
 			printf("malloc command failed\n");
-			return (NULL);
+			return (-1);
 		}
 		ft_strcpy(cmd->command, token->value);
 		if (add_arg(cmd, token->value) != 0)
 		{
 			printf("add_arg failed\n");
-			return (NULL);
+			return (-1);
 		}
 	}
 	else
@@ -53,7 +53,7 @@ static int	handle_command_token(t_cmd *cmd, t_token *token)
 		if (add_arg(cmd, token->value) != 0)
 		{
 			printf("add_arg failed\n");
-			return (NULL);
+			return (-1);
 		}
 	}
 	return (0);
@@ -69,12 +69,12 @@ static int	process_token(t_token **curr_ptr, t_cmd **cmd_list,
 	else if ((*curr_ptr)->type == TOKEN_REDIR)
 	{
 		if (handle_redirection(*current_cmd, curr_ptr) != 0)
-			return (NULL);
+			return (-1);
 	}
 	else if ((*curr_ptr)->type == TOKEN_COMMAND)
 	{
 		if (handle_command_token(*current_cmd, *curr_ptr) != 0)
-			return (NULL);
+			return (-1);
 	}
 	return (0);
 }
