@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/09 17:23:15 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 12:17:50 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,4 +128,5 @@ int					process_dollar_length(const char *str, t_shell *shell,
 						size_t *i, size_t *len);
 int					process_expansion_char(const char *str, t_shell *shell,
 						char *out, size_t *i, size_t *out_index);
+t_expand			*init_expand(size_t total_len);
 #endif

@@ -6,11 +6,29 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:06:24 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/09 17:17:11 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:12:18 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+t_expand	*init_expand(size_t total_len)
+{
+	t_expand	*exp;
+
+	exp = malloc(sizeof(t_expand));
+	if (!exp)
+		return (NULL);
+	exp->out = malloc(total_len + 1);
+	if (!exp->out)
+	{
+		free(exp);
+		return (NULL);
+	}
+	exp->i = 0;
+	exp->out_index = 0;
+	return (exp);
+}
 
 int	expand_length(const char *str, t_shell *shell)
 {
@@ -23,7 +41,7 @@ int	expand_length(const char *str, t_shell *shell)
 	{
 		if (str[i] == '\'' || str[i] == '"')
 		{
-			if (process_quote(str, shell, &i, &len) < 0)
+			if (process_quote_expand(str, shell, &i, &len) < 0)
 				return (-1);
 		}
 		else if (str[i] == '$')
@@ -42,25 +60,25 @@ int	expand_length(const char *str, t_shell *shell)
 
 char	*perform_expansion(const char *str, t_shell *shell, size_t total_len)
 {
-	char	*out;
-	size_t	out_index;
-	size_t	i;
+	t_expand	*exp;
+	char		*result;
 
-	out = malloc(total_len + 1);
-	out_index = 0;
-	i = 0;
-	if (!out)
+	exp = init_expand(total_len);
+	if (!exp)
 		return (NULL);
-	while (str[i] != '\0')
+	while (str[exp->i] != '\0')
 	{
-		if (process_expansion_char(str, shell, out, &i, &out_index) < 0)
+		if (process_expansion_char(str, shell, exp) < 0)
 		{
-			free(out);
+			free(exp->out);
+			free(exp);
 			return (NULL);
 		}
 	}
-	out[out_index] = '\0';
-	return (out);
+	exp->out[exp->out_index] = '\0';
+	result = exp->out;
+	free(exp);
+	return (result);
 }
 
 char	*expand(const char *str, t_shell *shell)
