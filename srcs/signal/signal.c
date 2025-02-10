@@ -6,22 +6,21 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:43:51 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 16:08:44 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:23:40 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	handle_sigint(int sig, t_shell *shell)
+void	handle_sigint(int sig)
 {
 	(void)sig;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	shell->exit_status = 130;
 }
-void	set_signal_handlers(t_shell *shell)
+void	set_signal_handlers(void)
 {
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;

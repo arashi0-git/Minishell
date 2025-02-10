@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 16:08:16 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:22:51 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void				free_env(t_env *env);
 t_token				*tokenize_list(char *line);
 char				*get_token(char **p, tokentype *token_type);
 /*---signal func---*/
-void				set_signal_handlers(t_shell *shell);
+void				set_signal_handlers(void);
 
 /*---builtin func---*/
 int					is_builtin(char **args);
