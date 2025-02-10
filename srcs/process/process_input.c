@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/08 17:20:12 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:34:05 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ void	process_input(t_shell *shell, char *input)
 	if (!cmd_list)
 	{
 		printf("Parsing error\n");
-		free_token_list(token_list);
+		// free_token_list(token_list);
 		return ;
 	}
 	cmd = cmd_list;
 	while (cmd != NULL)
 	{
-		expand_command(cmd, shell);
+		expand_cmd(cmd, shell);
 		cmd = cmd->next;
 	}
-	execute_cmd(cmd_list, shell);
-	free_cmd_list(cmd_list);
-	free_token_list(token_list);
+	// execute_cmd(cmd_list, shell);
+	// free_cmd_list(cmd_list);
+	// free_token_list(token_list);
 }

@@ -6,13 +6,13 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:15:55 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 13:29:15 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:43:26 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	expand_dollar_question(t_shell *shell, t_expand *exp)
+int	expand_dollar_question(t_shell *shell, t_expand *exp)
 {
 	char	*status_str;
 	size_t	t_len;

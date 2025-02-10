@@ -6,11 +6,25 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 14:56:27 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/08 14:56:46 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:20:00 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	free_env(t_env *env)
+{
+	t_env	*tmp;
+
+	while (env)
+	{
+		tmp = env;
+		env = env->next;
+		free(tmp->key);
+		free(tmp->value);
+		free(tmp);
+	}
+}
 
 t_env	*init_env(char **env)
 {

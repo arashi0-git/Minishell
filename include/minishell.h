@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 12:17:50 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:43:40 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ t_cmd				*new_cmd(void);
 
 /*---env func---*/
 t_env				*init_env(char **env);
+void				free_env(t_env *env);
 
 /*---tokenize func---*/
 t_token				*tokenize_list(char *line);
@@ -117,16 +118,21 @@ void				set_signal_handlers(void);
 int					is_builtin(char **args);
 int					exec_builtin(char **args, t_shell *shell);
 
+/*---process func---*/
+void				process_input(t_shell *shell, char *input);
+
 /*---expand func---*/
-int					process_dollar_others(const char *str, t_shell *shell,
-						size_t *i, size_t *len);
-int					process_dollar_question(const char *str, t_shell *shell,
-						size_t *i, size_t *len);
-int					process_quote(const char *str, t_shell *shell, size_t *i,
+void				expand_cmd(t_cmd *cmd, t_shell *shell);
+int					process_dollar_others(const char *str, size_t *i,
 						size_t *len);
+int					process_dollar_question(t_shell *shell, size_t *i,
+						size_t *len);
+int					process_quote_expand(const char *str, t_shell *shell,
+						size_t *i, size_t *len);
 int					process_dollar_length(const char *str, t_shell *shell,
 						size_t *i, size_t *len);
 int					process_expansion_char(const char *str, t_shell *shell,
-						char *out, size_t *i, size_t *out_index);
+						t_expand *exp);
 t_expand			*init_expand(size_t total_len);
+int					expand_dollar_question(t_shell *shell, t_expand *exp);
 #endif

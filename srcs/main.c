@@ -6,11 +6,19 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:05:10 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/08 17:16:59 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:32:53 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void	free_shell(t_shell *shell)
+{
+	if (!shell)
+		return ;
+	free_env(shell->env);
+	free(shell->pwd);
+}
 
 void	init_shell(t_shell *shell, char **envp)
 {
