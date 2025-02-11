@@ -5,16 +5,94 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/02 14:27:11 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/02 14:29:11 by aryamamo         ###   ########.fr       */
+/*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
+/*   Updated: 2025/02/10 15:56:07 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*peek_token(t_parser *token)
+t_cmd	*create_new_command(t_cmd **cmd_list, t_cmd **current_cmd)
 {
-	if (token->pos < token->token_count)
-		return (token->tokens[token->pos]);
-	return (NULL);
+	t_cmd	*new_cmd_ptr;
+	t_cmd	*tail;
+
+	new_cmd_ptr = new_cmd();
+	if (!*cmd_list)
+		*cmd_list = new_cmd_ptr;
+	else
+	{
+		tail = *cmd_list;
+		while (tail->next)
+			tail = tail->next;
+		tail->next = new_cmd_ptr;
+	}
+	*current_cmd = new_cmd_ptr;
+	return (new_cmd_ptr);
+}
+
+static int	handle_command_token(t_cmd *cmd, t_token *token)
+{
+	if (!cmd->command)
+	{
+		cmd->command = malloc(ft_strlen(token->value) + 1);
+		if (!cmd->command)
+		{
+			printf("malloc command failed\n");
+			return (-1);
+		}
+		ft_strcpy(cmd->command, token->value);
+		if (add_arg(cmd, token->value) != 0)
+		{
+			printf("add_arg failed\n");
+			return (-1);
+		}
+	}
+	else
+	{
+		if (add_arg(cmd, token->value) != 0)
+		{
+			printf("add_arg failed\n");
+			return (-1);
+		}
+	}
+	return (0);
+}
+
+static int	process_token(t_token **curr_ptr, t_cmd **cmd_list,
+		t_cmd **current_cmd)
+{
+	if (!*current_cmd)
+		create_new_command(cmd_list, current_cmd);
+	if ((*curr_ptr)->type == TOKEN_PIPE)
+		*current_cmd = NULL;
+	else if ((*curr_ptr)->type == TOKEN_REDIR)
+	{
+		if (handle_redirection(*current_cmd, curr_ptr) != 0)
+			return (-1);
+	}
+	else if ((*curr_ptr)->type == TOKEN_COMMAND)
+	{
+		if (handle_command_token(*current_cmd, *curr_ptr) != 0)
+			return (-1);
+	}
+	return (0);
+}
+
+t_cmd	*parse_tokens(t_token *tokens)
+{
+	t_cmd	*cmd_list;
+	t_cmd	*current_cmd;
+	t_token	*curr;
+
+	cmd_list = NULL;
+	current_cmd = NULL;
+	curr = tokens;
+	while (curr)
+	{
+		if (process_token(&curr, &cmd_list, &current_cmd) != 0)
+			return (NULL);
+		curr = curr->next;
+	}
+	return (cmd_list);
 }

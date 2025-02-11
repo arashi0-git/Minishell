@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
+/*   Updated: 2025/02/10 16:22:51 by aryamamo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -19,13 +31,13 @@
 # define REDIR_HEREDOC 3
 # define PATH_MAX 4096
 
-/*---AST---*/
-typedef enum
+/*---tokenize---*/
+typedef enum token_type
 {
-	NODE_COMMAND,
-	NODE_PIPE,
-	NODE_SEQUENCE
-}						nodetype;
+	TOKEN_COMMAND,
+	TOKEN_PIPE,
+	TOKEN_REDIR
+}					tokentype;
 
 typedef enum
 {
@@ -33,92 +45,95 @@ typedef enum
 	REDIRECT_OUT,
 	REDIRECT_APPEND,
 	REDIRECT_HEREDOC
-}						RedirectType;
-
-typedef struct s_redirect
-{
-	RedirectType		type;
-	char				*filename;
-	struct t_redirect	*next;
-}						t_redirect;
-
-typedef struct s_command
-{
-	char				**args;
-	int					argcount;
-	t_redirect			*redirects;
-	bool				is_builtin;
-}						t_command;
-
-typedef struct ASTnode
-{
-	nodetype			type;
-	t_command			command;
-	struct ASTnode		*left;
-	struct ASTnode		*right;
-}						ASTnode;
-
-/*---parser struct---*/
-typedef struct s_parser
-{
-	char				**tokens;
-	int					token_count;
-	int					pos;
-}						t_parser;
-
-/*---SHELL---*/
-typedef struct s_shell
-{
-	char				**env;
-	char				*pwd;
-	int					exit_status;
-	int					interactive;
-}						t_shell;
+}					RedirectType;
 
 typedef struct s_token
 {
-	char				*value;
-	int					type;
-	struct s_token		*next;
-}						t_token;
+	char			*value;
+	tokentype		type;
+	RedirectType	redirType;
+	struct s_token	*next;
+}					t_token;
 
-typedef struct s_redir
+/*---parser struct---*/
+
+typedef struct s_cmd
 {
-	int					type;
-	char				*file;
-	struct t_redir		*next;
-}						t_redir;
+	char			*command;
+	char			**args;
+	int				argc;
+	int				max_args;
+	char			*infile;
+	char			*outfile;
+	int				append;
+	struct s_cmd	*next;
+}					t_cmd;
 
-/*二重定義のため、一旦コメントアウトしました
-typedef struct s_command
+/*---expand struct---*/
+typedef struct s_expand
 {
-	char				**args;
-	t_redir				*redirect;
-	struct s_command	*next;
-}						t_command;
-*/
+	char			*out;
+	size_t			i;
+	size_t			out_index;
+}					t_expand;
 
+/*---env struct---*/
 typedef struct s_env
 {
-	char				*key;
-	char				*value;
-	struct s_env		*next;
-}						t_env;
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
 
-typedef struct s_builtin
+/*---shell struct---*/
+typedef struct s_shell
 {
-	char				*name;
-	int					(*func)(char **args, t_shell *shell);
-}						t_builtin;
+	t_env			*env;
+	char			*pwd;
+	int				exit_status;
+	int				interactive;
+}					t_shell;
 
-typedef struct s_pipe
-{
-	int					fd[2];
-	struct s_pipe		*next;
-}						t_pipe;
+/*---tokenize func---*/
+t_token				*tokenize_list(char *line);
+char				*get_token(char **p, tokentype *token_type);
 
-/*---tokenize---*/
-char					**token_split(char *str);
-int						count_tokens(char *str);
-char					*get_token(char **p);
+/*---parse func---*/
+t_cmd				*parse_tokens(t_token *tokens);
+int					handle_redirection(t_cmd *cmd, t_token **curr_ptr);
+int					add_arg(t_cmd *cmd, const char *arg);
+t_cmd				*new_cmd(void);
+
+/*---env func---*/
+t_env				*init_env(char **env);
+void				free_env(t_env *env);
+
+/*---tokenize func---*/
+t_token				*tokenize_list(char *line);
+char				*get_token(char **p, tokentype *token_type);
+/*---signal func---*/
+void				set_signal_handlers(void);
+
+/*---builtin func---*/
+int					is_builtin(char **args);
+int					exec_builtin(char **args, t_shell *shell);
+
+/*---process func---*/
+void				process_input(t_shell *shell, char *input);
+
+/*---expand func---*/
+void				expand_cmd(t_cmd *cmd, t_shell *shell);
+int					process_dollar_others(const char *str, size_t *i,
+						size_t *len);
+int					process_dollar_question(t_shell *shell, size_t *i,
+						size_t *len);
+int					process_quote_expand(const char *str, t_shell *shell,
+						size_t *i, size_t *len);
+int					process_dollar_length(const char *str, t_shell *shell,
+						size_t *i, size_t *len);
+int					process_expansion_char(const char *str, t_shell *shell,
+						t_expand *exp);
+t_expand			*init_expand(size_t total_len);
+int					expand_dollar_question(t_shell *shell, t_expand *exp);
+int					expand_dollar_variable(const char *str, t_expand *exp);
 #endif

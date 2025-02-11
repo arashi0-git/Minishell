@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 16:54:52 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/03 15:13:59 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:53:41 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ static t_token	*new_token_node(char *value, tokentype type,
 
 	node = malloc(sizeof(t_token));
 	if (!node)
-		exit(1);
-	// error_exit("node malloc failed");
+	{
+		printf("node malloc failed\n");
+		return (NULL);
+	}
 	node->value = value;
 	node->type = type;
 	node->redirType = redirType;
@@ -33,25 +35,25 @@ static RedirectType	redirect_type_from_token(const char *token)
 	if (token[0] == '<')
 	{
 		if (ft_strlen(token) == 1)
-			return (REDIR_IN);
+			return (REDIRECT_IN);
 		else
-			return (REDIR_HEREDOC);
+			return (REDIRECT_HEREDOC);
 	}
 	else if (token[0] == '>')
 	{
 		if (ft_strlen(token) == 1)
-			return (REDIR_OUT);
+			return (REDIRECT_OUT);
 		else
-			return (REDIR_APPEND);
+			return (REDIRECT_APPEND);
 	}
-	return (REDIR_OUT);
+	return (REDIRECT_OUT);
 }
 
 static t_token	*create_token_node(char *token, tokentype type)
 {
 	RedirectType	redirType;
 
-	redirType = REDIR_OUT;
+	redirType = REDIRECT_OUT;
 	if (type == TOKEN_REDIR)
 		redirType = redirect_type_from_token(token);
 	return (new_token_node(token, type, redirType));
