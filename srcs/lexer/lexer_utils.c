@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:10:31 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 16:02:19 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/11 12:08:24 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static char	*process_word(char **p)
 	return (token);
 }
 
-char	*get_token(char **p, tokentype *token_type)
+char	*get_token(char **p, t_tokentype *token_type)
 {
 	while (**p && ft_isspace((unsigned char)**p))
 		(*p)++;

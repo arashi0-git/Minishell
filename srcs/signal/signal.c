@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:43:51 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 16:37:03 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/11 12:05:15 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	handle_sigint(int sig)
 	if (g_shell != NULL)
 		g_shell->exit_status = 130;
 }
+
 void	set_signal_handlers(void)
 {
 	struct sigaction	sa_int;

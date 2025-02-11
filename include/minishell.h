@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/11 11:31:26 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/11 12:06:44 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,21 @@ typedef enum token_type
 	TOKEN_COMMAND,
 	TOKEN_PIPE,
 	TOKEN_REDIR
-}					tokentype;
+}					t_tokentype;
 
-typedef enum
+typedef enum redirect_type
 {
 	REDIRECT_IN,
 	REDIRECT_OUT,
 	REDIRECT_APPEND,
 	REDIRECT_HEREDOC
-}					RedirectType;
+}					t_redirecttype;
 
 typedef struct s_token
 {
 	char			*value;
-	tokentype		type;
-	RedirectType	redirType;
+	t_tokentype		type;
+	t_redirecttype	redirtype;
 	struct s_token	*next;
 }					t_token;
 
@@ -96,7 +96,7 @@ typedef struct s_shell
 
 /*---tokenize func---*/
 t_token				*tokenize_list(char *line);
-char				*get_token(char **p, tokentype *token_type);
+char				*get_token(char **p, t_tokentype *token_type);
 
 /*---parse func---*/
 t_cmd				*parse_tokens(t_token *tokens);
@@ -110,7 +110,7 @@ void				free_env(t_env *env);
 
 /*---tokenize func---*/
 t_token				*tokenize_list(char *line);
-char				*get_token(char **p, tokentype *token_type);
+char				*get_token(char **p, t_tokentype *token_type);
 /*---signal func---*/
 void				set_signal_handlers(void);
 

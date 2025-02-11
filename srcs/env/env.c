@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 14:56:27 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/11 10:39:42 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:36:47 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,3 @@ t_env	*init_env(char **env)
 	}
 	return (env_list);
 }
-
