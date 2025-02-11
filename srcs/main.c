@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:05:10 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 16:36:12 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:41:12 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	minishell(t_shell *shell)
 		input = readline("minishell$ ");
 		if (!input)
 		{
-			write(STDOUT_FILENO, "exit\n", 5);
+			write(STDERR_FILENO, "exit\n", 5);
 			break ;
 		}
 		if (*input != '\0')

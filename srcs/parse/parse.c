@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 15:56:07 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:30:50 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,10 @@ t_cmd	*parse_tokens(t_token *tokens)
 	while (curr)
 	{
 		if (process_token(&curr, &cmd_list, &current_cmd) != 0)
+		{
+			free_cmd_list(cmd_list);
 			return (NULL);
+		}
 		curr = curr->next;
 	}
 	return (cmd_list);

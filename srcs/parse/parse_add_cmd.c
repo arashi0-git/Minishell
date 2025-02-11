@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:51:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 15:55:56 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:27:06 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_cmd	*new_cmd(void)
 	if (!cmd->args)
 	{
 		printf("malloc args failed\n");
+		free(cmd);
 		return (NULL);
 	}
 	cmd->argc = 0;

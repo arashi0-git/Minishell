@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 16:22:51 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:31:26 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int					exec_builtin(char **args, t_shell *shell);
 
 /*---process func---*/
 void				process_input(t_shell *shell, char *input);
+void				free_cmd_list(t_cmd *cmd_list);
 
 /*---expand func---*/
 void				expand_cmd(t_cmd *cmd, t_shell *shell);
