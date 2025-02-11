@@ -19,6 +19,10 @@
 # define REDIR_HEREDOC 3
 # define PATH_MAX 4096
 
+#define ENV_SUCCESS 0
+#define ENV_MALLOC_ERROR 1
+#define ENV_INVALID_ARGS 2
+
 /*---AST---*/
 typedef enum
 {
@@ -67,14 +71,6 @@ typedef struct s_parser
 }						t_parser;
 
 /*---SHELL---*/
-typedef struct s_shell
-{
-	char				**env;
-	char				*pwd;
-	int					exit_status;
-	int					interactive;
-}						t_shell;
-
 typedef struct s_token
 {
 	char				*value;
@@ -89,12 +85,14 @@ typedef struct s_redir
 	struct t_redir		*next;
 }						t_redir;
 
+/*二重定義のため、一旦コメントアウトしました
 typedef struct s_command
 {
 	char				**args;
 	t_redir				*redirect;
 	struct s_command	*next;
 }						t_command;
+*/
 
 typedef struct s_env
 {
@@ -102,6 +100,14 @@ typedef struct s_env
 	char				*value;
 	struct s_env		*next;
 }						t_env;
+
+typedef struct s_shell
+{
+    t_env               *env;
+	char				*pwd;
+	int					exit_status;
+	int					interactive;
+}						t_shell;
 
 typedef struct s_builtin
 {
@@ -119,4 +125,9 @@ typedef struct s_pipe
 char					**token_split(char *str);
 int						count_tokens(char *str);
 char					*get_token(char **p);
+int	set_env(t_env **env, const char *key, const char *value);
+char **sort_env(t_env *env);
+int     print_sorted_env(t_env *env);
+int	set_env(t_env **env, const char *key, const char *value);
+void free_array(char **array);
 #endif
