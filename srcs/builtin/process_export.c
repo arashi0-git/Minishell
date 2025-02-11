@@ -6,7 +6,7 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:18:21 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/09 20:25:16 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:33:00 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ static void	update_env_variable(char *args, t_env **env)
 	char	*equal_pos;
 	char	*key;
 	char	*value;
-    char    *args_copy;
+	char	*args_copy;
 
-    args_copy = ft_strdup(args);
+	args_copy = ft_strdup(args);
 	if (!args || !env)
 		return ;
 	equal_pos = ft_strchr(args_copy, '=');
@@ -60,7 +60,7 @@ static void	update_env_variable(char *args, t_env **env)
 	}
 	else
 		set_env(env, args, "");
-    free(args_copy);
+	free(args_copy);
 }
 
 int	exec_export(char **cmd_and_args, t_shell *shell)
@@ -79,8 +79,34 @@ int	exec_export(char **cmd_and_args, t_shell *shell)
 	return (0);
 }
 
-// #compile option:libftをmake &&  cc -Wall -Wextra -Werror -g  process_export.c process_export_utils.c process_export_utils2.c ../env/env.c -I../../include -L../../libft -lft 
+// #compile option:libftをmake &&  cc -Wall -Wextra -Werror
+	-g  process_export.c process_export_utils.c process_export_utils2.c ../env/env.c
+	-I../../include -L../../libft -lft
 // test1
+
+void	clean_env(t_env *env)
+{
+	t_env	*current;
+	t_env	*next;
+
+	current = env;
+	while (current)
+	{
+		next = current->next;
+		free(current->key);
+		free(current->value);
+		free(current);
+		current = next;
+	}
+}
+
+void	clean_shell(t_shell *shell)
+{
+	if (!shell)
+		return ;
+	clean_env(shell->env);
+	free(shell);
+}
 
 #include <stdio.h>
 
@@ -94,8 +120,9 @@ static t_shell	*init_test_shell(void)
 		return (NULL);
 	shell->env = NULL;
 	// 基本的な環境変数を設定
-	set_env(&shell->env, "HOME", "/home/user");
-	set_env(&shell->env, "PATH", "/usr/bin");
+	set_env(&shell->env, "C", "/home/user");
+	set_env(&shell->env, "B", "/usr/bin");
+	set_env(&shell->env, "A", "/usr/local");
 	return (shell);
 }
 
@@ -120,6 +147,7 @@ int	main(void)
 	// 結果を確認するため再度表示
 	test_args[1] = NULL;
 	exec_export(test_args, shell);
+	clean_shell(shell);
 	return (0);
 }
 
