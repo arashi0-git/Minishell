@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:10:31 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/11 12:08:24 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:31:59 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static char	*process_word(char **p)
 
 char	*get_token(char **p, t_tokentype *token_type)
 {
-	while (**p && ft_isspace((unsigned char)**p))
+	while (**p && **p == ' ')
 		(*p)++;
 	if (**p == '\0')
 		return (NULL);
@@ -118,7 +118,7 @@ char	*get_token(char **p, t_tokentype *token_type)
 		*token_type = TOKEN_REDIR;
 		return (process_redir(p));
 	}
-	else if (**p == '|')
+	else if (**p && **p == '|')
 	{
 		*token_type = TOKEN_PIPE;
 		return (process_pipe(p));

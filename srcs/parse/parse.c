@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/11 11:35:37 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/18 13:20:55 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,19 @@ static int	handle_command_token(t_cmd *cmd, t_token *token)
 static int	process_token(t_token **curr_ptr, t_cmd **cmd_list,
 		t_cmd **current_cmd)
 {
+	if (!*current_cmd && (*curr_ptr)->type == TOKEN_PIPE)
+	{
+		printf("minishell: syntax error unexpected token '|'or '||'\n");
+		return (-1);
+	}
 	if (!*current_cmd)
 		create_new_command(cmd_list, current_cmd);
 	if ((*curr_ptr)->type == TOKEN_PIPE)
+	{
+		if ((*curr_ptr)->next == NULL)
+			return (-1);
 		*current_cmd = NULL;
+	}
 	else if ((*curr_ptr)->type == TOKEN_REDIR)
 	{
 		if (handle_redirection(*current_cmd, curr_ptr) != 0)
