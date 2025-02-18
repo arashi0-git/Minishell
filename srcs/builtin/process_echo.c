@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:06:22 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/08 17:10:10 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:36:33 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	test_echo(char **args, char *test_name, char *expected_output)
 	// 標準出力を元に戻す
 	dup2(original_stdout, STDOUT_FILENO);
 	// 結果を検証
-	printf("return (value: %d\n", result));
+	printf("return (value: %d\n", result);
 	printf("Test: %s\n", test_name);
 	printf("Expected: '%s'\n", expected_output);
 	printf("Got     : '%s'\n", buffer);

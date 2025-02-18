@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 14:03:27 by aryamamo          #+#    #+#              #
-#    Updated: 2025/02/10 16:23:42 by aryamamo         ###   ########.fr        #
+#    Updated: 2025/02/11 12:27:52 by aryamamo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ SRCS = $(SRCDIR)/main.c\
 		$(SRCDIR)/expand/expand_length_utils.c\
 		$(SRCDIR)/expand/expand_perform.c\
 		$(SRCDIR)/expand/expand_perform_utils.c\
-
+		$(SRCDIR)/builtin/builtin.c
+		
 ##リリンク確認！
 
 LIBFTDIR = ./libft
