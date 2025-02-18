@@ -36,31 +36,34 @@ int	exec_echo(char **args)
 	return (0);
 }
 
-void	test_echo(char **args, char *test_name, char *expected_output)
-{
-	int		original_stdout;
-	int		pipe_fd[2];
-	char	buffer[1024];
-	int		result;
-	int		bytes_read;
-
+/*
+// テスト用の関数
+void	test_echo(char **args, char *test_name, char *expected_output) {
 	// 出力をキャプチャするためのファイルディスクリプタ
+	int original_stdout;
+	int pipe_fd[2];
+	char buffer[1024];
+
 	// 現在の標準出力を保存
 	original_stdout = dup(STDOUT_FILENO);
 	pipe(pipe_fd);
 	dup2(pipe_fd[1], STDOUT_FILENO);
 	// echoを実行
-	result = exec_echo(args);
+	int result = exec_echo(args);
+
 	// パイプをフラッシュしてclose
 	fflush(stdout);
 	close(pipe_fd[1]);
+
 	// 出力を読み取る
-	bytes_read = read(pipe_fd[0], buffer, sizeof(buffer) - 1);
+	int bytes_read = read(pipe_fd[0], buffer, sizeof(buffer)-1);
 	buffer[bytes_read] = '\0';
+
 	// 標準出力を元に戻す
 	dup2(original_stdout, STDOUT_FILENO);
+
 	// 結果を検証
-	printf("return (value: %d\n", result);
+	printf("return (value: %d\n", result));
 	printf("Test: %s\n", test_name);
 	printf("Expected: '%s'\n", expected_output);
 	printf("Got     : '%s'\n", buffer);
@@ -68,18 +71,7 @@ void	test_echo(char **args, char *test_name, char *expected_output)
 			expected_output) == 0 ? "PASS" : "FAIL");
 }
 
-int	main(int argc, char **argv)
-{
-	int	ret;
 
-	(void)argc;
-	if (!argv || !argv[0])
-		return (1);
-	ret = exec_echo(&argv[0]);
-	return (ret);
-}
-
-/*
 int	main(void) {
 	// 基本的なテストケース
 	printf("basic echo\n");

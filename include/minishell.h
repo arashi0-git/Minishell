@@ -31,6 +31,8 @@
 # define REDIR_HEREDOC 3
 # define PATH_MAX 4096
 
+
+=======
 /*---tokenize---*/
 typedef enum token_type
 {
@@ -55,7 +57,6 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-/*---parser struct---*/
 
 typedef struct s_cmd
 {
@@ -85,6 +86,26 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
+
+
+typedef struct s_builtin
+{
+	char				*name;
+	int					(*func)(char **args, t_shell *shell);
+}						t_builtin;
+
+typedef struct s_pipe
+{
+	int					fd[2];
+	struct s_pipe		*next;
+}						t_pipe;
+
+
+int	set_env(t_env **env, const char *key, const char *value);
+char **sort_env(t_env *env);
+int     print_sorted_env(t_env *env);
+int	set_env(t_env **env, const char *key, const char *value);
+void free_array(char **array);
 /*---shell struct---*/
 typedef struct s_shell
 {
@@ -96,7 +117,7 @@ typedef struct s_shell
 
 /*---tokenize func---*/
 t_token				*tokenize_list(char *line);
-char				*get_token(char **p, t_tokentype *token_type);
+char		(char **p, t_tokentype *token_type);
 
 /*---parse func---*/
 t_cmd				*parse_tokens(t_token *tokens);
