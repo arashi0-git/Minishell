@@ -71,7 +71,8 @@ int	exec_unset(char **args, t_shell *shell)
 	}
 	return (status);
 }
-/*cc -Wall -Wextra -Werror -g  process_unset.c ../env/env.c -I../../include -L../../libft -lft
+/*cc -Wall -Wextra -Werror -g  process_unset.c ../env/env.c -I../../include
+	-L../../libft -lft
  //
 static t_shell	*init_shell(void)
 {
