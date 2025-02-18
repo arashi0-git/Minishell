@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/09 14:53:31 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/09 18:51:57 by retoriya         ###   ########.fr       */
+/*   Created: 2025/02/08 14:56:27 by aryamamo          #+#    #+#             */
+/*   Updated: 2025/02/11 11:36:47 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 void	free_env(t_env *env)
 {
