@@ -37,10 +37,9 @@ typedef enum e_bool {
     TRUE = 1
 } t_bool;
 
-
-static int  open_file(t_redirect *redir)
+static int open_file(t_redirect *redir)
 {
-    char    *filename;
+    char *filename;
 
     filename = redir->filename->data;
     if (redir->type == REDIR_INPUT)
@@ -50,11 +49,12 @@ static int  open_file(t_redirect *redir)
     return (open(filename, O_WRONLY | O_CREAT | O_APPEND, FILE_MODE));
 }
 
-static t_bool check_redirect(t_redirect *redir, char *org_filename)
+//redirect checker
+static t_bool check_redirect(t_redirect *redir)
 {
     if (redir->filename == NULL || redir->filename->next)
     {
-        print_error("ambiguous redirect", org_filename);
+        print_error("ambiguous redirect", redir->filename->data);
         return (FALSE);
     }
     if ((redir->fd_file = open_file(redir)) < 0)
@@ -65,32 +65,28 @@ static t_bool check_redirect(t_redirect *redir, char *org_filename)
     return (TRUE);
 }
 
-t_bool  setup_redirects(t_command *command)
+// リダイレクトのsetUp
+t_bool setup_redirects(t_command *command)
 {
-    t_redirect   *redir;
-    char        *org_filename;
+    t_redirect *redir;
 
     redir = command->redirects;
     while (redir)
     {
-        if ((org_filename = ft_strdup(redir->filename->data)) == NULL)
-            error_exit(NULL);
-        expand_tokens(&redir->filename);
-        if (check_redirect(redir, org_filename) == FALSE)
+        if (check_redirect(redir) == FALSE)
         {
-            free(org_filename);
             cleanup_redirects(command);
             return (FALSE);
         }
-        free(org_filename);
         redir = redir->next;
     }
     return (TRUE);
 }
 
-void    cleanup_redirects(t_command *command)
+// リダイレクトのcleanup
+void cleanup_redirects(t_command *command)
 {
-    t_redirect   *redir;
+    t_redirect *redir;
 
     redir = command->redirects;
     while (redir && redir->next)
@@ -114,9 +110,10 @@ void    cleanup_redirects(t_command *command)
     }
 }
 
-t_bool  dup_redirects(t_command *command, t_bool is_parent)
+// リダイレクトの複製処理
+t_bool dup_redirects(t_command *command, t_bool is_parent)
 {
-    t_redirect   *redir;
+    t_redirect *redir;
 
     redir = command->redirects;
     while (redir)
@@ -139,3 +136,35 @@ t_bool  dup_redirects(t_command *command, t_bool is_parent)
     return (TRUE);
 }
 
+// リダイレクト構造体の作成
+t_redirect *create_redirect(t_redirect_type type, t_token *filename, int fd_io)
+{
+    t_redirect *redir;
+
+    redir = malloc(sizeof(t_redirect));
+    if (!redir)
+        error_exit(NULL);
+    redir->type = type;
+    redir->filename = filename;
+    redir->fd_io = fd_io;
+    redir->fd_file = -1;
+    redir->fd_backup = -1;
+    redir->next = NULL;
+    redir->prev = NULL;
+    return (redir);
+}
+
+// リダイレクト構造体の解放
+void free_redirect(t_redirect *redir)
+{
+    t_redirect *next;
+
+    while (redir)
+    {
+        next = redir->next;
+        if (redir->filename)
+            free_token(redir->filename);
+        free(redir);
+        redir = next;
+    }
+}
