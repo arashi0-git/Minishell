@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/11 12:06:44 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/22 17:30:01 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,6 @@ t_cmd				*new_cmd(void);
 t_env				*init_env(char **env);
 void				free_env(t_env *env);
 
-/*---tokenize func---*/
-t_token				*tokenize_list(char *line);
-char				*get_token(char **p, t_tokentype *token_type);
 /*---signal func---*/
 void				set_signal_handlers(void);
 
@@ -137,4 +134,10 @@ int					process_expansion_char(const char *str, t_shell *shell,
 t_expand			*init_expand(size_t total_len);
 int					expand_dollar_question(t_shell *shell, t_expand *exp);
 int					expand_dollar_variable(const char *str, t_expand *exp);
+
+/*---builtin---*/
+void				exec_echo(char **args);
+int					exec_cd(char **args, t_shell *shell);
+int					process_pwd(void);
+
 #endif
