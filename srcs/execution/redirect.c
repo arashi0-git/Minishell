@@ -6,28 +6,23 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/23 21:27:09 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:05:31 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-#include "expander.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
 #include "../../include/redirect.h"
 
-#define FILE_MODE 0644
-
-
 static int	open_file(t_redirect *redir)
 {
 	char	*filename;
-
+	
 	filename = redir->filename->data;
-	if (redir->type == REDIR_INPUT)
+	if (redir->type == REDIRECT_IN)
 		return (open(filename, O_RDONLY));
-	if (redir->type == REDIR_OUTPUT)
+	if (redir->type == REDIRECT_OUT)
 		return (open(filename, O_WRONLY | O_CREAT | O_TRUNC, FILE_MODE));
 	return (open(filename, O_WRONLY | O_CREAT | O_APPEND, FILE_MODE));
 }
@@ -151,3 +146,4 @@ void	free_redirect(t_redirect *redir)
 		redir = next;
 	}
 }
+

@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:06:14 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/18 14:06:21 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:54:45 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,28 +48,29 @@ int	exec_cd(char **args, t_shell *shell)
 
 	if (getcwd(oldpwd, sizeof(oldpwd)) == NULL)
 	{
-		ft_print_error("cd: getcwd", NULL);
+		print_error("cd: getcwd", NULL);
 		return (1);
 	}
 	target = resolve_path(args[1], shell);
 	if (!target)
 	{
-		ft_print_error("cd: path not set", NULL);
+		print_error("cd: path not set", NULL);
 		return (1);
 	}
 	if (chdir(target) != 0)
 	{
-		ft_print_error("cd", NULL);
+		print_error("cd", NULL);
 		return (1);
 	}
 	if (update_pwd_env(shell, oldpwd) != 0)
     {
-        ft_print_error("cd: Failed to update PWD", NULL);
+        print_error("cd: Failed to update PWD", NULL);
         return (1);
     }
     return (0);
 }
 
+/*
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -78,7 +79,7 @@ int	exec_cd(char **args, t_shell *shell)
 #include <pwd.h>
 #include <errno.h>
 
-/* 初期化関数 */
+//初期化関数
 int initialize_shell_env(t_shell *shell)
 {
     char current_dir[PATH_MAX];
@@ -109,7 +110,7 @@ int initialize_shell_env(t_shell *shell)
     return 0;
 }
 
-/* メイン関数 */
+// メイン関数 
 int main(int argc, char *argv[])
 {
     char before[PATH_MAX];
@@ -133,4 +134,4 @@ int main(int argc, char *argv[])
     printf("\nAfter: %s\n", after);
     printf("\nexec_cd:return_value:%d\n", return_value);
 }
-
+*/

@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/11 12:06:44 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:22:27 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <sys/stat.h>
 
 # define REDIR_IN 0
 # define REDIR_OUT 1
@@ -31,8 +32,13 @@
 # define REDIR_HEREDOC 3
 # define PATH_MAX 4096
 
+typedef struct stat	t_stat;
 
-=======
+typedef enum e_bool {
+    FALSE = 0,
+    TRUE = 1
+} t_bool;
+
 /*---tokenize---*/
 typedef enum token_type
 {
@@ -68,6 +74,9 @@ typedef struct s_cmd
 	char			*outfile;
 	int				append;
 	struct s_cmd	*next;
+    struct s_cmd    *prev;          // パイプライン用
+    pid_t           pid;            // プロセス管理用
+    t_redirecttype      *redirects;     // リダイレクト管理用
 }					t_cmd;
 
 /*---expand struct---*/
@@ -87,12 +96,6 @@ typedef struct s_env
 }					t_env;
 
 
-
-typedef struct s_builtin
-{
-	char				*name;
-	int					(*func)(char **args, t_shell *shell);
-}						t_builtin;
 
 typedef struct s_pipe
 {
@@ -115,9 +118,16 @@ typedef struct s_shell
 	int				interactive;
 }					t_shell;
 
+
+typedef struct s_builtin
+{
+	char				*name;
+	int					(*func)(char **args, t_shell *shell);
+}						t_builtin;
+
 /*---tokenize func---*/
 t_token				*tokenize_list(char *line);
-char		(char **p, t_tokentype *token_type);
+//char		(char **p, t_tokentype *token_type);
 
 /*---parse func---*/
 t_cmd				*parse_tokens(t_token *tokens);
@@ -128,6 +138,8 @@ t_cmd				*new_cmd(void);
 /*---env func---*/
 t_env				*init_env(char **env);
 void				free_env(t_env *env);
+char	*get_env(t_env *env, const char *name);
+int	set_env(t_env **env, const char *key, const char *value);
 
 /*---tokenize func---*/
 t_token				*tokenize_list(char *line);
@@ -158,4 +170,14 @@ int					process_expansion_char(const char *str, t_shell *shell,
 t_expand			*init_expand(size_t total_len);
 int					expand_dollar_question(t_shell *shell, t_expand *exp);
 int					expand_dollar_variable(const char *str, t_expand *exp);
+
+/*---error func---*/
+void	print_error(char *message, char *command);
+
+/***exit func***/
+void	error_exit(char *command);
+
+
+/*---execution func---*/
+int	execute_command(t_shell *shell, t_cmd *cmd);
 #endif

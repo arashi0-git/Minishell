@@ -6,27 +6,42 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 14:03:27 by aryamamo          #+#    #+#              #
-#    Updated: 2025/02/11 12:27:52 by aryamamo         ###   ########.fr        #
+#    Updated: 2025/02/25 15:00:27 by retoriya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ./minishell
 SRCDIR = ./srcs
-SRCS = $(SRCDIR)/main.c\
-		$(SRCDIR)/signal/signal.c\
-		$(SRCDIR)/process/process_input.c\
-		$(SRCDIR)/env/env.c\
-		$(SRCDIR)/lexer/lexer.c\
-		$(SRCDIR)/lexer/lexer_utils.c\
-		$(SRCDIR)/parse/parse.c\
-		$(SRCDIR)/parse/parse_handle.c\
-		$(SRCDIR)/parse/parse_add_cmd.c\
-		$(SRCDIR)/expand/expand.c\
-		$(SRCDIR)/expand/expand_length.c\
-		$(SRCDIR)/expand/expand_length_utils.c\
-		$(SRCDIR)/expand/expand_perform.c\
-		$(SRCDIR)/expand/expand_perform_utils.c\
-		$(SRCDIR)/builtin/builtin.c
+SRCS = $(SRCDIR)/main.c \
+		$(SRCDIR)/signal/signal.c \
+		$(SRCDIR)/process/process_input.c \
+		$(SRCDIR)/env/env.c \
+		$(SRCDIR)/lexer/lexer.c \
+		$(SRCDIR)/lexer/lexer_utils.c \
+		$(SRCDIR)/parse/parse.c \
+		$(SRCDIR)/parse/parse_handle.c \
+		$(SRCDIR)/parse/parse_add_cmd.c \
+		$(SRCDIR)/expand/expand.c \
+		$(SRCDIR)/expand/expand_length.c \
+		$(SRCDIR)/expand/expand_length_utils.c \
+		$(SRCDIR)/expand/expand_perform.c \
+		$(SRCDIR)/expand/expand_perform_utils.c \
+		$(SRCDIR)/builtin/builtin.c \
+		$(SRCDIR)/builtin/process_cd.c \
+		$(SRCDIR)/builtin/process_echo.c \
+		$(SRCDIR)/builtin/process_export.c \
+		$(SRCDIR)/builtin/process_export_utils.c \
+		$(SRCDIR)/builtin/process_export_utils2.c \
+		$(SRCDIR)/builtin/process_pwd.c \
+		$(SRCDIR)/builtin/process_unset.c \
+		$(SRCDIR)/execution/execute_command.c \
+		$(SRCDIR)/execution/execute_binary.c \
+		$(SRCDIR)/execution/execute_pipe.c \
+		$(SRCDIR)/execution/find_commond_path.c \
+		$(SRCDIR)/execution/redirect.c \
+		$(SRCDIR)/execution/utils.c \
+		$(SRCDIR)/utils/free_array.c \
+		$(SRCDIR)/utils/print_error.c
 		
 ##リリンク確認！
 

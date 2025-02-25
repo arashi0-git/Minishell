@@ -6,7 +6,7 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:18:21 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/11 14:33:00 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:11:42 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,10 @@ int	exec_export(char **cmd_and_args, t_shell *shell)
 	return (0);
 }
 
+/*
 // #compile option:libftをmake &&  cc -Wall -Wextra -Werror
 	-g  process_export.c process_export_utils.c process_export_utils2.c ../env/env.c
 	-I../../include -L../../libft -lft
-// test1
-
 void	clean_env(t_env *env)
 {
 	t_env	*current;
@@ -150,7 +149,7 @@ int	main(void)
 	clean_shell(shell);
 	return (0);
 }
-
+*/
 /*
    export [-fn] [name[=word]] ...
 		export -p

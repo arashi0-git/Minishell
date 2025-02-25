@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_commond.c                                  :+:      :+:    :+:   */
+/*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/23 21:13:56 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:11:26 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	exec_builtin_parent(t_shell *shell, t_cmd *command, char **args)
 		return (EXIT_FAILURE);
 	if (dup_redirects(command, TRUE) == FALSE)
 		return (EXIT_FAILURE);
-	return (exec_builtin(shell, args));
+	return (exec_builtin(args, shell));
 }
 
 static void	execute_in_child(t_shell *shell, t_cmd *cmd, t_pipe_state state,
@@ -39,8 +39,8 @@ static void	execute_in_child(t_shell *shell, t_cmd *cmd, t_pipe_state state,
 	if (!setup_redirects(cmd))
 		exit(EXIT_FAILURE);
 	setup_pipes(state, old_pipe, new_pipe);
-	if (is_builtin(cmd->args[0]))
-		exit(exec_builtin(shell, cmd->args));
+	if (is_builtin(&cmd->args[0]))
+		exit(exec_builtin(cmd->args, shell));
 	else
 		exec_binary(shell, cmd->args);
 }
@@ -55,7 +55,7 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 	init_pipe_state(&state, cmd);
 	expand_cmd(cmd, shell);
 	create_pipe(state, new_pipe);
-	if (state == NO_PIPE && is_builtin(cmd->args[0]))
+	if (state == NO_PIPE && is_builtin(&cmd->args[0]))
 		return (exec_builtin_parent(shell, cmd, cmd->args));
 	pid = fork();
 	if (pid < 0)
@@ -64,5 +64,6 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 		execute_in_child(shell, cmd, state, old_pipe, new_pipe);
 	cleanup_pipe(state, old_pipe, new_pipe);
 	cmd->pid = pid;
-	return (wait_for_command(pid));
+	return (1);
+	//return (wait_for_command(pid));
 }

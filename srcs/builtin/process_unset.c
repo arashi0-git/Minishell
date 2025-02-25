@@ -6,11 +6,38 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:03:31 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/11 20:41:00 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:57:04 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static int	is_valid_identifier(const char *str)
+{
+	char	*equal_pos;
+	size_t	key_length;
+	size_t	i;
+
+	equal_pos = NULL;
+	i = 0;
+	if (!str || !*str)
+		return (0);
+	if (!ft_isalpha(*str) && *str != '_')
+		return (0);
+	equal_pos = ft_strchr(str, '=');
+	if (equal_pos)
+		key_length = equal_pos - str;
+	else
+		key_length = ft_strlen(str);
+	i = 1;
+	while (i < key_length)
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 static void	free_env_node(t_env *node)
 {
@@ -58,7 +85,7 @@ int	exec_unset(char **args, t_shell *shell)
 	i = 1;
 	status = 0;
 	if (!shell->env)
-		return ;
+		return (1);
 	while (args[i])
 	{
 		if (!is_valid_identifier(args[i]))

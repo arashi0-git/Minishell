@@ -6,12 +6,12 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/14 10:32:26 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:40:56 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
+#include "../../include/execution.h"
 void	print_cmd_list(t_cmd *cmd_list)
 {
 	int	i;
@@ -102,6 +102,20 @@ t_cmd	*tokenize_and_parse(char *input)
 	return (cmd_list);
 }
 
+void process_output(t_shell *shell, t_cmd *cmd_list)
+{
+    t_cmd *cmd;
+    int status;
+    
+    cmd = cmd_list;
+    while (cmd != NULL)
+    {
+        status = execute_command(shell, cmd);
+        shell->exit_status = status;
+        cmd = cmd->next;
+    }
+}
+
 void	process_input(t_shell *shell, char *input)
 {
 	t_cmd	*cmd_list;
@@ -120,6 +134,6 @@ void	process_input(t_shell *shell, char *input)
 		cmd = cmd->next;
 	}
 	print_cmd_list(cmd_list);
-	// process_output(shell, cmd_list);
+	process_output(shell, cmd_list);
 	free_cmd_list(cmd_list);
 }
