@@ -6,11 +6,11 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:37:19 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 13:20:37 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:17:17 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "expand.h"
 
 int	process_single_quote(const char *str, size_t *i, size_t *len)
 {

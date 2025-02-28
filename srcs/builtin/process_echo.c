@@ -6,11 +6,11 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:06:22 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/22 18:25:44 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:16:32 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "builtin.h"
 
 void	print_echo(char **args, int i, int opt_n)
 {

@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 14:03:27 by aryamamo          #+#    #+#              #
-#    Updated: 2025/02/11 12:27:52 by aryamamo         ###   ########.fr        #
+#    Updated: 2025/02/28 16:43:41 by aryamamo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ SRCS = $(SRCDIR)/main.c\
 		$(SRCDIR)/signal/signal.c\
 		$(SRCDIR)/process/process_input.c\
 		$(SRCDIR)/env/env.c\
-		$(SRCDIR)/lexer/lexer.c\
-		$(SRCDIR)/lexer/lexer_utils.c\
+		$(SRCDIR)/tokenize/tokenize.c\
+		$(SRCDIR)/tokenize/tokenize_utils.c\
 		$(SRCDIR)/parse/parse.c\
 		$(SRCDIR)/parse/parse_handle.c\
 		$(SRCDIR)/parse/parse_add_cmd.c\
@@ -38,7 +38,7 @@ OBJ = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -I./libft -I./include
 
 LDFLAG = -lreadline
 
