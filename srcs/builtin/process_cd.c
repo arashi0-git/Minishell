@@ -6,11 +6,13 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:06:14 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/18 14:06:21 by retoriya         ###   ########.fr       */
+
+/*   Updated: 2025/02/28 16:16:21 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "builtin.h"
+
 
 static char	*resolve_path(char *path, t_shell *shell)
 {
