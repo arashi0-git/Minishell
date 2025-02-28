@@ -6,20 +6,30 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/25 16:05:31 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:54:54 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/minishell.h"
+#include "../../include/redirect.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
-#include "../../include/redirect.h"
+
+// Function prototype for the missing function
+static void	print_bad_fd_error(int fd)
+{
+	char	fd_str[12];
+
+	sprintf(fd_str, "%d", fd);
+	print_error("Bad file descriptor", fd_str);
+}
 
 static int	open_file(t_redirect *redir)
 {
 	char	*filename;
-	
-	filename = redir->filename->data;
+
+	filename = redir->filename->value; // Changed from data to value
 	if (redir->type == REDIRECT_IN)
 		return (open(filename, O_RDONLY));
 	if (redir->type == REDIRECT_OUT)
@@ -32,12 +42,14 @@ static t_bool	check_redirect(t_redirect *redir)
 {
 	if (redir->filename == NULL || redir->filename->next)
 	{
-		print_error("ambiguous redirect", redir->filename->data);
+		print_error("ambiguous redirect", redir->filename->value);
+			// Changed from data to value
 		return (FALSE);
 	}
 	if ((redir->fd_file = open_file(redir)) < 0)
 	{
-		print_error(strerror(errno), redir->filename->data);
+		print_error(strerror(errno), redir->filename->value);
+			// Changed from data to value
 		return (FALSE);
 	}
 	return (TRUE);
@@ -48,7 +60,10 @@ t_bool	setup_redirects(t_cmd *command)
 {
 	t_redirect	*redir;
 
-	redir = command->redirects;
+	// command->redirectsはt_redirect*型に変更する必要があります
+	// この関数を呼び出す前に、コマンド構造体内のredirectsフィールドが
+	// 正しく初期化されていることを確認してください
+	redir = (t_redirect *)command->redirects; // キャスト追加
 	while (redir)
 	{
 		if (check_redirect(redir) == FALSE)
@@ -66,7 +81,7 @@ void	cleanup_redirects(t_cmd *command)
 {
 	t_redirect	*redir;
 
-	redir = command->redirects;
+	redir = (t_redirect *)command->redirects; // キャスト追加
 	while (redir && redir->next)
 		redir = redir->next;
 	while (redir)
@@ -93,7 +108,7 @@ t_bool	dup_redirects(t_cmd *command, t_bool is_parent)
 {
 	t_redirect	*redir;
 
-	redir = command->redirects;
+	redir = (t_redirect *)command->redirects; // キャスト追加
 	while (redir)
 	{
 		if (is_parent)
@@ -115,7 +130,7 @@ t_bool	dup_redirects(t_cmd *command, t_bool is_parent)
 }
 
 // リダイレクト構造体の作成
-t_redirect	*create_redirect(t_redirect_type type, t_token *filename, int fd_io)
+t_redirect	*create_redirect(t_redirecttype type, t_token *filename, int fd_io)
 {
 	t_redirect	*redir;
 
@@ -141,9 +156,8 @@ void	free_redirect(t_redirect *redir)
 	{
 		next = redir->next;
 		if (redir->filename)
-			free_token(redir->filename);
+			free_token_list(redir->filename);
 		free(redir);
 		redir = next;
 	}
 }
-

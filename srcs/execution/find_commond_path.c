@@ -6,7 +6,7 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:58:24 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/18 19:39:26 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/28 18:04:41 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char	*get_env_path(char **envp)
 {
 	while (*envp)
 	{
-		if (ft_strncmp(*envp, "path=", 5) == 0)
+		if (ft_strncmp(*envp, "PATH=", 5) == 0)
 			return (*envp + 5);
 		envp++;
 	}

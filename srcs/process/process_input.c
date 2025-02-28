@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/25 14:40:56 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:27:30 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,13 +106,24 @@ void process_output(t_shell *shell, t_cmd *cmd_list)
 {
     t_cmd *cmd;
     int status;
+    t_pipe_state state;
+    pid_t   last_pid;
+    
     
     cmd = cmd_list;
+    last_pid = -1;
     while (cmd != NULL)
     {
+        init_pipe_state(&state, cmd);
         status = execute_command(shell, cmd);
-        shell->exit_status = status;
+        if (state == PIPE_READ_ONLY)
+            last_pid = cmd->pid;
         cmd = cmd->next;
+    }
+    if (cmd_list && cmd_list->next && last_pid > 0)
+    {
+        status = wait_for_command(last_pid);
+        shell->exit_status = status;
     }
 }
 

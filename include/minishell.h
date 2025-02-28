@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/25 17:22:27 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:56:14 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct s_cmd
 	struct s_cmd	*next;
     struct s_cmd    *prev;          // パイプライン用
     pid_t           pid;            // プロセス管理用
-    t_redirecttype      *redirects;     // リダイレクト管理用
+    struct s_redirect *redirects;      // リダイレクト管理用
 }					t_cmd;
 
 /*---expand struct---*/
@@ -154,6 +154,7 @@ int					exec_builtin(char **args, t_shell *shell);
 /*---process func---*/
 void				process_input(t_shell *shell, char *input);
 void				free_cmd_list(t_cmd *cmd_list);
+void       free_token_list(t_token *list);
 
 /*---expand func---*/
 void				expand_cmd(t_cmd *cmd, t_shell *shell);

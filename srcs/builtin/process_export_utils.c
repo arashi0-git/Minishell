@@ -6,7 +6,7 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:23:55 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/11 14:33:40 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:07:02 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static void	print_export_format(const char *env_str)
 	ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
+/*
 void	free_array(char **sorted_env)
 {
 	int	i;
@@ -44,6 +45,7 @@ void	free_array(char **sorted_env)
 	}
 	free(sorted_env);
 }
+*/
 
 int	print_sorted_env(t_env *env)
 {

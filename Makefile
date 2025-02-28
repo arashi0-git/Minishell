@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 14:03:27 by aryamamo          #+#    #+#              #
-#    Updated: 2025/02/25 15:00:27 by retoriya         ###   ########.fr        #
+#    Updated: 2025/02/28 17:29:13 by retoriya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,11 +34,14 @@ SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/builtin/process_export_utils2.c \
 		$(SRCDIR)/builtin/process_pwd.c \
 		$(SRCDIR)/builtin/process_unset.c \
+		$(SRCDIR)/builtin/process_env.c\
+		$(SRCDIR)/builtin/process_exit.c\
 		$(SRCDIR)/execution/execute_command.c \
 		$(SRCDIR)/execution/execute_binary.c \
 		$(SRCDIR)/execution/execute_pipe.c \
 		$(SRCDIR)/execution/find_commond_path.c \
 		$(SRCDIR)/execution/redirect.c \
+		$(SRCDIR)/execution/wait_for_commond.c\
 		$(SRCDIR)/execution/utils.c \
 		$(SRCDIR)/utils/free_array.c \
 		$(SRCDIR)/utils/print_error.c
@@ -53,7 +56,7 @@ OBJ = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 LDFLAG = -lreadline
 

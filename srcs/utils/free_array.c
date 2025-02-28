@@ -6,7 +6,7 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 19:45:38 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/23 19:46:10 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:05:34 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,3 @@ void	free_array(char **sorted_env)
 	}
 	free(sorted_env);
 }
-

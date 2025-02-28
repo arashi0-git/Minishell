@@ -32,4 +32,5 @@ char	*find_command_path(const char *cmd, char **envp);
 
 size_t	get_environ_size(t_env *envs);
 t_bool	can_generate_environ(t_env *env);
+int	wait_for_command(pid_t pid);
 #endif

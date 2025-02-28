@@ -6,7 +6,7 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:37:04 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/25 17:24:43 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/28 18:08:06 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ char	**create_environ(t_env *env)
 
 	env_size = get_environ_size(env);
 	i = 0;
-	if (!(environ = (char **)malloc(sizeof(char *) * env_size + 1)))
+	if (!(environ = (char **)malloc(sizeof(char *) * (env_size + 1))))
 		error_exit(NULL);
-	while (i < env_size)
+	while (env && i < env_size)
 	{
 		if (can_generate_environ(env))
 		{
-			if (!(environ[i] == ft_strjoin(env->key, "=")))
+			if (!(environ[i] = ft_strjoin(env->key, "=")))
 				error_exit(NULL);
 			tmp = environ[i];
-			if (!(environ[i] == ft_strjoin(environ[i], env->value)))
+			if (!(environ[i] = ft_strjoin(environ[i], env->value)))
 				error_exit(NULL);
 			free(tmp);
 			i++;
@@ -49,8 +49,8 @@ void	exec_binary(t_shell *shell, char **args)
 
 	envp = create_environ(shell->env);
 	path = find_command_path(args[0], envp);
-	if (execve(path, args, envp) < 0)
-		handle_execve_error(path);
+	execve(path, args, envp);
+	handle_execve_error(path);
 	free(path);
 	free_array(envp);
 }
@@ -66,7 +66,7 @@ t_bool	is_directory(const char *path)
 	return (FALSE);
 }
 
-t_bool		is_executable(const char *path)
+t_bool	is_executable(const char *path)
 {
 	t_stat	path_stat;
 

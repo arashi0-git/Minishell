@@ -6,7 +6,7 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/25 16:11:26 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:27:57 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	execute_in_child(t_shell *shell, t_cmd *cmd, t_pipe_state state,
 int	execute_command(t_shell *shell, t_cmd *cmd)
 {
 	t_pipe_state	state;
+	int				status;
 	int				old_pipe[2] = {-1, -1};
 	int				new_pipe[2] = {-1, -1};
 	pid_t			pid;
@@ -64,6 +65,16 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 		execute_in_child(shell, cmd, state, old_pipe, new_pipe);
 	cleanup_pipe(state, old_pipe, new_pipe);
 	cmd->pid = pid;
-	return (1);
-	//return (wait_for_command(pid));
+	if (state == NO_PIPE || state == PIPE_READ_ONLY)
+	{
+		// 単一コマンドまたはパイプラインの最後のコマンドの場合は待機
+		status = wait_for_command(pid);
+		shell->exit_status = status;
+		return (status);
+	}
+	else
+	{
+		// パイプラインの先頭または中間の場合は待機せずに返す
+		return (1);
+	}
 }
