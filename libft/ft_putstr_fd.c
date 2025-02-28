@@ -6,13 +6,13 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 16:21:11 by aryamamo          #+#    #+#             */
-/*   Updated: 2024/11/06 16:24:02 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/09 17:46:01 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	ft_putstr_fd(const char *s, int fd)
 {
 	size_t	i;
 

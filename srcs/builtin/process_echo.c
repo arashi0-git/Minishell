@@ -27,6 +27,7 @@ void	print_echo(char **args, int i, int opt_n)
 	}
 }
 
+
 void	exec_echo(char **args)
 {
 	int	i;
@@ -85,6 +86,7 @@ void	exec_echo(char **args)
 // 		write(STDOUT_FILENO, "\n", 1);
 // 	return (0);
 // }
+
 
 // void	test_echo(char **args, char *test_name, char *expected_output)
 // {
