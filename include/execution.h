@@ -3,7 +3,6 @@
 
 #include "./minishell.h"
 
-
 #define STATUS_CMD_NOT_FOUND 127
 #define STATUS_CMD_NOT_EXECUTABLE 126
 #define PIPE_IN 0
@@ -33,4 +32,7 @@ char	*find_command_path(const char *cmd, char **envp);
 size_t	get_environ_size(t_env *envs);
 t_bool	can_generate_environ(t_env *env);
 int	wait_for_command(pid_t pid);
+
+void					process_input(t_shell *shell, char *input);
+void					free_cmd_list(t_cmd *cmd_list);
 #endif

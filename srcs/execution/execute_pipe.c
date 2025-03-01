@@ -1,5 +1,6 @@
 #include "../../include/execution.h"
 #include "../../include/minishell.h"
+#include "../../include/parse.h"
 
 void	create_pipe(t_pipe_state state, int new_pipe[])
 {

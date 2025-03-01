@@ -6,18 +6,18 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:06:22 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/28 16:16:32 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:00:29 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "../../include/builtin.h"
 
-void	print_echo(char **args, int i, int opt_n)
+int	print_echo(char **args, int i, int opt_n)
 {
 	{
 		while (args[i])
 		{
-			write(STDOUT_FILENO, args[i], strlen(args[i]));
+			write(STDOUT_FILENO, args[i], ft_strlen(args[i]));
 			if (args[i + 1])
 				write(STDOUT_FILENO, " ", 1);
 			i++;
@@ -25,10 +25,10 @@ void	print_echo(char **args, int i, int opt_n)
 		if (!opt_n)
 			write(STDOUT_FILENO, "\n", 1);
 	}
+	return (0);
 }
 
-
-void	exec_echo(char **args)
+int	exec_echo(char **args)
 {
 	int	i;
 	int	j;
@@ -52,7 +52,7 @@ void	exec_echo(char **args)
 		}
 		break ;
 	}
-	print_echo(args, i, opt_n);
+	return (print_echo(args, i, opt_n));
 }
 
 // int	main(void)

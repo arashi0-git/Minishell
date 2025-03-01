@@ -6,12 +6,15 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/28 17:27:57 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:18:44 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
 #include "../../include/redirect.h"
+#include "../../include/builtin.h"
+#include "../../include/parse.h"
+#include "../../include/expand.h"
 
 // executor_command
 /*

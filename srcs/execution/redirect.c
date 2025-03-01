@@ -6,12 +6,13 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/28 15:54:54 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:22:32 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/redirect.h"
+#include "../../include/parse.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>

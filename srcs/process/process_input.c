@@ -6,12 +6,15 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/28 17:27:30 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:09:36 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include "../../include/parse.h"
 #include "../../include/execution.h"
+#include "../../include/expand.h"
+#include "../../include/builtin.h"
 void	print_cmd_list(t_cmd *cmd_list)
 {
 	int	i;

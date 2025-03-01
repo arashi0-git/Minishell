@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:05:35 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/28 16:39:42 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/01 16:18:48 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct s_cmd	t_cmd;
 # include <string.h>
 # include <tokenize.h>
 # include <unistd.h>
-
+# include "./minishell.h"
 /*---expand struct---*/
 typedef struct s_expand
 {

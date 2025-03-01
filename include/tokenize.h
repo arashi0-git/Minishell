@@ -6,14 +6,14 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:50:39 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/28 16:47:22 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/01 16:18:14 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKENIZE_H
 # define TOKENIZE_H
 
-# include "minishell.h"
+# include "./minishell.h"
 # include <libft.h>
 # include <stdio.h>
 # include <stdlib.h>
