@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:10:31 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/18 12:31:59 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:39:13 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "tokenize.h"
 
 static char	*process_quote(char **p)
 {

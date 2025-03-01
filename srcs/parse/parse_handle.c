@@ -6,11 +6,11 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:49:25 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/11 12:09:28 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:21:06 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "parse.h"
 
 extern t_shell	*g_shell;
 

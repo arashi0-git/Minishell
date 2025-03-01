@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 16:54:52 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/11 12:08:12 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:42:58 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "tokenize.h"
 
 static t_token	*new_token_node(char *value, t_tokentype type,
 		t_redirecttype redirtype)

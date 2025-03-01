@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 14:03:27 by aryamamo          #+#    #+#              #
-#    Updated: 2025/02/28 17:29:13 by retoriya         ###   ########.fr        #
+#    Updated: 2025/03/01 15:01:34 by retoriya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/execution/utils.c \
 		$(SRCDIR)/utils/free_array.c \
 		$(SRCDIR)/utils/print_error.c
-		
+
 ##リリンク確認！
 
 LIBFTDIR = ./libft
@@ -56,7 +56,8 @@ OBJ = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+
+CFLAGS = -Wall -Wextra -Werror -I./libft -I./include
 
 LDFLAG = -lreadline
 

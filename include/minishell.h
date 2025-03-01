@@ -6,15 +6,24 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/28 15:56:14 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/01 15:24:17 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/libft.h"
+/*---module---*/
+typedef struct s_cmd	t_cmd;
+typedef struct s_token	t_token;
+# include "builtin.h"
+# include "expand.h"
+# include "parse.h"
+# include "tokenize.h"
+
+/*---library---*/
 # include <errno.h>
+# include <libft.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -26,10 +35,6 @@
 # include <unistd.h>
 # include <sys/stat.h>
 
-# define REDIR_IN 0
-# define REDIR_OUT 1
-# define REDIR_APPEND 2
-# define REDIR_HEREDOC 3
 # define PATH_MAX 4096
 
 typedef struct stat	t_stat;
@@ -39,6 +44,7 @@ typedef enum e_bool {
     TRUE = 1
 } t_bool;
 
+<<<<<<< HEAD
 /*---tokenize---*/
 typedef enum token_type
 {
@@ -90,10 +96,10 @@ typedef struct s_expand
 /*---env struct---*/
 typedef struct s_env
 {
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}					t_env;
+	char				*key;
+	char				*value;
+	struct s_env		*next;
+}						t_env;
 
 
 
@@ -112,12 +118,11 @@ void free_array(char **array);
 /*---shell struct---*/
 typedef struct s_shell
 {
-	t_env			*env;
-	char			*pwd;
-	int				exit_status;
-	int				interactive;
-}					t_shell;
-
+	t_env				*env;
+	char				*pwd;
+	int					exit_status;
+	int					interactive;
+}						t_shell;
 
 typedef struct s_builtin
 {
@@ -127,13 +132,6 @@ typedef struct s_builtin
 
 /*---tokenize func---*/
 t_token				*tokenize_list(char *line);
-//char		(char **p, t_tokentype *token_type);
-
-/*---parse func---*/
-t_cmd				*parse_tokens(t_token *tokens);
-int					handle_redirection(t_cmd *cmd, t_token **curr_ptr);
-int					add_arg(t_cmd *cmd, const char *arg);
-t_cmd				*new_cmd(void);
 
 /*---env func---*/
 t_env				*init_env(char **env);
@@ -141,17 +139,11 @@ void				free_env(t_env *env);
 char	*get_env(t_env *env, const char *name);
 int	set_env(t_env **env, const char *key, const char *value);
 
-/*---tokenize func---*/
-t_token				*tokenize_list(char *line);
-char				*get_token(char **p, t_tokentype *token_type);
 /*---signal func---*/
-void				set_signal_handlers(void);
-
-/*---builtin func---*/
-int					is_builtin(char **args);
-int					exec_builtin(char **args, t_shell *shell);
+void					set_signal_handlers(void);
 
 /*---process func---*/
+<<<<<<< HEAD
 void				process_input(t_shell *shell, char *input);
 void				free_cmd_list(t_cmd *cmd_list);
 void       free_token_list(t_token *list);
@@ -181,4 +173,11 @@ void	error_exit(char *command);
 
 /*---execution func---*/
 int	execute_command(t_shell *shell, t_cmd *cmd);
+void					process_input(t_shell *shell, char *input);
+void					free_cmd_list(t_cmd *cmd_list);
+
+/*---builtin---*/
+void					exec_echo(char **args);
+int						exec_cd(char **args, t_shell *shell);
+int						process_pwd(void);
 #endif

@@ -6,11 +6,11 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/18 13:20:55 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:21:13 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "parse.h"
 
 t_cmd	*create_new_command(t_cmd **cmd_list, t_cmd **current_cmd)
 {

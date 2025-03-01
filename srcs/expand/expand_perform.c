@@ -6,11 +6,11 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 16:54:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 15:38:04 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:20:42 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "expand.h"
 
 static int	expand_dollar(const char *str, t_shell *shell, t_expand *exp)
 {

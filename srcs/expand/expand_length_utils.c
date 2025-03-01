@@ -6,11 +6,11 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:20:54 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/10 13:29:50 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:17:06 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "expand.h"
 
 int	process_dollar_question(t_shell *shell, size_t *i, size_t *len)
 {
