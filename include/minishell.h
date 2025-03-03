@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/01 16:24:03 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:20:32 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,18 @@ typedef struct s_token	t_token;
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <unistd.h>
 # include <sys/stat.h>
+# include <unistd.h>
 
 # define PATH_MAX 4096
 
-typedef struct stat	t_stat;
+typedef struct stat		t_stat;
 
-typedef enum e_bool {
-    FALSE = 0,
-    TRUE = 1
-} t_bool;
+typedef enum e_bool
+{
+	FALSE = 0,
+	TRUE = 1
+}						t_bool;
 
 /*---env struct---*/
 typedef struct s_env
@@ -54,20 +55,19 @@ typedef struct s_env
 	struct s_env		*next;
 }						t_env;
 
-
-
 typedef struct s_pipe
 {
 	int					fd[2];
 	struct s_pipe		*next;
 }						t_pipe;
 
-
-int	set_env(t_env **env, const char *key, const char *value);
-char **sort_env(t_env *env);
-int     print_sorted_env(t_env *env);
-int	set_env(t_env **env, const char *key, const char *value);
-void free_array(char **array);
+int						set_env(t_env **env, const char *key,
+							const char *value);
+char					**sort_env(t_env *env);
+int						print_sorted_env(t_env *env);
+int						set_env(t_env **env, const char *key,
+							const char *value);
+void					free_array(char **array);
 /*---shell struct---*/
 typedef struct s_shell
 {
@@ -84,28 +84,29 @@ typedef struct s_builtin
 }						t_builtin;
 
 /*---env func---*/
-t_env				*init_env(char **env);
-void				free_env(t_env *env);
-char	*get_env(t_env *env, const char *name);
-int	set_env(t_env **env, const char *key, const char *value);
+t_env					*init_env(char **env);
+void					free_env(t_env *env);
+char					*get_env(t_env *env, const char *name);
+int						set_env(t_env **env, const char *key,
+							const char *value);
 
 /*---signal func---*/
 void					set_signal_handlers(void);
 
 /*---process func---*/
-void				process_input(t_shell *shell, char *input);
-void				free_cmd_list(t_cmd *cmd_list);
-void       free_token_list(t_token *list);
+void					process_input(t_shell *shell, char *input);
+void					free_cmd_list(t_cmd *cmd_list);
+void					free_token_list(t_token *list);
 
 /*---error func---*/
-void	print_error(char *message, char *command);
+void					print_error(char *message, char *command,
+							char *command2);
 
 /***exit func***/
-void	error_exit(char *command);
-
+void					error_exit(char *command);
 
 /*---execution func---*/
-int	execute_command(t_shell *shell, t_cmd *cmd);
+int						execute_command(t_shell *shell, t_cmd *cmd);
 void					process_input(t_shell *shell, char *input);
 void					free_cmd_list(t_cmd *cmd_list);
 

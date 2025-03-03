@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 12:43:51 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/11 12:05:15 by aryamamo         ###   ########.fr       */
+/*   Created: 2025/03/03 16:23:30 by aryamamo          #+#    #+#             */
+/*   Updated: 2025/03/03 16:23:34 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,28 +47,3 @@ void	set_signal_handlers(void)
 		exit(1);
 	}
 }
-
-// int	main(int argc, char **argv)
-// {
-// 	char	*input;
-
-// 	(void)argc;
-// 	(void)argv;
-// 	set_signal_handlers();
-// 	while (1)
-// 	{
-// 		input = readline("minishell$ ");
-// 		if (!input)
-// 		{
-// 			write(STDOUT_FILENO, "exit\n", 5);
-// 			break ;
-// 		}
-// 		if (*input != '\0')
-// 		{
-// 			add_history(input);
-// 			printf("%s\n", input);
-// 		}
-// 		free(input);
-// 	}
-// 	return (0);
-// }

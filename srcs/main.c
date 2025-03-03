@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:05:10 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/11 10:41:12 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:23:06 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	minishell(t_shell *shell)
 		if (!input)
 		{
 			write(STDERR_FILENO, "exit\n", 5);
+			shell->exit_status = 130;
 			break ;
 		}
 		if (*input != '\0')

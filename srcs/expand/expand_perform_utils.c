@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:15:55 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/28 16:17:28 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/02 12:48:25 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,31 @@ int	expand_dollar_question(t_shell *shell, t_expand *exp)
 	if (!status_str)
 		return (-1);
 	t_len = strlen(status_str);
-	memcpy(&exp->out[exp->out_index], status_str, t_len);
+	ft_memcpy(&exp->out[exp->out_index], status_str, t_len);
 	exp->out_index += t_len;
 	free(status_str);
 	exp->i += 2;
 	return (0);
 }
+
+// int	expand_dollar_question(t_shell *shell, t_expand *exp)
+// {
+// 	char	*status_str;
+// 	size_t	t_len;
+
+// 	status_str = ft_itoa(shell->exit_status);
+// 	if (!status_str)
+// 	{
+// 		printf("ft_itoa returned NULL\n");
+// 		return (-1);
+// 	}
+// 	t_len = strlen(status_str);
+// 	ft_memcpy(&exp->out[exp->out_index], status_str, t_len);
+// 	exp->out_index += t_len;
+// 	free(status_str);
+// 	exp->i += 2;
+// 	return (0);
+// }
 
 static int	copy_variable(const char *value, t_expand *exp)
 {
@@ -35,7 +54,7 @@ static int	copy_variable(const char *value, t_expand *exp)
 	if (!value)
 		value = "";
 	v_len = strlen(value);
-	memcpy(&exp->out[exp->out_index], value, v_len);
+	ft_memcpy(&exp->out[exp->out_index], value, v_len);
 	exp->out_index += v_len;
 	return (0);
 }

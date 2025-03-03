@@ -7,6 +7,7 @@
 int	wait_for_command(pid_t pid)
 {
 	int	status;
+	int	sig;
 
 	// プロセスIDが無効な場合
 	if (pid <= 0)
@@ -17,10 +18,15 @@ int	wait_for_command(pid_t pid)
 		perror("waitpid");
 		return (EXIT_FAILURE);
 	}
+	if (WIFSIGNALED(status))
+	{
+		sig = WTERMSIG(status);
+		if (sig == SIGQUIT)
+			write(STDOUT_FILENO, "Quit (core dumped)\n", 20);
+		return (128 + sig);
+	}
 	// 終了ステータスを返す
-	if (WIFEXITED(status))
+	else if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
 	return (EXIT_FAILURE);
 }
