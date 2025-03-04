@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 16:54:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/28 16:20:42 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/04 18:00:15 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,27 @@ static int	expand_dollar(const char *str, t_shell *shell, t_expand *exp)
 
 static int	expand_single_quote(const char *str, t_expand *exp)
 {
-	exp->i++;
-	while (str[exp->i] && str[exp->i] != '\'')
-		exp->out[exp->out_index++] = str[exp->i++];
 	if (str[exp->i] != '\'')
 		return (-1);
+	exp->i++;
+	while (str[exp->i] && str[exp->i] != '\'')
+	{
+		exp->out[exp->out_index++] = str[exp->i];
+		exp->i++;
+	}
+	if (str[exp->i] != '\'')
+	{
+		printf("Error: single quote is not closed\n");
+		return (-1);
+	}
 	exp->i++;
 	return (0);
 }
 
 static int	expand_double_quote(const char *str, t_shell *shell, t_expand *exp)
 {
+	if (str[exp->i] != '"')
+		return (-1);
 	exp->i++;
 	while (str[exp->i] && str[exp->i] != '"')
 	{
@@ -42,10 +52,16 @@ static int	expand_double_quote(const char *str, t_shell *shell, t_expand *exp)
 				return (-1);
 		}
 		else
-			exp->out[exp->out_index++] = str[exp->i++];
+		{
+			exp->out[exp->out_index++] = str[exp->i];
+			exp->i++;
+		}
 	}
 	if (str[exp->i] != '"')
+	{
+		printf("Error: double quote is not closed\n");
 		return (-1);
+	}
 	exp->i++;
 	return (0);
 }
