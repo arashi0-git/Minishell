@@ -15,6 +15,7 @@
 
 typedef struct s_shell	t_shell;
 typedef struct s_cmd	t_cmd;
+# include "./minishell.h"
 # include <errno.h>
 # include <libft.h>
 # include <limits.h>
@@ -25,7 +26,6 @@ typedef struct s_cmd	t_cmd;
 # include <string.h>
 # include <tokenize.h>
 # include <unistd.h>
-# include "./minishell.h"
 /*---expand struct---*/
 typedef struct s_expand
 {

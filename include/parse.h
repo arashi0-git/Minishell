@@ -14,6 +14,7 @@
 # define PARSE_H
 
 typedef struct s_token	t_token;
+# include "./minishell.h"
 # include <errno.h>
 # include <libft.h>
 # include <limits.h>
@@ -23,24 +24,23 @@ typedef struct s_token	t_token;
 # include <string.h>
 # include <tokenize.h>
 # include <unistd.h>
-# include "./minishell.h"
 
 /*---parser struct---*/
 
 typedef struct s_cmd
 {
-	char			*command;
-	char			**args;
-	int				argc;
-	int				max_args;
-	char			*infile;
-	char			*outfile;
-	int				append;
-	struct s_cmd	*next;
-    struct s_cmd    *prev;          // パイプライン用
-    pid_t           pid;            // プロセス管理用
-    struct s_redirect *redirects;      // リダイレクト管理用
-}					t_cmd;
+	char				*command;
+	char				**args;
+	int					argc;
+	int					max_args;
+	char				*infile;
+	char				*outfile;
+	int					append;
+	struct s_cmd		*next;
+	struct s_cmd *prev;           // パイプライン用
+	pid_t pid;                    // プロセス管理用
+	struct s_redirect *redirects; // リダイレクト管理用
+}						t_cmd;
 
 /*---parse func---*/
 t_cmd					*parse_tokens(t_token *tokens);

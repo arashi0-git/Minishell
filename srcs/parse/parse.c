@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/28 16:21:13 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/01 20:18:05 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_cmd	*create_new_command(t_cmd **cmd_list, t_cmd **current_cmd)
 		while (tail->next)
 			tail = tail->next;
 		tail->next = new_cmd_ptr;
+		new_cmd_ptr->prev = tail;
 	}
 	*current_cmd = new_cmd_ptr;
 	return (new_cmd_ptr);

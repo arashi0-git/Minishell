@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 14:03:27 by aryamamo          #+#    #+#              #
-#    Updated: 2025/03/01 17:28:16 by retoriya         ###   ########.fr        #
+#    Updated: 2025/03/04 19:18:38 by retoriya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,8 @@ SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/execution/wait_for_commond.c\
 		$(SRCDIR)/execution/utils.c \
 		$(SRCDIR)/utils/free_array.c \
-		$(SRCDIR)/utils/print_error.c
+		$(SRCDIR)/utils/print_error.c\
+		$(SRCDIR)/utils/valid_identifier.c
 
 ##リリンク確認！
 
@@ -57,7 +58,7 @@ OBJ = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -I./libft -I./include
+CFLAGS = -Wall -Wextra -Werror -g -I./libft -I./include
 
 LDFLAG = -lreadline
 

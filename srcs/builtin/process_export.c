@@ -6,39 +6,11 @@
 /*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:18:21 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/25 15:11:42 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/04 19:16:21 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-// keyが命名規則に沿っているか確認する関数
-static int	is_valid_identifier(const char *str)
-{
-	char	*equal_pos;
-	size_t	key_length;
-	size_t	i;
-
-	equal_pos = NULL;
-	i = 0;
-	if (!str || !*str)
-		return (0);
-	if (!ft_isalpha(*str) && *str != '_')
-		return (0);
-	equal_pos = ft_strchr(str, '=');
-	if (equal_pos)
-		key_length = equal_pos - str;
-	else
-		key_length = ft_strlen(str);
-	i = 1;
-	while (i < key_length)
-	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 static void	update_env_variable(char *args, t_env **env)
 {

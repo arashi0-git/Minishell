@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/03 16:20:32 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:09:47 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void					set_signal_handlers(void);
 void					process_input(t_shell *shell, char *input);
 void					free_cmd_list(t_cmd *cmd_list);
 void					free_token_list(t_token *list);
+int						is_valid_identifier(const char *str);
 
 /*---error func---*/
 void					print_error(char *message, char *command,
@@ -106,7 +107,6 @@ void					print_error(char *message, char *command,
 void					error_exit(char *command);
 
 /*---execution func---*/
-int						execute_command(t_shell *shell, t_cmd *cmd);
 void					process_input(t_shell *shell, char *input);
 void					free_cmd_list(t_cmd *cmd_list);
 
