@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_binary.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:37:04 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/28 18:08:06 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/03 15:07:08 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,12 @@ void	exec_binary(t_shell *shell, char **args)
 
 	envp = create_environ(shell->env);
 	path = find_command_path(args[0], envp);
+	if (!path)
+	{
+		printf("%s: command not found\n", args[0]);
+		shell->exit_status = 127;
+		exit(shell->exit_status);
+	}
 	execve(path, args, envp);
 	handle_execve_error(path);
 	free(path);
@@ -89,13 +95,13 @@ void	handle_execve_error(char *path)
 		status = STATUS_CMD_NOT_EXECUTABLE;
 	if (is_directory(path))
 	{
-		print_error("is a directory", path);
+		print_error("is a directory", NULL, path);
 		exit(status);
 	}
 	if (errno == ENOEXEC && !is_executable(path))
 		errno = EACCES;
 	if (errno == ENOEXEC)
 		exit(EXIT_SUCCESS);
-	print_error(strerror(errno), path);
+	print_error(strerror(errno), NULL, path);
 	exit(status);
 }

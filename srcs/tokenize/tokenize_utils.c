@@ -6,39 +6,11 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:10:31 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/28 16:39:13 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/04 18:09:09 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenize.h"
-
-static char	*process_quote(char **p)
-{
-	char	quote;
-	char	*start;
-	int		len;
-	char	*token;
-
-	start = *p;
-	quote = **p;
-	(*p)++;
-	while (**p && **p != quote)
-		(*p)++;
-	if (**p == '\0')
-	{
-		printf("error quote not close\n");
-		return (NULL);
-	}
-	if (**p == quote)
-		(*p)++;
-	len = *p - start + 1;
-	token = malloc(len + 1);
-	if (!token)
-		return (NULL);
-	ft_strlcpy(token, start, len);
-	token[len] = '\0';
-	return (token);
-}
 
 static char	*process_redir(char **p)
 {
@@ -80,6 +52,18 @@ static char	*process_pipe(char **p)
 	return (token);
 }
 
+static void	skip_quote(char **p)
+{
+	char	quote;
+
+	quote = **p;
+	(*p)++;
+	while (**p && **p != quote)
+		(*p)++;
+	if (**p == quote)
+		(*p)++;
+}
+
 static char	*process_word(char **p)
 {
 	char	*start;
@@ -87,18 +71,22 @@ static char	*process_word(char **p)
 	char	*token;
 
 	start = *p;
-	while (**p && !ft_isspace((unsigned char)**p) && **p != '\'' && **p != '"'
-		&& **p != '>' && **p != '<' && **p != '|')
-		(*p)++;
-	len = *p - start + 1;
+	while (**p && !ft_isspace((unsigned char)**p) && **p != '>' && **p != '<'
+		&& **p != '|')
+	{
+		if (**p == '\'' || **p == '"')
+			skip_quote(p);
+		else
+			(*p)++;
+	}
+	len = *p - start;
 	token = malloc(len + 1);
 	if (!token)
 	{
 		printf("token malloc failed\n");
 		return (NULL);
 	}
-	ft_strlcpy(token, start, len);
-	token[len] = '\0';
+	ft_strlcpy(token, start, len + 1);
 	return (token);
 }
 
@@ -108,12 +96,7 @@ char	*get_token(char **p, t_tokentype *token_type)
 		(*p)++;
 	if (**p == '\0')
 		return (NULL);
-	if (**p == '\'' || **p == '"')
-	{
-		*token_type = TOKEN_COMMAND;
-		return (process_quote(p));
-	}
-	else if (**p == '<' || **p == '>')
+	if (**p == '<' || **p == '>')
 	{
 		*token_type = TOKEN_REDIR;
 		return (process_redir(p));

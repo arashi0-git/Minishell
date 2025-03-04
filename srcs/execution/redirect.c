@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/01 17:22:32 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/03 15:08:14 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../include/redirect.h"
 #include "../../include/parse.h"
+#include "../../include/redirect.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
@@ -23,7 +23,7 @@ static void	print_bad_fd_error(int fd)
 	char	fd_str[12];
 
 	sprintf(fd_str, "%d", fd);
-	print_error("Bad file descriptor", fd_str);
+	print_error("Bad file descriptor", NULL, fd_str);
 }
 
 static int	open_file(t_redirect *redir)
@@ -43,14 +43,14 @@ static t_bool	check_redirect(t_redirect *redir)
 {
 	if (redir->filename == NULL || redir->filename->next)
 	{
-		print_error("ambiguous redirect", redir->filename->value);
-			// Changed from data to value
+		print_error("ambiguous redirect", NULL, redir->filename->value);
+		// Changed from data to value
 		return (FALSE);
 	}
 	if ((redir->fd_file = open_file(redir)) < 0)
 	{
-		print_error(strerror(errno), redir->filename->value);
-			// Changed from data to value
+		print_error(strerror(errno), NULL, redir->filename->value);
+		// Changed from data to value
 		return (FALSE);
 	}
 	return (TRUE);

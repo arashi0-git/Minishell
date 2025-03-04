@@ -6,15 +6,16 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/01 17:09:36 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/04 18:22:54 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
-#include "../../include/parse.h"
+#include "../../include/builtin.h"
 #include "../../include/execution.h"
 #include "../../include/expand.h"
-#include "../../include/builtin.h"
+#include "../../include/minishell.h"
+#include "../../include/parse.h"
+
 void	print_cmd_list(t_cmd *cmd_list)
 {
 	int	i;
@@ -50,14 +51,15 @@ void	free_cmd_list(t_cmd *cmd_list)
 	t_cmd	*tmp;
 	int		i;
 
+	i = 0;
 	while (cmd_list)
 	{
 		tmp = cmd_list;
 		cmd_list = cmd_list->next;
 		if (tmp->args)
 		{
-			for (i = 0; i < tmp->argc; i++)
-				free(tmp->args[i]);
+			while (i < tmp->argc)
+				free(tmp->args[i++]);
 			free(tmp->args);
 		}
 		if (tmp->command)
@@ -105,30 +107,29 @@ t_cmd	*tokenize_and_parse(char *input)
 	return (cmd_list);
 }
 
-void process_output(t_shell *shell, t_cmd *cmd_list)
-{
-    t_cmd *cmd;
-    int status;
-    t_pipe_state state;
-    pid_t   last_pid;
-    
-    
-    cmd = cmd_list;
-    last_pid = -1;
-    while (cmd != NULL)
-    {
-        init_pipe_state(&state, cmd);
-        status = execute_command(shell, cmd);
-        if (state == PIPE_READ_ONLY)
-            last_pid = cmd->pid;
-        cmd = cmd->next;
-    }
-    if (cmd_list && cmd_list->next && last_pid > 0)
-    {
-        status = wait_for_command(last_pid);
-        shell->exit_status = status;
-    }
-}
+// void	process_output(t_shell *shell, t_cmd *cmd_list)
+// {
+// 	t_cmd			*cmd;
+// 	int				status;
+// 	t_pipe_state	state;
+// 	pid_t			last_pid;
+
+// 	cmd = cmd_list;
+// 	last_pid = -1;
+// 	while (cmd != NULL)
+// 	{
+// 		init_pipe_state(&state, cmd);
+// 		status = execute_command(shell, cmd);
+// 		if (state == PIPE_READ_ONLY)
+// 			last_pid = cmd->pid;
+// 		cmd = cmd->next;
+// 	}
+// 	if (cmd_list && cmd_list->next && last_pid > 0)
+// 	{
+// 		status = wait_for_command(last_pid);
+// 		shell->exit_status = status;
+// 	}
+// }
 
 void	process_input(t_shell *shell, char *input)
 {
@@ -148,6 +149,6 @@ void	process_input(t_shell *shell, char *input)
 		cmd = cmd->next;
 	}
 	print_cmd_list(cmd_list);
-	process_output(shell, cmd_list);
+	// process_output(shell, cmd_list);
 	free_cmd_list(cmd_list);
 }
