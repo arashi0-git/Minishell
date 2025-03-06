@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 16:54:52 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/28 16:42:58 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:16:17 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,13 @@ static t_token	*new_token_node(char *value, t_tokentype type,
 		printf("node malloc failed\n");
 		return (NULL);
 	}
-	node->value = value;
+	node->value = ft_strdup(value);
+	if (!node->value)
+	{
+		printf("node->value malloc failed\n");
+		free(node);
+		return (NULL);
+	}
 	node->type = type;
 	node->redirtype = redirtype;
 	node->next = NULL;
@@ -32,6 +38,8 @@ static t_token	*new_token_node(char *value, t_tokentype type,
 
 static t_redirecttype	redirect_type_from_token(const char *token)
 {
+	if (!token)
+		return (REDIRECT_OUT);
 	if (token[0] == '<')
 	{
 		if (ft_strlen(token) == 1)

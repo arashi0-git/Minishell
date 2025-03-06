@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/07 02:56:53 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/07 07:10:46 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	free_cmd_list(t_cmd *cmd_list)
 		cmd_list = cmd_list->next;
 		if (tmp->args)
 		{
+			i = 0;
 			while (i < tmp->argc)
 				free(tmp->args[i++]);
 			free(tmp->args);
