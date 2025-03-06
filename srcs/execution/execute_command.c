@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/07 06:44:37 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/07 07:03:19 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,15 @@ void	reset_signal_in_child(void)
 
 static int	exec_builtin_parent(t_shell *shell, t_cmd *command, char **args)
 {
-	int result;
+	int	result;
 
-    result = 0;
-    if (setup_redirects(command) == FALSE)
+	result = 0;
+	if (setup_redirects(command) == FALSE)
 		return (EXIT_FAILURE);
 	if (dup_redirects(command, TRUE) == FALSE)
 		return (EXIT_FAILURE);
-    result = exec_builtin(args, shell);
-    cleanup_redirects(command);
+	result = exec_builtin(args, shell);
+	cleanup_redirects(command);
 	return (result);
 }
 
@@ -68,74 +68,74 @@ static void	execute_in_child(t_shell *shell, t_cmd *cmd, t_pipe_state state,
 	if (!setup_redirects(cmd))
 		exit(EXIT_FAILURE);
 	setup_pipes(state, old_pipe, new_pipe);
-	if (is_builtin(&cmd->args[0]))
+	/* if (is_builtin(&cmd->args[0]))
 		exit(exec_builtin(cmd->args, shell));
-	else
-		exec_binary(shell, cmd->args);
+	else */
+	exec_binary(shell, cmd->args);
 }
 
-int finalize_command(t_shell *shell, t_pipe_state state, 
-                    pid_t pid, struct sigaction *old_sa)
+int	finalize_command(t_shell *shell, t_pipe_state state, pid_t pid,
+		struct sigaction *old_sa)
 {
-    int status;
+	int	status;
 
-    if (state == NO_PIPE || state == PIPE_READ_ONLY)
-    {
-        status = wait_for_command(pid);
-        shell->exit_status = status;
-        sigaction(SIGINT, old_sa, NULL);
-        if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-            write(STDOUT_FILENO, "\n", 1);
-        return (status);
-    }
-    return (1);
+	if (state == NO_PIPE || state == PIPE_READ_ONLY)
+	{
+		status = wait_for_command(pid);
+		shell->exit_status = status;
+		sigaction(SIGINT, old_sa, NULL);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+		return (status);
+	}
+	return (1);
 }
 
-void cleanup_pipe_ext(t_pipe_state state, int shared_pipe[2], int new_pipe[2])
+void	cleanup_pipe_ext(t_pipe_state state, int shared_pipe[2],
+		int new_pipe[2])
 {
-    // READ_ONLYまたはREAD_WRITEの場合、古いパイプはもう不要なので閉じる
-    if (state == PIPE_READ_ONLY || state == PIPE_READ_WRITE)
-    {
-        if (shared_pipe[PIPE_IN] != -1)
-            close(shared_pipe[PIPE_IN]);
-        if (shared_pipe[PIPE_OUT] != -1)
-            close(shared_pipe[PIPE_OUT]);
-    }
-    
-    // 新しいパイプの書き込み側を閉じる
-    if (state == PIPE_WRITE_ONLY || state == PIPE_READ_WRITE)
-    {
-        if (new_pipe[PIPE_OUT] != -1)
-            close(new_pipe[PIPE_OUT]);
-        
-        // 次のコマンドのために情報を保存
-        shared_pipe[PIPE_IN] = new_pipe[PIPE_IN];
-        shared_pipe[PIPE_OUT] = -1;
-    }
+	// READ_ONLYまたはREAD_WRITEの場合、古いパイプはもう不要なので閉じる
+	if (state == PIPE_READ_ONLY || state == PIPE_READ_WRITE)
+	{
+		if (shared_pipe[PIPE_IN] != -1)
+			close(shared_pipe[PIPE_IN]);
+		if (shared_pipe[PIPE_OUT] != -1)
+			close(shared_pipe[PIPE_OUT]);
+	}
+	// 新しいパイプの書き込み側を閉じる
+	if (state == PIPE_WRITE_ONLY || state == PIPE_READ_WRITE)
+	{
+		if (new_pipe[PIPE_OUT] != -1)
+			close(new_pipe[PIPE_OUT]);
+		// 次のコマンドのために情報を保存
+		shared_pipe[PIPE_IN] = new_pipe[PIPE_IN];
+		shared_pipe[PIPE_OUT] = -1;
+	}
 }
 
-int execute_command(t_shell *shell, t_cmd *cmd, t_pipe_state state, int shared_pipe[2])
+int	execute_command(t_shell *shell, t_cmd *cmd, t_pipe_state state,
+		int shared_pipe[2])
 {
-    //int status;
-    int new_pipe[2] = {-1, -1};
-    pid_t pid;
-    struct sigaction new_sa, old_sa;
+	int		new_pipe[2] = {-1, -1};
+	pid_t	pid;
 
-    create_pipe(state, new_pipe);
-    if (state == NO_PIPE && is_builtin(&cmd->args[0]))
-        return (exec_builtin_parent(shell, cmd, cmd->args));
-    pid = fork();
-    if (pid < 0)
-        return (EXIT_FAILURE);
-    if (pid == 0)
-        execute_in_child(shell, cmd, state, shared_pipe, new_pipe);
-    new_sa.sa_handler = SIG_IGN;
-    sigemptyset(&new_sa.sa_mask);
-    new_sa.sa_flags = 0;
-    sigaction(SIGINT, &new_sa, &old_sa);
-    cleanup_pipe_ext(state, shared_pipe, new_pipe);
-    cmd->pid = pid;
-    return finalize_command(shell, state, pid, &old_sa);
+	// int status;
+	struct sigaction new_sa, old_sa;
+	create_pipe(state, new_pipe);
+	if (state == NO_PIPE && is_builtin(&cmd->args[0]))
+		return (exec_builtin_parent(shell, cmd, cmd->args));
+	pid = fork();
+	if (pid < 0)
+		return (EXIT_FAILURE);
+	if (pid == 0)
+		execute_in_child(shell, cmd, state, shared_pipe, new_pipe);
+	new_sa.sa_handler = SIG_IGN;
+	sigemptyset(&new_sa.sa_mask);
+	new_sa.sa_flags = 0;
+	sigaction(SIGINT, &new_sa, &old_sa);
+	cleanup_pipe_ext(state, shared_pipe, new_pipe);
+	cmd->pid = pid;
+	return (finalize_command(shell, state, pid, &old_sa));
 }
 
 /*
