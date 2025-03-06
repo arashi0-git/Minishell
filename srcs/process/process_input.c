@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/04 20:07:46 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/07 02:56:53 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../../include/expand.h"
 #include "../../include/minishell.h"
 #include "../../include/parse.h"
-
+#include <sys/wait.h>
 /*
 void	print_cmd_list(t_cmd *cmd_list)
 {
@@ -128,8 +128,11 @@ void	process_output(t_shell *shell, t_cmd *cmd_list)
  	}
  	if (cmd_list && cmd_list->next && last_pid > 0)
  	{
- 		status = wait_for_command(last_pid);
- 		shell->exit_status = status;
+ 		if (waitpid(last_pid, NULL, WNOHANG) == 0)
+        { 
+            status = wait_for_command(last_pid);
+ 		    shell->exit_status = status;
+        }
  	}
 }
 
