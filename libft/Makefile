@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/06 17:15:23 by aryamamo          #+#    #+#              #
-#    Updated: 2025/02/11 12:30:57 by aryamamo         ###   ########.fr        #
+#    Updated: 2025/03/07 04:27:09 by retoriya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,9 @@ SRC = ft_strlen.c \
 	ft_strndup.c \
 	ft_isspace.c \
 	ft_strcpy.c \
-	ft_strcmp.c
+	ft_strcmp.c \
+	ft_get_next_line.c\
+	ft_get_next_line_utils.c
 	
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
