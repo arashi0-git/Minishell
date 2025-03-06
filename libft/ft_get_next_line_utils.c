@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   ft_get_next_line_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: retoriya <retoriya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 20:53:48 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/07 04:26:36 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/07 04:39:55 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,6 @@ int	finalize_line(t_string *line)
 		return (1);
 	}
 	return (0);
-}
-
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	unsigned char	*dest_ptr;
-	unsigned char	*src_ptr;
-	size_t			i;
-
-	if (!dest && !src)
-		return (NULL);
-	dest_ptr = (unsigned char *)dest;
-	src_ptr = (unsigned char *)src;
-	i = 0;
-	while (i < n)
-	{
-		dest_ptr[i] = src_ptr[i];
-		i++;
-	}
-	return (dest);
 }
 
 // int	ft_putc(t_string *line, char c)

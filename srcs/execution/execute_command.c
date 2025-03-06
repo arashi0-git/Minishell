@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/04 20:15:00 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/07 06:44:37 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,16 @@ void	reset_signal_in_child(void)
 
 static int	exec_builtin_parent(t_shell *shell, t_cmd *command, char **args)
 {
-	if (setup_redirects(command) == FALSE)
+	int result;
+
+    result = 0;
+    if (setup_redirects(command) == FALSE)
 		return (EXIT_FAILURE);
 	if (dup_redirects(command, TRUE) == FALSE)
 		return (EXIT_FAILURE);
-	return (exec_builtin(args, shell));
+    result = exec_builtin(args, shell);
+    cleanup_redirects(command);
+	return (result);
 }
 
 static void	execute_in_child(t_shell *shell, t_cmd *cmd, t_pipe_state state,

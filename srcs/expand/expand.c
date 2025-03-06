@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:06:24 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/28 16:20:46 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/07 05:09:41 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	expand_length(const char *str, t_shell *shell)
 
 	i = 0;
 	len = 0;
+	if (!str || str[0] == '\0')
+		return (0);
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\'' || str[i] == '"')
@@ -112,7 +114,7 @@ void	expand_cmd(t_cmd *cmd, t_shell *shell)
 	while (cmd->args && cmd->args[i])
 	{
 		expanded = expand(cmd->args[i], shell);
-		if (expanded)
+		if (expanded && expanded != cmd->args[i])
 		{
 			free(cmd->args[i]);
 			cmd->args[i] = expanded;

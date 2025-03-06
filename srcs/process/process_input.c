@@ -16,6 +16,7 @@
 #include "../../include/minishell.h"
 #include "../../include/parse.h"
 #include <sys/wait.h>
+
 /*
 void	print_cmd_list(t_cmd *cmd_list)
 {
@@ -110,30 +111,30 @@ t_cmd	*tokenize_and_parse(char *input)
 
 void	process_output(t_shell *shell, t_cmd *cmd_list)
 {
- 	t_cmd			*cmd;
- 	int				status;
- 	t_pipe_state	state;
- 	pid_t			last_pid;
-    int pipeline_pipe[2] = {-1, -1};
+	t_cmd			*cmd;
+	int				status;
+	t_pipe_state	state;
+	pid_t			last_pid;
+	int				pipeline_pipe[2] = {-1, -1};
 
- 	cmd = cmd_list;
- 	last_pid = -1;
- 	while (cmd != NULL)
- 	{
- 		init_pipe_state(&state, cmd);
- 		status = execute_command(shell, cmd, state, pipeline_pipe);
- 		if (state == PIPE_READ_ONLY)
- 			last_pid = cmd->pid;
- 		cmd = cmd->next;
- 	}
- 	if (cmd_list && cmd_list->next && last_pid > 0)
- 	{
- 		if (waitpid(last_pid, NULL, WNOHANG) == 0)
-        { 
-            status = wait_for_command(last_pid);
- 		    shell->exit_status = status;
-        }
- 	}
+	cmd = cmd_list;
+	last_pid = -1;
+	while (cmd != NULL)
+	{
+		init_pipe_state(&state, cmd);
+		status = execute_command(shell, cmd, state, pipeline_pipe);
+		if (state == PIPE_READ_ONLY)
+			last_pid = cmd->pid;
+		cmd = cmd->next;
+	}
+	if (cmd_list && cmd_list->next && last_pid > 0)
+	{
+		if (waitpid(last_pid, NULL, WNOHANG) == 0)
+		{
+			status = wait_for_command(last_pid);
+			shell->exit_status = status;
+		}
+	}
 }
 
 void	process_input(t_shell *shell, char *input)
@@ -153,7 +154,7 @@ void	process_input(t_shell *shell, char *input)
 		expand_cmd(cmd, shell);
 		cmd = cmd->next;
 	}
-	//print_cmd_list(cmd_list);
+	// print_cmd_list(cmd_list);
 	process_output(shell, cmd_list);
 	free_cmd_list(cmd_list);
 }

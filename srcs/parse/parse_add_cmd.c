@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:51:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/01 20:16:47 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/07 03:19:03 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ t_cmd	*new_cmd(void)
 	cmd->append = 0;
 	cmd->next = NULL;
    	cmd->prev = NULL;
+	cmd->redirects = NULL;
+	cmd->pid = 0;
 	return (cmd);
 }
 
