@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 14:03:27 by aryamamo          #+#    #+#              #
-#    Updated: 2025/03/06 20:05:18 by aryamamo         ###   ########.fr        #
+#    Updated: 2025/03/08 12:02:57 by aryamamo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,8 @@ SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/execution/utils.c \
 		$(SRCDIR)/utils/free_array.c \
 		$(SRCDIR)/utils/print_error.c\
-		$(SRCDIR)/utils/valid_identifier.c
+		$(SRCDIR)/utils/valid_identifier.c\
+		$(SRCDIR)/utils/ft_getline.c\
 
 ##リリンク確認！
 

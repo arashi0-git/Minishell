@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 16:54:52 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 11:52:46 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 13:35:18 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ t_token	*tokenize_list(char *line)
 		if (token == NULL)
 			break ;
 		append_token_node(&head, &end, create_token_node(token, type));
+		free(token);
 	}
 	return (head);
 }

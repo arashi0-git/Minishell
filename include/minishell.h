@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/04 20:09:47 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/08 12:02:31 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,8 @@ void					error_exit(char *command);
 /*---execution func---*/
 void					process_input(t_shell *shell, char *input);
 void					free_cmd_list(t_cmd *cmd_list);
+
+/*---utils---*/
+void					minishell_pipe(t_shell *shell);
 
 #endif
