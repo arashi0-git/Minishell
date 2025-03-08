@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 20:41:00 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 21:19:19 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 22:40:16 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,19 @@ int	process_pipe_token(t_token *token, t_cmd **current_cmd)
 	return (1);
 }
 
-int	process_redir_token(t_token *token, t_cmd *current_cmd)
+int	process_redir_token(t_token **curr_ptr, t_cmd *current_cmd)
 {
+	t_token	*token;
+
+	token = *curr_ptr;
 	if (token->next == NULL)
 	{
 		printf("minishell: syntax error near unexpected token `newline'\n");
 		return (-1);
 	}
-	return (handle_redirection(current_cmd, token));
+	if (handle_redirection(current_cmd, curr_ptr) == -1)
+		return (-1);
+	return (2);
 }
 
 int	process_command_token(t_token *token, t_cmd *current_cmd)

@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:59:33 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 21:19:31 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 22:34:34 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PARSE_H
 
 # include "./minishell.h"
+# include "redirect.h"
 # include <errno.h>
 # include <libft.h>
 # include <limits.h>
@@ -49,7 +50,8 @@ int						add_arg(t_cmd *cmd, const char *arg);
 t_cmd					*new_cmd(void);
 int						process_command_token(t_token *token,
 							t_cmd *current_cmd);
-int						process_redir_token(t_token *token, t_cmd *current_cmd);
+int						process_redir_token(t_token **curr_ptr,
+							t_cmd *current_cmd);
 int						process_pipe_token(t_token *token, t_cmd **current_cmd);
 int						handle_command_token(t_cmd *cmd, t_token *token);
 void					add_redirect_to_list(t_cmd *cmd, t_redirect *new_redir);

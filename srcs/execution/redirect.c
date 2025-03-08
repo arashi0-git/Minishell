@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/08 21:07:38 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 22:46:33 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,17 +185,16 @@ static int	open_file(t_redirect *redir)
 // redirect checker
 t_bool	check_redirect(t_redirect *redir)
 {
-	if (redir->filename == NULL)
+	if (redir->filename == NULL || redir->filename->next)
 	{
-		print_error("ambiguous redirect", NULL, "NULL");
+		print_error("ambiguous redirect", NULL, redir->filename->value);
+		// Changed from data to value
 		return (FALSE);
 	}
-	// 以降のトークンは無視するため、next を切り離す
-	if (redir->filename->next)
-		redir->filename->next = NULL;
 	if ((redir->fd_file = open_file(redir)) < 0)
 	{
 		print_error(strerror(errno), NULL, redir->filename->value);
+		// Changed from data to value
 		return (FALSE);
 	}
 	// debug
@@ -298,8 +297,6 @@ t_bool	dup_redirects(t_cmd *command, t_bool is_parent)
 		// 子プロセスの場合、元のファイルディスクリプタを閉じる
 		if (!is_parent && redir->fd_file > 2)
 		{
-			fprintf(stderr, "Debug: Closing original fd_file = %d\n",
-				redir->fd_file);
 			close(redir->fd_file);
 		}
 		redir = redir->next;

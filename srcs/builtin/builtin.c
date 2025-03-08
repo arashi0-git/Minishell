@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:05:32 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 21:02:15 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 21:55:41 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	exec_builtin(char **args, t_shell *shell)
 {
 	if (ft_strcmp(args[0], "exit") == 0)
-		return (exec_exit(args));
+		return (exec_exit(args, shell));
 	if (ft_strcmp(args[0], "cd") == 0)
 		return (exec_cd(args, shell));
 	if (ft_strcmp(args[0], "echo") == 0)
@@ -45,6 +45,8 @@ int	is_builtin(char **args)
 	if (ft_strcmp(args[0], "export") == 0)
 		return (1);
 	if (ft_strcmp(args[0], "unset") == 0)
+		return (1);
+	if (ft_strcmp(args[0], "exit") == 0)
 		return (1);
 	return (0);
 }

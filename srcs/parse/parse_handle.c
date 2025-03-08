@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:49:25 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 21:19:09 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 22:45:12 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,25 @@ static int	copy_filename(char **dest, const char *src)
 	}
 	ft_strcpy(*dest, src);
 	return (0);
+}
+
+// リダイレクトをリストの末尾に追加する関数
+void	add_redirect_to_list(t_cmd *cmd, t_redirect *new_redir)
+{
+	t_redirect	*current;
+
+	if (cmd->redirects == NULL)
+	{
+		cmd->redirects = new_redir;
+		return ;
+	}
+	current = (t_redirect *)cmd->redirects;
+	while (current->next)
+	{
+		current = current->next;
+	}
+	current->next = new_redir;
+	new_redir->prev = current;
 }
 
 // 入力リダイレクション処理

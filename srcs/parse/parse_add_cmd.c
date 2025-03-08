@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:51:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 20:35:36 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 21:23:00 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,6 @@ t_cmd	*new_cmd(void)
 	cmd->outfile = NULL;
 	cmd->infile = NULL;
 	cmd->append = 0;
-<<<<<<< HEAD
-=======
-	cmd->next = NULL;
-	cmd->prev = NULL;
->>>>>>> origin/main
 	cmd->redirects = NULL;
 	cmd->pid = 0;
 	cmd->next = NULL;
