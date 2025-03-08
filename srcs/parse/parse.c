@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 20:36:20 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 20:43:37 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_cmd	*create_new_command(t_cmd **cmd_list, t_cmd **current_cmd)
 	return (new_cmd_ptr);
 }
 
-static int	handle_command_token(t_cmd *cmd, t_token *token)
+int	handle_command_token(t_cmd *cmd, t_token *token)
 {
 	if (!cmd->command)
 	{
@@ -76,29 +76,15 @@ static int	process_token(t_token **curr_ptr, t_cmd **cmd_list,
 	if (!*current_cmd)
 		create_new_command(cmd_list, current_cmd);
 	if (token->type == TOKEN_PIPE)
-	{
-		if (token->next == NULL)
-			return (-1);
-		*current_cmd = NULL;
-		tokens_consumed = 1;
-	}
+		tokens_consumed = process_pipe_token(token, current_cmd);
 	else if (token->type == TOKEN_REDIR)
-	{
-		if (token->next == NULL)
-		{
-			printf("minishell: syntax error near unexpected token `newline'\n");
-			return (-1);
-		}
-		tokens_consumed = handle_redirection(*current_cmd, token, token->next);
-		if (tokens_consumed < 0)
-			return (-1);
-	}
+		tokens_consumed = process_redir_token(token, *current_cmd);
 	else if (token->type == TOKEN_COMMAND)
-	{
-		if (handle_command_token(*current_cmd, token) != 0)
-			return (-1);
+		tokens_consumed = process_command_token(token, *current_cmd);
+	else
 		tokens_consumed = 1;
-	}
+	if (tokens_consumed < 0)
+		return (-1);
 	while (tokens_consumed-- > 0 && *curr_ptr)
 		*curr_ptr = (*curr_ptr)->next;
 	return (0);

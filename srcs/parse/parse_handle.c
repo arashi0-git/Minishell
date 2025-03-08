@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:49:25 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 20:38:03 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 20:46:20 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,26 @@ static int	handle_input_redirection(t_cmd *cmd, t_token *target)
 	return (0);
 }
 
-static int	handle_output_redirection(t_cmd *cmd, t_token *target,
+static int	update_cmd_output(t_cmd *cmd, const char *value,
 		t_redirecttype redirtype)
 {
-	t_redirect	*redir;
-
 	if (cmd->outfile)
 		free(cmd->outfile);
-	cmd->outfile = strdup(target->value);
+	cmd->outfile = strdup(value);
 	if (!cmd->outfile)
 	{
 		perror("strdup outfile failed");
 		return (-1);
 	}
-	if (redirtype == REDIRECT_APPEND)
-		cmd->append = 1;
-	else
-		cmd->append = 0;
+	cmd->append = (redirtype == REDIRECT_APPEND);
+	return (0);
+}
+
+static int	add_output_redirect(t_cmd *cmd, t_token *target,
+		t_redirecttype redirtype)
+{
+	t_redirect	*redir;
+
 	redir = create_redirect(redirtype, target, STDOUT_FILENO);
 	if (!redir)
 		return (-1);
@@ -70,6 +73,14 @@ static int	handle_output_redirection(t_cmd *cmd, t_token *target,
 		cmd->redirects->prev = redir;
 	cmd->redirects = redir;
 	return (0);
+}
+
+static int	handle_output_redirection(t_cmd *cmd, t_token *target,
+		t_redirecttype redirtype)
+{
+	if (update_cmd_output(cmd, target->value, redirtype) == -1)
+		return (-1);
+	return (add_output_redirect(cmd, target, redirtype));
 }
 
 int	handle_redirection(t_cmd *cmd, t_token *redir_token, t_token *file_token)
