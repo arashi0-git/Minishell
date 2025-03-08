@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 15:29:45 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:49:18 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void					free_env(t_env *env);
 char					*get_env(t_env *env, const char *name);
 int						set_env(t_env **env, const char *key,
 							const char *value);
+char					*get_env_value(t_env *env, const char *key);
 
 /*---signal func---*/
 void					set_signal_handlers(void);

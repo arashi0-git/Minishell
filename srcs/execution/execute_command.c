@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/08 15:49:19 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 17:59:47 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ static void	execute_in_child(t_shell *shell, t_cmd *cmd, t_pipe_state state,
 	if (!setup_redirects(cmd))
 		exit(EXIT_FAILURE);
 	setup_pipes(state, old_pipe, new_pipe);
-	/* if (is_builtin(&cmd->args[0]))
+	if (is_builtin(&cmd->args[0]))
 		exit(exec_builtin(cmd->args, shell));
-	else */
-	exec_binary(shell, cmd->args);
+	else
+		exec_binary(shell, cmd->args);
 }
 
 int	finalize_command(t_shell *shell, t_pipe_state state, pid_t pid,

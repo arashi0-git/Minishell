@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:05:32 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/06 19:45:44 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:12:47 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,17 @@ int	exec_builtin(char **args, t_shell *shell)
 
 int	is_builtin(char **args)
 {
-	const char	*commands[] = {"exit", "cd", "pwd", "env", "export", "unset",
-			"echo", NULL};
-	int			i;
-
-	i = 0;
-	if (args[0] == NULL)
-		return (0);
-	while (commands[i])
-	{
-		if (ft_strcmp(args[0], (char *)commands[i]) == 0)
-			return (1);
-		i++;
-	}
+	if (ft_strcmp(args[0], "echo") == 0)
+		return (1);
+	if (ft_strcmp(args[0], "cd") == 0)
+		return (1);
+	if (ft_strcmp(args[0], "pwd") == 0)
+		return (1);
+	if (ft_strcmp(args[0], "env") == 0)
+		return (1);
+	if (ft_strcmp(args[0], "export") == 0)
+		return (1);
+	if (ft_strcmp(args[0], "unset") == 0)
+		return (1);
 	return (0);
 }

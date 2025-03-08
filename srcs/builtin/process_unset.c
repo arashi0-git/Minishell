@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:03:31 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/04 19:13:31 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/08 18:53:49 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	exec_unset(char **args, t_shell *shell)
 	int	status;
 
 	if (!args[1])
-		return (0); // 引数がない場合は成功として扱う
+		return (0);
 	i = 1;
 	status = 0;
 	if (!shell->env)
@@ -71,6 +71,7 @@ int	exec_unset(char **args, t_shell *shell)
 	}
 	return (status);
 }
+
 /*cc -Wall -Wextra -Werror -g  process_unset.c ../env/env.c -I../../include
 	-L../../libft -lft
  //

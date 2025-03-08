@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:15:55 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/02 12:48:25 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:56:58 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	copy_variable(const char *value, t_expand *exp)
 	return (0);
 }
 
-int	expand_dollar_variable(const char *str, t_expand *exp)
+int	expand_dollar_variable(const char *str, t_shell *shell, t_expand *exp)
 {
 	size_t	var_start;
 	size_t	var_len;
@@ -80,7 +80,7 @@ int	expand_dollar_variable(const char *str, t_expand *exp)
 	var_name = strndup(&str[var_start], var_len);
 	if (!var_name)
 		return (-1);
-	value = getenv(var_name);
+	value = get_env_value(shell->env, var_name);
 	free(var_name);
 	return (copy_variable(value, exp));
 }

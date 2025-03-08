@@ -15,4 +15,5 @@ int		exec_env(char **args, t_shell *shell);
 int		exec_exit(char **args);
 int		exec_builtin(char **args, t_shell *shell);
 int		is_builtin(char **args);
+int		get_env_size(t_env *env);
 #endif

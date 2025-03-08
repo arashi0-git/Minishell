@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 16:54:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/04 18:00:15 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:57:24 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	expand_dollar(const char *str, t_shell *shell, t_expand *exp)
 	if (str[exp->i + 1] == '?')
 		return (expand_dollar_question(shell, exp));
 	else
-		return (expand_dollar_variable(str, exp));
+		return (expand_dollar_variable(str, shell, exp));
 }
 
 static int	expand_single_quote(const char *str, t_expand *exp)
