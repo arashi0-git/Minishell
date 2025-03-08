@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/07 07:13:10 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 11:52:51 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,37 +17,36 @@
 #include "../../include/parse.h"
 #include <sys/wait.h>
 
-/*
-void	print_cmd_list(t_cmd *cmd_list)
-{
-	int	i;
-	int	j;
+// void	print_cmd_list(t_cmd *cmd_list)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	while (cmd_list)
-	{
-		j = 0;
-		printf("Command %d:\n", i);
-		if (cmd_list->command)
-			printf("  Command: %s\n", cmd_list->command);
-		if (cmd_list->argc > 0)
-		{
-			while (j < cmd_list->argc)
-			{
-				printf("  Arg[%d]: %s\n", j, cmd_list->args[j]);
-				j++;
-			}
-		}
-		if (cmd_list->infile)
-			printf(" Infile: %s\n", cmd_list->infile);
-		if (cmd_list->outfile)
-			printf(" Outfile: %s(%s)\n", cmd_list->outfile,
-				(cmd_list->append ? "append" : "overwrite"));
-		cmd_list = cmd_list->next;
-		i++;
-	}
-}
-*/
+// 	i = 0;
+// 	while (cmd_list)
+// 	{
+// 		j = 0;
+// 		printf("Command %d:\n", i);
+// 		if (cmd_list->command)
+// 			printf("  Command: %s\n", cmd_list->command);
+// 		if (cmd_list->argc > 0)
+// 		{
+// 			while (j < cmd_list->argc)
+// 			{
+// 				printf("  Arg[%d]: %s\n", j, cmd_list->args[j]);
+// 				j++;
+// 			}
+// 		}
+// 		if (cmd_list->infile)
+// 			printf(" Infile: %s\n", cmd_list->infile);
+// 		if (cmd_list->outfile)
+// 			printf(" Outfile: %s(%s)\n", cmd_list->outfile,
+// 				(cmd_list->append ? "append" : "overwrite"));
+// 		cmd_list = cmd_list->next;
+// 		i++;
+// 	}
+// }
+
 void	free_cmd_list(t_cmd *cmd_list)
 {
 	t_cmd	*tmp;

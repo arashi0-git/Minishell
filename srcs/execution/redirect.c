@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/07 07:10:16 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 11:53:12 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,16 +185,17 @@ static int	open_file(t_redirect *redir)
 // redirect checker
 t_bool	check_redirect(t_redirect *redir)
 {
-	if (redir->filename == NULL || redir->filename->next)
+	if (redir->filename == NULL)
 	{
-		print_error("ambiguous redirect", NULL, redir->filename->value);
-		// Changed from data to value
+		print_error("ambiguous redirect", NULL, "NULL");
 		return (FALSE);
 	}
+	// 以降のトークンは無視するため、next を切り離す
+	if (redir->filename->next)
+		redir->filename->next = NULL;
 	if ((redir->fd_file = open_file(redir)) < 0)
 	{
 		print_error(strerror(errno), NULL, redir->filename->value);
-		// Changed from data to value
 		return (FALSE);
 	}
 	// debug
@@ -274,8 +275,6 @@ t_bool	dup_redirects(t_cmd *command, t_bool is_parent)
 	redir = (t_redirect *)command->redirects; // キャスト追加
 	while (redir)
 	{
-		fprintf(stderr, "Debug: In dup_redirects - type: %d, fd_io: %d, fd_file:
-			%d\n", redir->type, redir->fd_io, redir->fd_file);
 		if (is_parent)
 		{
 			if ((redir->fd_backup = dup(redir->fd_io)) < 0)

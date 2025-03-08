@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:59:33 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/01 16:17:31 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/07 11:44:00 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ typedef struct s_cmd
 
 /*---parse func---*/
 t_cmd					*parse_tokens(t_token *tokens);
-int						handle_redirection(t_cmd *cmd, t_token **curr_ptr);
+int						handle_redirection(t_cmd *cmd, t_token *redir_token,
+							t_token *file_token);
 int						add_arg(t_cmd *cmd, const char *arg);
 t_cmd					*new_cmd(void);
 

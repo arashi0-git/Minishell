@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/01 20:18:05 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/07 11:42:48 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,29 +63,44 @@ static int	handle_command_token(t_cmd *cmd, t_token *token)
 static int	process_token(t_token **curr_ptr, t_cmd **cmd_list,
 		t_cmd **current_cmd)
 {
-	if (!*current_cmd && (*curr_ptr)->type == TOKEN_PIPE)
+	int		tokens_consumed;
+	t_token	*token;
+
+	tokens_consumed = 0;
+	token = *curr_ptr;
+	if (!*current_cmd && token->type == TOKEN_PIPE)
 	{
-		printf("minishell: syntax error unexpected token '|'or '||'\n");
+		printf("minishell: syntax error unexpected token '|' or '||'\n");
 		return (-1);
 	}
 	if (!*current_cmd)
 		create_new_command(cmd_list, current_cmd);
-	if ((*curr_ptr)->type == TOKEN_PIPE)
+	if (token->type == TOKEN_PIPE)
 	{
-		if ((*curr_ptr)->next == NULL)
+		if (token->next == NULL)
 			return (-1);
 		*current_cmd = NULL;
+		tokens_consumed = 1;
 	}
-	else if ((*curr_ptr)->type == TOKEN_REDIR)
+	else if (token->type == TOKEN_REDIR)
 	{
-		if (handle_redirection(*current_cmd, curr_ptr) != 0)
+		if (token->next == NULL)
+		{
+			printf("minishell: syntax error near unexpected token `newline'\n");
+			return (-1);
+		}
+		tokens_consumed = handle_redirection(*current_cmd, token, token->next);
+		if (tokens_consumed < 0)
 			return (-1);
 	}
-	else if ((*curr_ptr)->type == TOKEN_COMMAND)
+	else if (token->type == TOKEN_COMMAND)
 	{
-		if (handle_command_token(*current_cmd, *curr_ptr) != 0)
+		if (handle_command_token(*current_cmd, token) != 0)
 			return (-1);
+		tokens_consumed = 1;
 	}
+	while (tokens_consumed-- > 0 && *curr_ptr)
+		*curr_ptr = (*curr_ptr)->next;
 	return (0);
 }
 
@@ -105,7 +120,7 @@ t_cmd	*parse_tokens(t_token *tokens)
 			free_cmd_list(cmd_list);
 			return (NULL);
 		}
-		curr = curr->next;
+		// curr = curr->next;
 	}
 	return (cmd_list);
 }
