@@ -10,7 +10,6 @@ int	exec_env(char **args, t_shell *shell)
 		ft_putendl_fd("env: too many arguments", STDERR_FILENO);
 		return (1);
 	}
-	
 	// 環境変数を表示
 	env = shell->env;
 	while (env)
@@ -26,4 +25,3 @@ int	exec_env(char **args, t_shell *shell)
 	}
 	return (0);
 }
-

@@ -45,6 +45,11 @@ t_cmd	*new_cmd(void)
 	cmd->outfile = NULL;
 	cmd->infile = NULL;
 	cmd->append = 0;
+<<<<<<< HEAD
+=======
+	cmd->next = NULL;
+	cmd->prev = NULL;
+>>>>>>> origin/main
 	cmd->redirects = NULL;
 	cmd->pid = 0;
 	cmd->next = NULL;

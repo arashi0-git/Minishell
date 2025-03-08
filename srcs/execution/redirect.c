@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/08 11:53:12 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 21:07:38 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,31 +267,44 @@ void	cleanup_redirects(t_cmd *command)
 	}
 }
 
-// リダイレクトの複製処理
 t_bool	dup_redirects(t_cmd *command, t_bool is_parent)
 {
 	t_redirect	*redir;
 
-	redir = (t_redirect *)command->redirects; // キャスト追加
-	while (redir)
+	fprintf(stderr, "Debug: Before dup_redirects\n");
+	// 全てのリダイレクトのバックアップを先に取る
+	if (is_parent)
 	{
-		if (is_parent)
+		redir = (t_redirect *)command->redirects;
+		while (redir)
 		{
 			if ((redir->fd_backup = dup(redir->fd_io)) < 0)
 			{
 				print_bad_fd_error(redir->fd_io);
 				return (FALSE);
 			}
-			fprintf(stderr, "Debug: Backup fd created: fd_backup = %d\n",
-				redir->fd_backup);
+			redir = redir->next;
 		}
+	}
+	// リダイレクトを実際に適用
+	redir = (t_redirect *)command->redirects;
+	while (redir)
+	{
 		if (dup2(redir->fd_file, redir->fd_io) < 0)
 		{
 			print_bad_fd_error(redir->fd_io);
 			return (FALSE);
 		}
+		// 子プロセスの場合、元のファイルディスクリプタを閉じる
+		if (!is_parent && redir->fd_file > 2)
+		{
+			fprintf(stderr, "Debug: Closing original fd_file = %d\n",
+				redir->fd_file);
+			close(redir->fd_file);
+		}
 		redir = redir->next;
 	}
+	fprintf(stderr, "Debug: After dup_redirects\n");
 	return (TRUE);
 }
 

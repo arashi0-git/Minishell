@@ -6,106 +6,114 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:49:25 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 20:46:20 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 21:19:09 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "redirect.h"
 
+extern t_shell	*g_shell;
+
+static int	copy_filename(char **dest, const char *src)
+{
+	*dest = malloc(ft_strlen(src) + 1);
+	if (!*dest)
+	{
+		printf("malloc filename failed\n");
+		return (-1);
+	}
+	ft_strcpy(*dest, src);
+	return (0);
+}
+
+// 入力リダイレクション処理
 static int	handle_input_redirection(t_cmd *cmd, t_token *target)
 {
 	t_redirect	*redir;
 
-	if (cmd->infile)
-		free(cmd->infile);
-	cmd->infile = strdup(target->value);
-	if (!cmd->infile)
-	{
-		perror("strdup infile failed");
+	if (copy_filename(&cmd->infile, target->value) < 0)
 		return (-1);
-	}
 	redir = create_redirect(REDIRECT_IN, target, STDIN_FILENO);
-	if (!redir)
-		return (-1);
-	if (!check_redirect(redir))
+	if (!redir || !check_redirect(redir))
 	{
-		free_redirect(redir);
+		if (redir)
+			free_redirect(redir);
 		return (-1);
 	}
-	redir->next = cmd->redirects;
-	if (cmd->redirects)
-		cmd->redirects->prev = redir;
-	cmd->redirects = redir;
+	add_redirect_to_list(cmd, redir);
+	// redir->next = (t_redirect *)cmd->redirects;
+	// cmd->redirects = redir;
 	return (0);
 }
 
-static int	update_cmd_output(t_cmd *cmd, const char *value,
-		t_redirecttype redirtype)
-{
-	if (cmd->outfile)
-		free(cmd->outfile);
-	cmd->outfile = strdup(value);
-	if (!cmd->outfile)
-	{
-		perror("strdup outfile failed");
-		return (-1);
-	}
-	cmd->append = (redirtype == REDIRECT_APPEND);
-	return (0);
-}
-
-static int	add_output_redirect(t_cmd *cmd, t_token *target,
+// 出力リダイレクション処理
+static int	handle_output_redirection(t_cmd *cmd, t_token *target,
 		t_redirecttype redirtype)
 {
 	t_redirect	*redir;
 
-	redir = create_redirect(redirtype, target, STDOUT_FILENO);
-	if (!redir)
+	if (copy_filename(&cmd->outfile, target->value) < 0)
 		return (-1);
-	if (!check_redirect(redir))
+	cmd->append = (redirtype == REDIRECT_APPEND) ? 1 : 0;
+	redir = create_redirect(redirtype, target, STDOUT_FILENO);
+	if (!redir || !check_redirect(redir))
 	{
-		free_redirect(redir);
+		if (redir)
+			free_redirect(redir);
 		return (-1);
 	}
-	redir->next = cmd->redirects;
-	if (cmd->redirects)
-		cmd->redirects->prev = redir;
-	cmd->redirects = redir;
+	add_redirect_to_list(cmd, redir);
+	// redir->next = (t_redirect *)cmd->redirects;
+	// cmd->redirects = redir;
 	return (0);
 }
 
-static int	handle_output_redirection(t_cmd *cmd, t_token *target,
-		t_redirecttype redirtype)
+// トークン複製関数（新規追加）
+static t_token	*duplicate_token(t_token *src)
 {
-	if (update_cmd_output(cmd, target->value, redirtype) == -1)
-		return (-1);
-	return (add_output_redirect(cmd, target, redirtype));
+	t_token	*new_token;
+	char	*value_copy;
+
+	value_copy = ft_strdup(src->value);
+	if (!value_copy)
+		return (NULL);
+	new_token = malloc(sizeof(t_token));
+	if (!new_token)
+	{
+		free(value_copy);
+		return (NULL);
+	}
+	new_token->value = value_copy;
+	new_token->type = src->type;
+	new_token->redirtype = src->redirtype;
+	new_token->next = NULL;
+	return (new_token);
 }
 
-int	handle_redirection(t_cmd *cmd, t_token *redir_token, t_token *file_token)
+// リダイレクト処理メイン関数
+int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
 {
-	int	ret;
+	int		ret;
+	t_token	*redir;
+	t_token	*target_copy;
 
-	if (file_token == NULL || file_token->type != TOKEN_COMMAND)
+	redir = *curr_ptr;
+	*curr_ptr = (*curr_ptr)->next;
+	if (*curr_ptr == NULL || (*curr_ptr)->type != TOKEN_COMMAND)
 	{
 		printf("minishell: syntax error near unexpected token `newline'\n");
+		g_shell->exit_status = 2;
 		return (-1);
 	}
-	if (redir_token->redirtype == REDIRECT_IN
-		|| redir_token->redirtype == REDIRECT_HEREDOC)
-	{
-		ret = handle_input_redirection(cmd, file_token);
-		if (ret != 0)
-			return (ret);
-	}
-	else if (redir_token->redirtype == REDIRECT_OUT
-		|| redir_token->redirtype == REDIRECT_APPEND)
-	{
-		ret = handle_output_redirection(cmd, file_token,
-				redir_token->redirtype);
-		if (ret != 0)
-			return (ret);
-	}
-	return (2);
+	target_copy = duplicate_token(*curr_ptr);
+	if (!target_copy)
+		return (-1);
+	if (redir->redirtype == REDIRECT_IN || redir->redirtype == REDIRECT_HEREDOC)
+		ret = handle_input_redirection(cmd, target_copy);
+	else
+		ret = handle_output_redirection(cmd, target_copy, redir->redirtype);
+	if (ret != 0)
+		free_token_list(target_copy);
+	return (ret);
 }

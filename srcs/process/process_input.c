@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 20:24:27 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 21:20:27 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,21 @@ void	free_token_list(t_token *list)
 		free(tmp->value);
 		free(tmp);
 	}
+}
+
+void	print_tokens(t_token *head)
+{
+	t_token	*current;
+
+	current = head;
+	fprintf(stderr, "DEBUG TOKENS:\n");
+	while (current)
+	{
+		fprintf(stderr, "Token: '%s' | Type: %d | RedirType: %d\n",
+			current->value, current->type, current->redirtype);
+		current = current->next;
+	}
+	fprintf(stderr, "END TOKENS\n");
 }
 
 t_cmd	*tokenize_and_parse(char *input)

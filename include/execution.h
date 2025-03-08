@@ -46,6 +46,7 @@ size_t	get_environ_size(t_env *envs);
 t_bool	can_generate_environ(t_env *env);
 int		wait_for_command(pid_t pid);
 
+void handle_command_file_args(t_cmd *cmd);
 void	process_input(t_shell *shell, char *input);
 void	free_cmd_list(t_cmd *cmd_list);
 #endif

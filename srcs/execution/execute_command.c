@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/08 17:59:47 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 21:06:24 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,34 @@ extern
 	}
 }
 
+void	handle_command_file_args(t_cmd *cmd)
+{
+	t_token		*token;
+	t_redirect	*redir;
+
+	if (!cmd->args[0] || !cmd->args[1] || cmd->infile)
+		return ;
+	if (ft_strcmp(cmd->args[0], "cat") != 0)
+		return ;
+	token = malloc(sizeof(t_token));
+	if (!token)
+		return ;
+	token->value = ft_strdup(cmd->args[1]);
+	token->type = TOKEN_COMMAND;
+	token->next = NULL;
+	redir = create_redirect(REDIRECT_IN, token, STDIN_FILENO);
+	if (!redir || !check_redirect(redir))
+	{
+		if (redir)
+			free_redirect(redir);
+		else
+			free_token_list(token);
+		return ;
+	}
+	redir->next = (t_redirect *)cmd->redirects;
+	cmd->redirects = redir;
+}
+
 static int	exec_builtin_parent(t_shell *shell, t_cmd *command, char **args)
 {
 	int	result;
@@ -65,10 +93,23 @@ static int	exec_builtin_parent(t_shell *shell, t_cmd *command, char **args)
 	return (result);
 }
 
+/*
 static void	execute_in_child(t_shell *shell, t_cmd *cmd, t_pipe_state state,
 		int old_pipe[2], int new_pipe[2])
 {
+	t_redirect	*debug_redir;
+
 	reset_signal_in_child();
+	handle_command_file_args(cmd);
+		// リダイレクトリストの内容をデバッグ出力
+	fprintf(stderr, "Debug: Redirect list after handle_command_file_args:\n");
+	debug_redir = (t_redirect *)cmd->redirects;
+	while (debug_redir) {
+		fprintf(stderr, "  Type: %d, fd_io: %d, fd_file: %d, filename: %s\n",
+				debug_redir->type, debug_redir->fd_io, debug_redir->fd_file,
+				debug_redir->filename ? debug_redir->filename->value : "(null)");
+		debug_redir = debug_redir->next;
+	}
 	if (!setup_redirects(cmd))
 		exit(EXIT_FAILURE);
 	setup_pipes(state, old_pipe, new_pipe);
@@ -77,6 +118,7 @@ static void	execute_in_child(t_shell *shell, t_cmd *cmd, t_pipe_state state,
 	else
 		exec_binary(shell, cmd->args);
 }
+*/
 
 int	finalize_command(t_shell *shell, t_pipe_state state, pid_t pid,
 		struct sigaction *old_sa)
@@ -84,8 +126,6 @@ int	finalize_command(t_shell *shell, t_pipe_state state, pid_t pid,
 	int	status;
 
 	(void)state;
-	// if (state == NO_PIPE || state == PIPE_READ_ONLY)
-	// {
 	status = wait_for_command(pid);
 	shell->exit_status = status;
 	sigaction(SIGINT, old_sa, NULL);
@@ -93,6 +133,23 @@ int	finalize_command(t_shell *shell, t_pipe_state state, pid_t pid,
 		write(STDOUT_FILENO, "\n", 1);
 	return (status);
 	return (1);
+}
+
+static void	execute_in_child(t_shell *shell, t_cmd *cmd, t_pipe_state state,
+		int old_pipe[2], int new_pipe[2])
+{
+	reset_signal_in_child();
+	// 他のケースは通常の実行を続行
+	handle_command_file_args(cmd);
+	if (!setup_redirects(cmd))
+		exit(EXIT_FAILURE);
+	if (!dup_redirects(cmd, FALSE))
+		exit(EXIT_FAILURE);
+	setup_pipes(state, old_pipe, new_pipe);
+	if (is_builtin(&cmd->args[0]))
+		exit(exec_builtin(cmd->args, shell));
+	else
+		exec_binary(shell, cmd->args);
 }
 
 void	cleanup_pipe_ext(t_pipe_state state, int shared_pipe[2],
@@ -123,7 +180,6 @@ int	execute_command(t_shell *shell, t_cmd *cmd, t_pipe_state state,
 	int		new_pipe[2] = {-1, -1};
 	pid_t	pid;
 
-	// int status;
 	struct sigaction new_sa, old_sa;
 	create_pipe(state, new_pipe);
 	if (state == NO_PIPE && is_builtin(&cmd->args[0]))
