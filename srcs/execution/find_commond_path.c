@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_commond_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:58:24 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/08 19:31:01 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/02/28 18:04:41 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,16 +79,10 @@ static char	*check_dir_path(char *dir_start, const char *cmd)
 	j = 0;
 	while (dir_start[j] && dir_start[j] != ':')
 		j++;
-	if (dir_start[j] == ':')
-	{
+	if (dir_start[j])
 		dir_start[j] = '\0';
-		temp_path = create_path(dir_start, cmd);
-		dir_start[j] = ':';
-	}
-	else
-	{
-		temp_path = create_path(dir_start, cmd);
-	}
+	temp_path = create_path(dir_start, cmd);
+	dir_start[j] = ':';
 	if (temp_path && access(temp_path, X_OK) == 0)
 		return (temp_path);
 	free(temp_path);
@@ -109,49 +103,30 @@ static char	*check_dir_path(char *dir_start, const char *cmd)
 各ディレクトリでコマンドを探索
 最初に見つかった実行可能なパスを返す
 */
-
-static char	*iterate_path(char *path, const char *cmd)
+char	*find_command_path(const char *cmd, char **envp)
 {
+	char	*path;
 	char	*dir_start;
 	char	*temp_path;
 	int		j;
 
+	if (cmd[0] == '/' || cmd[0] == '.')
+		if (access(cmd, X_OK) == 0)
+			return (ft_strdup(cmd));
+	path = get_env_path(envp);
+	if (!path)
+		return (NULL);
 	dir_start = path;
 	while (*dir_start)
 	{
 		if ((temp_path = check_dir_path(dir_start, cmd)))
-			return (ft_strdup(temp_path));
+			return (temp_path);
 		j = 0;
 		while (dir_start[j] && dir_start[j] != ':')
 			j++;
-		if (j == 0)
+		dir_start = dir_start + j;
+		if (*dir_start)
 			dir_start++;
-		else
-		{
-			dir_start += j;
-			if (*dir_start == ':')
-				dir_start++;
-		}
 	}
 	return (NULL);
-}
-
-char	*find_command_path(const char *cmd, char **envp)
-{
-	char	*env_path;
-	char	*dup_path;
-	char	*result;
-
-	if (cmd[0] == '/' || cmd[0] == '.')
-	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-	}
-	env_path = get_env_path(envp);
-	if (!env_path)
-		return (NULL);
-	dup_path = ft_strdup(env_path);
-	result = iterate_path(dup_path, cmd);
-	free(dup_path);
-	return (result);
 }

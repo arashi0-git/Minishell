@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 22:48:13 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:15:28 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_cmd	*create_new_command(t_cmd **cmd_list, t_cmd **current_cmd)
 	return (new_cmd_ptr);
 }
 
-int	handle_command_token(t_cmd *cmd, t_token *token)
+static int	handle_command_token(t_cmd *cmd, t_token *token)
 {
 	fprintf(stderr, "Adding token '%s' as command/arg\n", token->value);
 	if (!cmd->command)

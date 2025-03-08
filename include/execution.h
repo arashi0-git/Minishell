@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/08 20:29:56 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 20:29:58 by aryamamo         ###   ########.fr       */
+/*   Created: 2025/03/08 23:34:57 by aryamamo          #+#    #+#             */
+/*   Updated: 2025/03/08 23:34:58 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ size_t	get_environ_size(t_env *envs);
 t_bool	can_generate_environ(t_env *env);
 int		wait_for_command(pid_t pid);
 
-void handle_command_file_args(t_cmd *cmd);
+void	handle_command_file_args(t_cmd *cmd);
 void	process_input(t_shell *shell, char *input);
 void	free_cmd_list(t_cmd *cmd_list);
 #endif

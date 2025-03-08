@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/02/10 14:03:27 by aryamamo          #+#    #+#              #
-#    Updated: 2025/03/08 22:45:29 by aryamamo         ###   ########.fr        #
+#    Created: 2025/03/08 23:08:08 by aryamamo          #+#    #+#              #
+#    Updated: 2025/03/08 23:20:19 by aryamamo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/utils/print_error.c\
 		$(SRCDIR)/utils/valid_identifier.c\
 		$(SRCDIR)/utils/ft_getline.c\
+
 
 ##リリンク確認！
 

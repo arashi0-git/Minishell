@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/08 20:27:26 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 21:24:08 by aryamamo         ###   ########.fr       */
+/*   Created: 2025/03/08 23:34:51 by aryamamo          #+#    #+#             */
+/*   Updated: 2025/03/08 23:34:51 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ int		exec_pwd(void);
 int		exec_unset(char **args, t_shell *shell);
 void	remove_env_unset(t_shell *shell, char *arg);
 int		exec_env(char **args, t_shell *shell);
-int		exec_exit(char **args, t_shell *shell);
+int		exec_exit(char **args);
 int		exec_builtin(char **args, t_shell *shell);
 int		is_builtin(char **args);
-int		get_env_size(t_env *env);
-
 #endif
