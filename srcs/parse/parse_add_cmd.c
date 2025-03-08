@@ -36,7 +36,7 @@ t_cmd	*new_cmd(void)
 	cmd->infile = NULL;
 	cmd->append = 0;
 	cmd->next = NULL;
-   	cmd->prev = NULL;
+	cmd->prev = NULL;
 	cmd->redirects = NULL;
 	cmd->pid = 0;
 	return (cmd);

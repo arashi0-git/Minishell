@@ -87,7 +87,6 @@ int	exec_echo(char **args)
 // 	return (0);
 // }
 
-
 // void	test_echo(char **args, char *test_name, char *expected_output)
 // {
 // 	int		original_stdout;

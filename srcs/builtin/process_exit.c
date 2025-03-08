@@ -6,7 +6,6 @@ int	exec_exit(char **args, t_shell *shell)
 
 	if (shell->interactive)
 		ft_putendl_fd("exit", STDOUT_FILENO);
-	
 	if (!args[1])
 	{
 		exit_code = shell->exit_status;
