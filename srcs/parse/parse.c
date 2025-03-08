@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/07 11:42:48 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 20:36:20 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ t_cmd	*parse_tokens(t_token *tokens)
 			free_cmd_list(cmd_list);
 			return (NULL);
 		}
-		// curr = curr->next;
 	}
 	return (cmd_list);
 }

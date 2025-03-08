@@ -6,13 +6,13 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:51:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/07 07:10:36 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 20:35:36 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-t_cmd	*new_cmd(void)
+static t_cmd	*allocate_cmd(void)
 {
 	t_cmd	*cmd;
 
@@ -22,7 +22,6 @@ t_cmd	*new_cmd(void)
 		printf("malloc cmd failed\n");
 		return (NULL);
 	}
-	cmd->command = NULL;
 	cmd->max_args = 4;
 	cmd->args = malloc(sizeof(char *) * cmd->max_args);
 	if (!cmd->args)
@@ -31,6 +30,17 @@ t_cmd	*new_cmd(void)
 		free(cmd);
 		return (NULL);
 	}
+	return (cmd);
+}
+
+t_cmd	*new_cmd(void)
+{
+	t_cmd	*cmd;
+
+	cmd = allocate_cmd();
+	if (!cmd)
+		return (NULL);
+	cmd->command = NULL;
 	cmd->argc = 0;
 	cmd->outfile = NULL;
 	cmd->infile = NULL;
@@ -39,8 +49,6 @@ t_cmd	*new_cmd(void)
 	cmd->pid = 0;
 	cmd->next = NULL;
 	cmd->prev = NULL;
-	cmd->redirects = NULL;
-	cmd->pid = 0;
 	return (cmd);
 }
 

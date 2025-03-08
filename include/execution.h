@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/08 20:29:56 by aryamamo          #+#    #+#             */
+/*   Updated: 2025/03/08 20:29:58 by aryamamo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
@@ -16,7 +28,8 @@ typedef enum e_pipe_state
 	PIPE_READ_WRITE
 }		t_pipe_state;
 
-int		execute_command(t_shell *shell, t_cmd *cmd, t_pipe_state state, int shared_pipe[2]);
+int		execute_command(t_shell *shell, t_cmd *cmd, t_pipe_state state,
+			int shared_pipe[2]);
 void	exec_binary(t_shell *shell, char **args);
 void	handle_execve_error(char *path);
 char	**create_environ(t_env *env);

@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 14:03:27 by aryamamo          #+#    #+#              #
-#    Updated: 2025/03/08 15:58:32 by aryamamo         ###   ########.fr        #
+#    Updated: 2025/03/08 20:25:43 by aryamamo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ SRCDIR = ./srcs
 SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/signal/signal.c \
 		$(SRCDIR)/process/process_input.c \
+		$(SRCDIR)/process/process_utils.c \
 		$(SRCDIR)/env/env.c \
 		$(SRCDIR)/parse/parse.c \
 		$(SRCDIR)/parse/parse_handle.c \

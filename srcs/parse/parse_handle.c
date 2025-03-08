@@ -6,45 +6,12 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:49:25 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/07 11:44:46 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 20:38:03 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "redirect.h"
-
-extern t_shell	*g_shell;
-/*
-static int	handle_input_redirection(t_cmd *cmd, t_token *target)
-{
-	cmd->infile = malloc(ft_strlen(target->value) + 1);
-	if (!cmd->infile)
-	{
-		printf("malloc infile failed\n");
-		return (-1);
-	}
-	ft_strcpy(cmd->infile, target->value);
-	return (0);
-}
-
-static int	handle_output_redirection(t_cmd *cmd, t_token *target,
-		t_redirecttype redirtype)
-{
-	cmd->outfile = malloc(ft_strlen(target->value) + 1);
-	if (cmd->outfile == NULL)
-	{
-		printf("malloc outfile failed\n");
-		return (-1);
-	}
-	ft_strcpy(cmd->outfile, target->value);
-	if (redirtype == REDIRECT_APPEND)
-		cmd->append = 1;
-	else
-		cmd->append = 0;
-	return (0);
-}
-
-*/
 
 static int	handle_input_redirection(t_cmd *cmd, t_token *target)
 {
@@ -73,7 +40,6 @@ static int	handle_input_redirection(t_cmd *cmd, t_token *target)
 	return (0);
 }
 
-// 出力リダイレクトの処理
 static int	handle_output_redirection(t_cmd *cmd, t_token *target,
 		t_redirecttype redirtype)
 {

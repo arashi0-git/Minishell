@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:06:22 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/01 17:00:29 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/08 20:26:52 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	exec_echo(char **args)
 // 	exec_echo(args);
 // 	return (0);
 // }
-/*--------------------------------------test-------------------------------------------*/
+/*--------------------------------test-------------------------------------------*/
 // int	exec_echo(char **args)
 // {
 // 	int	i;
@@ -86,7 +86,6 @@ int	exec_echo(char **args)
 // 		write(STDOUT_FILENO, "\n", 1);
 // 	return (0);
 // }
-
 
 // void	test_echo(char **args, char *test_name, char *expected_output)
 // {

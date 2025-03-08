@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 15:55:07 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 20:24:27 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,32 +107,10 @@ t_cmd	*tokenize_and_parse(char *input)
 
 void	process_output(t_shell *shell, t_cmd *cmd_list)
 {
-	t_cmd			*cmd;
-	int				status;
-	t_pipe_state	state;
-	pid_t			last_pid;
-	int				pipeline_pipe[2];
+	pid_t	last_pid;
 
-	pipeline_pipe[0] = -1;
-	pipeline_pipe[1] = -1;
-	cmd = cmd_list;
-	last_pid = -1;
-	while (cmd != NULL)
-	{
-		init_pipe_state(&state, cmd);
-		status = execute_command(shell, cmd, state, pipeline_pipe);
-		if (state == PIPE_READ_ONLY)
-			last_pid = cmd->pid;
-		cmd = cmd->next;
-	}
-	if (cmd_list && cmd_list->next && last_pid > 0)
-	{
-		if (waitpid(last_pid, NULL, WNOHANG) == 0)
-		{
-			status = wait_for_command(last_pid);
-			shell->exit_status = status;
-		}
-	}
+	execute_commands(shell, cmd_list, &last_pid);
+	wait_last_command(shell, cmd_list, last_pid);
 }
 
 void	process_input(t_shell *shell, char *input)

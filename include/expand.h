@@ -6,15 +6,13 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:05:35 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 19:57:22 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 20:29:39 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPAND_H
 # define EXPAND_H
 
-typedef struct s_shell	t_shell;
-typedef struct s_cmd	t_cmd;
 # include "./minishell.h"
 # include <errno.h>
 # include <libft.h>
@@ -26,6 +24,10 @@ typedef struct s_cmd	t_cmd;
 # include <string.h>
 # include <tokenize.h>
 # include <unistd.h>
+
+typedef struct s_shell	t_shell;
+typedef struct s_cmd	t_cmd;
+
 /*---expand struct---*/
 typedef struct s_expand
 {
