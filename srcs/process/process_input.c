@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 11:52:51 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:55:07 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,10 @@ t_cmd	*tokenize_and_parse(char *input)
 
 	token_list = tokenize_list(input);
 	if (!token_list)
-	{
-		printf("Tokenization error\n");
 		return (NULL);
-	}
 	cmd_list = parse_tokens(token_list);
 	if (!cmd_list)
 	{
-		printf("Parsing error\n");
 		free_token_list(token_list);
 		return (NULL);
 	}
@@ -115,8 +111,10 @@ void	process_output(t_shell *shell, t_cmd *cmd_list)
 	int				status;
 	t_pipe_state	state;
 	pid_t			last_pid;
-	int				pipeline_pipe[2] = {-1, -1};
+	int				pipeline_pipe[2];
 
+	pipeline_pipe[0] = -1;
+	pipeline_pipe[1] = -1;
 	cmd = cmd_list;
 	last_pid = -1;
 	while (cmd != NULL)
@@ -154,7 +152,6 @@ void	process_input(t_shell *shell, char *input)
 		expand_cmd(cmd, shell);
 		cmd = cmd->next;
 	}
-	// print_cmd_list(cmd_list);
 	process_output(shell, cmd_list);
 	free_cmd_list(cmd_list);
 }

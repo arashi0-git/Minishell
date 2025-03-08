@@ -6,12 +6,14 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 12:02:31 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:29:45 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# define _POSIX_C_SOURCE 200809L
 
 /*---module---*/
 typedef struct s_cmd	t_cmd;

@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 14:03:27 by aryamamo          #+#    #+#              #
-#    Updated: 2025/03/08 12:02:57 by aryamamo         ###   ########.fr        #
+#    Updated: 2025/03/08 15:58:32 by aryamamo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ LIBFTDIR = ./libft
 LIBFT = $(LIBFTDIR)/libft.a
 
 OBJDIR = ./OBJ
-OBJ = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
+OBJ = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
 
 CC = cc
@@ -76,8 +76,9 @@ $(LIBFT):
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-$(OBJDIR)/%.o: | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $(filter %/$*.c, $(SRCS)) -o $@
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJ)

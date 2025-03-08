@@ -6,15 +6,17 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/07 07:10:20 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:49:19 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtin.h"
 #include "../../include/execution.h"
 #include "../../include/expand.h"
+#include "../../include/minishell.h"
 #include "../../include/parse.h"
 #include "../../include/redirect.h"
+#define _POSIX_C_SOURCE 200809L
 
 // executor_command
 /*
@@ -26,8 +28,10 @@
 それ以外の場合は子プロセスを作成して実行
 リダイレクトのクリーンアップとパイプ状態の更新
 */
+extern
 
-void	reset_signal_in_child(void)
+	void
+	reset_signal_in_child(void)
 {
 	struct sigaction	sa;
 
@@ -79,15 +83,15 @@ int	finalize_command(t_shell *shell, t_pipe_state state, pid_t pid,
 {
 	int	status;
 
-	if (state == NO_PIPE || state == PIPE_READ_ONLY)
-	{
-		status = wait_for_command(pid);
-		shell->exit_status = status;
-		sigaction(SIGINT, old_sa, NULL);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-			write(STDOUT_FILENO, "\n", 1);
-		return (status);
-	}
+	(void)state;
+	// if (state == NO_PIPE || state == PIPE_READ_ONLY)
+	// {
+	status = wait_for_command(pid);
+	shell->exit_status = status;
+	sigaction(SIGINT, old_sa, NULL);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		write(STDOUT_FILENO, "\n", 1);
+	return (status);
 	return (1);
 }
 

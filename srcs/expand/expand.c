@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:06:24 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/07 07:10:28 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:48:47 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,8 @@ int	expand_length(const char *str, t_shell *shell)
 		return (0);
 	while (str[i] != '\0')
 	{
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			if (process_quote_expand(str, shell, &i, &len) < 0)
-				return (-1);
-		}
-		else if (str[i] == '$')
-		{
-			if (process_dollar_length(str, shell, &i, &len) < 0)
-				return (-1);
-		}
-		else
-		{
-			len++;
-			i++;
-		}
+		if (process_character(str, shell, &i, &len) < 0)
+			return (-1);
 	}
 	return (len);
 }

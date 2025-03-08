@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:37:19 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/28 16:17:17 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:50:37 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,18 @@ int	process_quote_expand(const char *str, t_shell *shell, size_t *i,
 	else if (str[*i] == '"')
 		length = process_double_quote(str, shell, i, len);
 	return (length);
+}
+
+int	process_character(const char *str, t_shell *shell, size_t *i, size_t *len)
+{
+	if (str[*i] == '\'' || str[*i] == '"')
+		return (process_quote_expand(str, shell, i, len));
+	else if (str[*i] == '$')
+		return (process_dollar_length(str, shell, i, len));
+	else
+	{
+		(*len)++;
+		(*i)++;
+	}
+	return (0);
 }
