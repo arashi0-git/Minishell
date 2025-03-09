@@ -6,7 +6,11 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:59:33 by aryamamo          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/03/09 21:46:32 by aryamamo         ###   ########.fr       */
+=======
+/*   Updated: 2025/03/09 18:53:46 by retoriya         ###   ########.fr       */
+>>>>>>> heredocument_multiple
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +41,7 @@ typedef struct s_cmd
 	char				*infile;
 	char				*outfile;
 	int					heredoc_flag;
+	t_list*				heredoc_delims;
 	int					append;
 	struct s_cmd		*next;
 	struct s_cmd		*prev;

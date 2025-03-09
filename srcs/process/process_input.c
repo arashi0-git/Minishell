@@ -40,6 +40,8 @@ void	free_cmd_list(t_cmd *cmd_list)
 			free(tmp->infile);
 		if (tmp->outfile)
 			free(tmp->outfile);
+		if (tmp->heredoc_delims)
+			ft_lstclear(&tmp->heredoc_delims, free);
 		free(tmp);
 	}
 }
@@ -100,6 +102,11 @@ void	process_input(t_shell *shell, char *input)
 		expand_cmd(cmd, shell);
 		expand_redirects(cmd, shell);
 		cmd = cmd->next;
+	}
+	if (!process_all_heredocs(cmd_list))
+	{
+		free_cmd_list(cmd_list);
+    	return;
 	}
 	process_output(shell, cmd_list);
 	free_cmd_list(cmd_list);

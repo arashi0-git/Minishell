@@ -86,7 +86,6 @@ int	finalize_command(t_shell *shell, pid_t pid, struct sigaction *old_sa)
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		write(STDOUT_FILENO, "\n", 1);
 	return (status);
-	return (1);
 }
 
 void	cleanup_pipe_ext(t_pipe_state state, int shared_pipe[2],
