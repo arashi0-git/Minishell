@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 20:31:20 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 23:36:36 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 00:00:29 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_redirect				*create_redirect(t_redirecttype type, t_token *filename,
 							int fd_io);
 void					free_redirect(t_redirect *redir);
 
-char					*read_until_delimiter(char *delimiter);
+char					*read_until_delimiter(char *delimiter, t_shell *shell);
 int						process_delimiter(char *line, char *delimiter,
 							char **content);
 int						append_to_content(char **content, char *line);
@@ -50,8 +50,9 @@ t_bool					check_redirect(t_redirect *redir);
 void					cleanup_redirects(t_cmd *command);
 t_redirect				*create_in_redirect(t_cmd *command);
 t_redirect				*create_out_redirect(t_cmd *command);
-t_bool					process_all_heredocs(t_cmd *cmd_list);
-t_bool					setup_heredoc_content(t_cmd *cmd, char *delimiter);
+t_bool					process_all_heredocs(t_cmd *cmd_list, t_shell *shell);
+t_bool					setup_heredoc_content(t_cmd *cmd, char *delimiter,
+							t_shell *shell);
 void					print_bad_fd_error(int fd);
 int						open_file(t_redirect *redir);
 void					close_pipe_fds(int pipe_fd[2]);

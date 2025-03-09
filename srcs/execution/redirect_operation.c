@@ -50,8 +50,6 @@ static t_bool	apply_redirects(t_redirect *redir)
 			print_bad_fd_error(redir->fd_io);
 			return (FALSE);
 		}
-		if (redir->fd_file > 2)
-			close(redir->fd_file);
 		redir = redir->next;
 	}
 	return (TRUE);

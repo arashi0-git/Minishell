@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:37:04 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/03 15:07:08 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 03:23:31 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,14 @@ void	exec_binary(t_shell *shell, char **args)
 	char	*path;
 	char	**envp;
 
-	if (!args[0] || !args)
-		return ;
+	if (!args[0])
+		exit(0);
 	envp = create_environ(shell->env);
 	path = find_command_path(args[0], envp);
 	if (!path)
 	{
-		printf("%s: command not found\n", args[0]);
+		write(STDERR_FILENO, args[0], ft_strlen(args[0]));
+		write(STDERR_FILENO, ": command not found\n", 20);
 		shell->exit_status = 127;
 		exit(shell->exit_status);
 	}

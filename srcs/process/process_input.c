@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 21:22:21 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 01:43:18 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	process_input(t_shell *shell, char *input)
 		expand_redirects(cmd, shell);
 		cmd = cmd->next;
 	}
-	if (!process_all_heredocs(cmd_list))
+	if (!process_all_heredocs(cmd_list, shell))
 	{
 		free_cmd_list(cmd_list);
 		return ;

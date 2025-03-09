@@ -54,7 +54,7 @@ SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/utils/free_array.c \
 		$(SRCDIR)/utils/print_error.c\
 		$(SRCDIR)/utils/valid_identifier.c\
-		$(SRCDIR)/utils/ft_getline.c\
+		$(SRCDIR)/utils/ft_getline.c 
 
 
 ##リリンク確認！

@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:49:25 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 20:20:49 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 22:26:01 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ static int	handle_heredoc_redirection(t_cmd *cmd, t_token *target)
 	char		*delim_copy;
 	t_list		*new_node;
 
-	if (copy_filename(&cmd->infile, target->value) < 0)
-		return (-1);
 	delim_copy = ft_strdup(target->value);
 	if (!delim_copy)
 		return (-1);

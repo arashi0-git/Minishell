@@ -13,11 +13,10 @@
 #include "../../include/minishell.h"
 #include "../../include/parse.h"
 #include "../../include/redirect.h"
+#include "../../include/expand.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
-
-// 入力リダイレクト用のトークンとリダイレクト構造体を作成
 
 static t_bool	setup_heredoc_token(t_token **token, char *delimiter)
 {
@@ -35,7 +34,7 @@ static t_bool	setup_heredoc_token(t_token **token, char *delimiter)
 	return (TRUE);
 }
 
-t_bool	setup_heredoc_content(t_cmd *cmd, char *delimiter)
+t_bool	setup_heredoc_content(t_cmd *cmd, char *delimiter, t_shell *shell)
 {
 	t_redirect	*redir;
 	t_token		*token;
@@ -48,7 +47,7 @@ t_bool	setup_heredoc_content(t_cmd *cmd, char *delimiter)
 		free_token_list(token);
 		return (FALSE);
 	}
-	redir->here_doc_content = read_until_delimiter(delimiter);
+	redir->here_doc_content = read_until_delimiter(delimiter, shell);
 	if (!redir->here_doc_content)
 	{
 		free_redirect(redir);
@@ -58,7 +57,7 @@ t_bool	setup_heredoc_content(t_cmd *cmd, char *delimiter)
 	return (TRUE);
 }
 
-t_bool	process_all_heredocs(t_cmd *cmd_list)
+t_bool	process_all_heredocs(t_cmd *cmd_list, t_shell *shell)
 {
 	t_cmd	*cmd;
 	t_list	*delim_node;
@@ -71,7 +70,7 @@ t_bool	process_all_heredocs(t_cmd *cmd_list)
 			delim_node = cmd->heredoc_delims;
 			while (delim_node)
 			{
-				if (!setup_heredoc_content(cmd, (char *)delim_node->content))
+				if (!setup_heredoc_content(cmd, (char *)delim_node->content, shell))
 					return (FALSE);
 				delim_node = delim_node->next;
 			}
@@ -81,7 +80,7 @@ t_bool	process_all_heredocs(t_cmd *cmd_list)
 	return (TRUE);
 }
 
-char	*read_until_delimiter(char *delimiter)
+char	*read_until_delimiter(char *delimiter, t_shell *shell)
 {
 	char	*line;
 	char	*content;
@@ -95,6 +94,7 @@ char	*read_until_delimiter(char *delimiter)
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
+		line = expand(line, shell);
 		if (process_delimiter(line, delimiter, &content))
 			break ;
 		if (!append_to_content(&content, line))

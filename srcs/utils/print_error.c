@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 16:58:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/03 15:08:27 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 03:03:20 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	print_error(char *message, char *command, char *command2)
 		ft_putstr_fd(": ", STDERR_FILENO);
 	}
 	ft_putendl_fd(message, STDERR_FILENO);
+	return ;
 }
 
 void	error_exit(char *command)
