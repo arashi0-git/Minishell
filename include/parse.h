@@ -6,14 +6,13 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:59:33 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 20:20:57 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 21:46:32 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSE_H
 # define PARSE_H
 
-typedef struct s_token	t_token;
 # include "./minishell.h"
 # include "redirect.h"
 # include <errno.h>
@@ -26,6 +25,7 @@ typedef struct s_token	t_token;
 # include <tokenize.h>
 # include <unistd.h>
 
+typedef struct s_token	t_token;
 /*---parser struct---*/
 
 typedef struct s_cmd

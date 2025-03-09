@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:38:14 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 13:56:53 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 21:48:23 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_atoi(const char *nptr)
 		result = result * 10 + (*nptr - '0');
 		nptr++;
 	}
-	return (int)(result * sign);
+	return ((int)(result * sign));
 }
 
 // #include <limits.h>
