@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/10 01:43:27 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 06:20:15 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ void					execute_commands(t_shell *shell, t_cmd *cmd_list,
 							pid_t *last_pid);
 void					wait_last_command(t_shell *shell, t_cmd *cmd_list,
 							pid_t last_pid);
+void					free_cmd_list(t_cmd *cmd_list);
+void					free_cmd(t_cmd *cmd);
 
 /*---error func---*/
 void					print_error(char *message, char *command,

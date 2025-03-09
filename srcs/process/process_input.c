@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/10 04:54:02 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 06:19:58 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,29 +20,12 @@
 void	free_cmd_list(t_cmd *cmd_list)
 {
 	t_cmd	*tmp;
-	int		i;
 
-	i = 0;
 	while (cmd_list)
 	{
 		tmp = cmd_list;
 		cmd_list = cmd_list->next;
-		if (tmp->args)
-		{
-			i = 0;
-			while (i < tmp->argc)
-				free(tmp->args[i++]);
-			free(tmp->args);
-		}
-		if (tmp->command)
-			free(tmp->command);
-		if (tmp->infile)
-			free(tmp->infile);
-		if (tmp->outfile)
-			free(tmp->outfile);
-		if (tmp->heredoc_delims)
-			ft_lstclear(&tmp->heredoc_delims, free);
-		free(tmp);
+		free_cmd(tmp);
 	}
 }
 
