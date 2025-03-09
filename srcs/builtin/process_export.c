@@ -6,10 +6,11 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:18:21 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/09 20:35:54 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 21:43:57 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/builtin.h"
 #include "../../include/minishell.h"
 
 char	*get_env_value(t_env *env, const char *key)
@@ -67,7 +68,7 @@ static void	update_env_variable_append(t_env **env, char *key, char *value)
 	}
 }
 
-static void	update_env_variable(char *args, t_env **env)
+void	update_env_variable(char *args, t_env **env)
 {
 	char	*key;
 	char	*value;
@@ -89,6 +90,7 @@ int	exec_export(char **cmd_and_args, t_shell *shell)
 {
 	int	i;
 	int	ret;
+	int	res;
 
 	ret = 0;
 	if (!cmd_and_args[1])
@@ -96,20 +98,9 @@ int	exec_export(char **cmd_and_args, t_shell *shell)
 	i = 1;
 	while (cmd_and_args[i])
 	{
-		if (cmd_and_args[i][0] == '\0')
-		{
-			i++;
-			continue ;
-		}
-		if (!is_valid_identifier(cmd_and_args[i]))
-		{
-			printf("minishell: export: `%s': not a valid identifier\n",
-				cmd_and_args[i]);
-			shell->exit_status = 1;
+		res = process_export_argument(cmd_and_args[i], shell);
+		if (res != 0)
 			ret = 1;
-		}
-		else
-			update_env_variable(cmd_and_args[i], &shell->env);
 		i++;
 	}
 	return (ret);

@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 23:34:51 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 00:08:00 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 21:44:09 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,7 @@ int		exec_exit(char **args, t_shell *shell);
 int		exec_builtin(char **args, t_shell *shell);
 int		is_builtin(char **args);
 int		get_env_size(t_env *env);
+int		process_export_argument(char *arg, t_shell *shell);
+void	update_env_variable(char *args, t_env **env);
 
 #endif

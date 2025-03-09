@@ -6,10 +6,11 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:23:55 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/08 23:26:31 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 21:44:33 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/builtin.h"
 #include "../../include/minishell.h"
 
 static void	print_export_format(const char *env_str)
@@ -29,23 +30,6 @@ static void	print_export_format(const char *env_str)
 		ft_putstr_fd(env_str, STDOUT_FILENO);
 	ft_putstr_fd("\n", STDOUT_FILENO);
 }
-
-/*
-void	free_array(char **sorted_env)
-{
-	int	i;
-
-	i = 0;
-	if (!sorted_env)
-		return ;
-	while (sorted_env[i])
-	{
-		free(sorted_env[i]);
-		i++;
-	}
-	free(sorted_env);
-}
-*/
 
 int	print_sorted_env(t_env *env)
 {
@@ -78,4 +62,18 @@ int	get_env_size(t_env *env)
 		current = current->next;
 	}
 	return (size);
+}
+
+int	process_export_argument(char *arg, t_shell *shell)
+{
+	if (arg[0] == '\0')
+		return (0);
+	if (!is_valid_identifier(arg))
+	{
+		printf("minishell: export: `%s': not a valid identifier\n", arg);
+		shell->exit_status = 1;
+		return (1);
+	}
+	update_env_variable(arg, &shell->env);
+	return (0);
 }
