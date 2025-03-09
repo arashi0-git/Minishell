@@ -62,8 +62,6 @@ static int	handle_heredoc_redirection(t_cmd *cmd, t_token *target)
 	char		*delim_copy;
 	t_list		*new_node;
 
-	// if (copy_filename(&cmd->infile, target->value) < 0)
-	// 	return (-1);
 	delim_copy = ft_strdup(target->value);
 	if (!delim_copy)
 		return (-1);

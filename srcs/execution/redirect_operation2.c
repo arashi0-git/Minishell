@@ -11,28 +11,34 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <sys/wait.h>
+#include "../../include/parse.h"
+#include "../../include/redirect.h"
+#include <errno.h>
+#include <fcntl.h>
+#include <string.h>
 
-int	wait_for_command(pid_t pid)
+void	cleanup_redirects(t_cmd *command)
 {
-	int	status;
-	int	sig;
+	t_redirect	*redir;
 
-	if (pid <= 0)
-		return (0);
-	if (waitpid(pid, &status, 0) == -1)
+	redir = (t_redirect *)command->redirects;
+	while (redir && redir->next)
+		redir = redir->next;
+	while (redir)
 	{
-		perror("waitpid");
-		return (EXIT_FAILURE);
+		if (redir->fd_file >= 0)
+		{
+			if (close(redir->fd_file) < 0)
+				error_exit(NULL);
+		}
+		if (redir->fd_backup >= 0)
+		{
+			if (dup2(redir->fd_backup, redir->fd_io) < 0
+				|| close(redir->fd_backup) < 0)
+			{
+				error_exit(NULL);
+			}
+		}
+		redir = redir->prev;
 	}
-	if (WIFSIGNALED(status))
-	{
-		sig = WTERMSIG(status);
-		if (sig == SIGQUIT)
-			write(STDOUT_FILENO, "Quit (core dumped)\n", 20);
-		return (128 + sig);
-	}
-	else if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (EXIT_FAILURE);
 }

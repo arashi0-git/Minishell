@@ -11,28 +11,30 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <sys/wait.h>
+#include "../../include/parse.h"
+#include "../../include/redirect.h"
+#include <errno.h>
+#include <fcntl.h>
+#include <string.h>
 
-int	wait_for_command(pid_t pid)
+int	process_delimiter(char *line, char *delimiter, char **content)
 {
-	int	status;
-	int	sig;
+	char	*tmp;
 
-	if (pid <= 0)
-		return (0);
-	if (waitpid(pid, &status, 0) == -1)
+	tmp = ft_strjoin(delimiter, "\n");
+	if (!tmp)
 	{
-		perror("waitpid");
-		return (EXIT_FAILURE);
+		free(line);
+		free(*content);
+		*content = NULL;
+		return (1);
 	}
-	if (WIFSIGNALED(status))
+	if (ft_strcmp(line, tmp) == 0)
 	{
-		sig = WTERMSIG(status);
-		if (sig == SIGQUIT)
-			write(STDOUT_FILENO, "Quit (core dumped)\n", 20);
-		return (128 + sig);
+		free(line);
+		free(tmp);
+		return (1);
 	}
-	else if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (EXIT_FAILURE);
+	free(tmp);
+	return (0);
 }

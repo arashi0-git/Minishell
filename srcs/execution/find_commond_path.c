@@ -12,14 +12,6 @@
 
 #include "../../include/minishell.h"
 
-/*
-create_path: 2つのパス文字列（ディレクトリとコマンド）を結合する関数
-
-	例：dir="/usr/bin" + cmd="ls" → "/usr/bin/ls"
-	メモリを動的に確保し、新しいパス文字列を作成
-	スラッシュ(/)を自動的に間に挿入
-*/
-
 static char	*create_path(const char *dir, const char *cmd)
 {
 	char	*path;
@@ -43,14 +35,6 @@ static char	*create_path(const char *dir, const char *cmd)
 	return (path);
 }
 
-/*
-get_env_path...環境変数からPATH情報を取得する関数
-
-envp配列から "PATH=" で始まる文字列を探す
-見つかったらPATH=以降の文字列のポインタを返す
-例：PATH=/usr/bin:/bin:/usr/local/bin
-*/
-
 static char	*get_env_path(char **envp)
 {
 	while (*envp)
@@ -61,15 +45,6 @@ static char	*get_env_path(char **envp)
 	}
 	return (NULL);
 }
-
-/*
-check_dir_path...特定のディレクトリ内でコマンドが実行可能かチェックする関数
-
-パスの区切り文字(:)を一時的にNULL文字に置き換えて処理
-create_pathで完全なパスを作成
-accessでそのパスが実行可能かチェック
-実行可能なら、そのパスを返す。不可能ならNULLを返す
-*/
 
 static char	*check_dir_path(char *dir_start, const char *cmd)
 {
@@ -92,20 +67,6 @@ static char	*check_dir_path(char *dir_start, const char *cmd)
 	return (NULL);
 }
 
-/*
- find_commmond_path...以下の順序で実行可能なパスを探索：
-
-コマンドが絶対パス(/で始まる)か相対パス(./で始まる)の場合
-
-そのパスが実行可能かを直接チェック
-
-
-それ以外の場合（コマンド名のみの場合）
-
-環境変数PATHから検索パスを取得
-各ディレクトリでコマンドを探索
-最初に見つかった実行可能なパスを返す
-*/
 char	*find_command_path(const char *cmd, char **envp)
 {
 	char	*path;
@@ -122,7 +83,8 @@ char	*find_command_path(const char *cmd, char **envp)
 	dir_start = path;
 	while (*dir_start)
 	{
-		if ((temp_path = check_dir_path(dir_start, cmd)))
+		temp_path = check_dir_path(dir_start, cmd);
+		if (temp_path)
 			return (temp_path);
 		j = 0;
 		while (dir_start[j] && dir_start[j] != ':')
