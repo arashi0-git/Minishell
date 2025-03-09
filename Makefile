@@ -41,6 +41,7 @@ SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/execution/execute_command.c \
 		$(SRCDIR)/execution/execute_binary.c \
 		$(SRCDIR)/execution/execute_pipe.c \
+		$(SRCDIR)/execution/heredoc.c \
 		$(SRCDIR)/execution/find_commond_path.c \
 		$(SRCDIR)/execution/redirect.c \
 		$(SRCDIR)/execution/wait_for_commond.c\

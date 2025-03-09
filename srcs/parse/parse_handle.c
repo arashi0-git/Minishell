@@ -59,9 +59,22 @@ int	handle_output_redirection(t_cmd *cmd, t_token *target,
 static int	handle_heredoc_redirection(t_cmd *cmd, t_token *target)
 {
 	t_redirect	*redir;
+	char		*delim_copy;
+	t_list		*new_node;
 
 	if (copy_filename(&cmd->infile, target->value) < 0)
 		return (-1);
+	delim_copy = ft_strdup(target->value);
+	if (!delim_copy)
+		return (-1);
+
+	new_node = ft_lstnew(delim_copy);
+	if (!new_node)
+	{
+		free(delim_copy);
+		return (-1);
+	}
+	ft_lstadd_back(&cmd->heredoc_delims, new_node);
 	redir = create_redirect(REDIRECT_HEREDOC, target, STDIN_FILENO);
 	if (!redir)
 		return (-1);
@@ -106,6 +119,7 @@ int	handle_redirection(t_cmd *cmd, t_token **curr_ptr, t_shell *shell)
 		ret = handle_heredoc_redirection(cmd, target_copy);
 		if (ret != 0)
 			free_token_list(target_copy);
+
 		return (ret);
 	}
 	ret = process_io_redirection(cmd, redir, target_copy);
