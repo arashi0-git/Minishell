@@ -6,7 +6,11 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:05:35 by aryamamo          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/03/09 11:24:57 by aryamamo         ###   ########.fr       */
+=======
+/*   Updated: 2025/03/09 15:57:33 by aryamamo         ###   ########.fr       */
+>>>>>>> 6ce31a0 (add)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +43,13 @@ typedef struct s_expand
 
 /*---expand func---*/
 void					expand_cmd(t_cmd *cmd, t_shell *shell);
+<<<<<<< HEAD
 int						process_dollar_others(const char *str, size_t *i,
 							size_t *len);
+=======
+int						process_dollar_others(const char *str, t_shell *shell,
+							size_t *i, size_t *len);
+>>>>>>> 6ce31a0 (add)
 int						process_dollar_question(t_shell *shell, size_t *i,
 							size_t *len);
 int						process_quote_expand(const char *str, t_shell *shell,
