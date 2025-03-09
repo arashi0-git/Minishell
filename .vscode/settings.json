@@ -3,6 +3,7 @@
     "execution.h": "c",
     "minishell.h": "c",
     "types.h": "c",
-    "stat.h": "c"
+    "stat.h": "c",
+    "parse.h": "c"
   }
 }
