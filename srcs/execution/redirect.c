@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/10 03:30:50 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 04:19:44 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,7 @@ static int	open_file(t_redirect *redir)
 {
 	char	*filename;
 
+	printf("redir->type: %d\n", redir->type);
 	if (redir->type == REDIRECT_HEREDOC)
 		return (handle_heredoc(redir));
 	filename = redir->filename->value;
@@ -215,6 +216,7 @@ t_bool	check_redirect(t_redirect *redir)
 		return (TRUE);
 	if ((redir->fd_file = open_file(redir)) < 0)
 	{
+		printf("redir->filename->value: %s\n", redir->filename->value);
 		print_error(strerror(errno), NULL, redir->filename->value);
 		// Changed from data to value
 		return (FALSE);
@@ -352,8 +354,8 @@ static t_bool	apply_redirects(t_redirect *redir)
 			print_bad_fd_error(redir->fd_io);
 			return (FALSE);
 		}
-		if (redir->fd_file > 2)
-			close(redir->fd_file);
+		// if (redir->fd_file > 2)
+		// 	close(redir->fd_file);
 		redir = redir->next;
 	}
 	return (TRUE);
