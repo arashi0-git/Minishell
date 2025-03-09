@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:06:24 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 11:25:30 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 14:24:44 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,14 @@ int	expand_length(const char *str, t_shell *shell)
 
 	i = 0;
 	len = 0;
-	if (!str || str[0] == '\0')
+	if (!str || (uintptr_t)str < 0x1000)
+	{
 		return (0);
+	}
+	if (str[0] == '\0')
+	{
+		return (0);
+	}
 	while (str[i] != '\0')
 	{
 		if (process_character(str, shell, &i, &len) < 0)
@@ -54,7 +60,7 @@ char	*perform_expansion(const char *str, t_shell *shell, size_t total_len)
 	char		*result;
 
 	exp = init_expand(total_len);
-	if (!exp)
+	if (!exp || !str)
 		return (NULL);
 	while (str[exp->i] != '\0')
 	{
@@ -87,11 +93,41 @@ char	*expand(const char *str, t_shell *shell)
 	return (perform_expansion(str, shell, total_len));
 }
 
+void	expand_redirects(t_cmd *cmd, t_shell *shell)
+{
+	char	*expanded;
+
+	// infileの展開（ヒアドキュメントでない場合のみ）
+	if (cmd->infile && !cmd->heredoc_flag)
+	{
+		expanded = expand(cmd->infile, shell);
+		if (expanded)
+		{
+			free(cmd->infile);
+			cmd->infile = expanded;
+		}
+	}
+	// outfileの展開
+	if (cmd->outfile)
+	{
+		expanded = expand(cmd->outfile, shell);
+		if (expanded)
+		{
+			free(cmd->outfile);
+			cmd->outfile = expanded;
+		}
+	}
+}
+
 void	expand_cmd(t_cmd *cmd, t_shell *shell)
 {
 	int		i;
 	char	*expanded;
 
+	if (!cmd->command)
+	{
+		return ;
+	}
 	if (cmd->command)
 	{
 		expanded = expand(cmd->command, shell);

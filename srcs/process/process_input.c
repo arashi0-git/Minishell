@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 17:31:40 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 23:28:40 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "../../include/minishell.h"
 #include "../../include/parse.h"
 #include <sys/wait.h>
+
 
 // void	print_cmd_list(t_cmd *cmd_list)
 // {
@@ -128,6 +129,7 @@ void	process_input(t_shell *shell, char *input)
 	while (cmd != NULL)
 	{
 		expand_cmd(cmd, shell);
+		expand_redirects(cmd, shell);
 		cmd = cmd->next;
 	}
 	process_output(shell, cmd_list);

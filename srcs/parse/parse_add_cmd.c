@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:51:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 23:38:05 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 17:12:10 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static t_cmd	*allocate_cmd(void)
 		free(cmd);
 		return (NULL);
 	}
+  for (int i = 0; i < cmd->max_args; i++)
+		cmd->args[i] = NULL;
 	return (cmd);
 }
 

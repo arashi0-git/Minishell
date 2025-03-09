@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:05:35 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 17:32:08 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/08 23:27:52 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct s_expand
 
 /*---expand func---*/
 void					expand_cmd(t_cmd *cmd, t_shell *shell);
+void					expand_redirects(t_cmd *cmd, t_shell *shell);
+
 int						process_dollar_others(const char *str, t_shell *shell,
 							size_t *i, size_t *len);
 int						process_dollar_question(t_shell *shell, size_t *i,
