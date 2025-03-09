@@ -34,7 +34,7 @@ static int	copy_variable(const char *value, t_expand *exp)
 
 	if (!value)
 		value = "";
-	v_len = strlen(value);
+	v_len = ft_strlen(value);
 	ft_memcpy(&exp->out[exp->out_index], value, v_len);
 	exp->out_index += v_len;
 	return (0);
