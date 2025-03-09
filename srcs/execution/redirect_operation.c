@@ -46,8 +46,10 @@ static t_bool	apply_redirects(t_redirect *redir)
 		}
 		if (dup2(redir->fd_file, redir->fd_io) < 0)
 		{
+			close(redir->fd_file);
 			return (FALSE);
 		}
+		close(redir->fd_file);
 		redir = redir->next;
 	}
 	return (TRUE);

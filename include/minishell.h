@@ -113,5 +113,6 @@ void					free_cmd_list(t_cmd *cmd_list);
 
 /*---utils---*/
 void					minishell_pipe(t_shell *shell);
-
+void					cleanup_all_fds(t_cmd *cmd_list);
+void					cleanup_cmd_fds(t_cmd *cmd);
 #endif

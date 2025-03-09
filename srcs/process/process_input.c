@@ -92,5 +92,6 @@ void	process_input(t_shell *shell, char *input)
 		return ;
 	}
 	process_output(shell, cmd_list);
+	cleanup_all_fds(cmd_list);
 	free_cmd_list(cmd_list);
 }

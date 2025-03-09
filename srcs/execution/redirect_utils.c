@@ -17,8 +17,6 @@
 #include <fcntl.h>
 #include <string.h>
 
-// 入力リダイレクト用のトークンとリダイレクト構造体を作成
-
 int	append_to_content(char **content, char *line)
 {
 	char	*tmp;
@@ -32,7 +30,6 @@ int	append_to_content(char **content, char *line)
 	return (1);
 }
 
-// リダイレクト構造体の解放
 void	free_redirect(t_redirect *redir)
 {
 	t_redirect	*next;
