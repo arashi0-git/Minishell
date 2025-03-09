@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/10 05:17:32 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 08:09:12 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,8 @@ static t_bool	apply_redirects(t_redirect *redir)
 		}
 		if (dup2(redir->fd_file, redir->fd_io) < 0)
 		{
-			close(redir->fd_file);
 			return (FALSE);
 		}
-		close(redir->fd_file);
 		redir = redir->next;
 	}
 	return (TRUE);
