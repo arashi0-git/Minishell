@@ -6,13 +6,14 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/09 15:44:06 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/09 23:59:37 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/parse.h"
 #include "../../include/redirect.h"
+#include "expand.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
@@ -77,7 +78,7 @@ static t_redirect	*create_out_redirect(t_cmd *command)
 }
 
 // ヒアドキュメントの入力を読み込む関数
-char	*read_until_delimiter(char *delimiter)
+char	*read_until_delimiter(char *delimiter, t_shell *shell)
 {
 	char	*line;
 	char	*content;
@@ -92,6 +93,7 @@ char	*read_until_delimiter(char *delimiter)
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
+		line = expand(line, shell);
 		if (process_delimiter(line, delimiter, &content))
 			break ;
 		if (!append_to_content(&content, line))

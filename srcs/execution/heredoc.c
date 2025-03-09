@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-t_bool	process_all_heredocs(t_cmd *cmd_list)
+t_bool	process_all_heredocs(t_cmd *cmd_list, t_shell *shell)
 {
 	t_cmd	*cmd;
 	t_list	*delim_node;
@@ -18,7 +18,8 @@ t_bool	process_all_heredocs(t_cmd *cmd_list)
 			delim_node = cmd->heredoc_delims;
 			while (delim_node)
 			{
-				if (!setup_heredoc_content(cmd, (char *)delim_node->content))
+				if (!setup_heredoc_content(cmd, (char *)delim_node->content,
+						shell))
 					return (FALSE);
 				delim_node = delim_node->next;
 			}
@@ -44,7 +45,7 @@ static t_bool	setup_heredoc_token(t_token **token, char *delimiter)
 	return (TRUE);
 }
 
-t_bool	setup_heredoc_content(t_cmd *cmd, char *delimiter)
+t_bool	setup_heredoc_content(t_cmd *cmd, char *delimiter, t_shell *shell)
 {
 	t_redirect	*redir;
 	t_token		*token;
@@ -57,7 +58,7 @@ t_bool	setup_heredoc_content(t_cmd *cmd, char *delimiter)
 		free_token_list(token);
 		return (FALSE);
 	}
-	redir->here_doc_content = read_until_delimiter(delimiter);
+	redir->here_doc_content = read_until_delimiter(delimiter, shell);
 	if (!redir->here_doc_content)
 	{
 		free_redirect(redir);

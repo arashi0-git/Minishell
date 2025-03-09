@@ -6,11 +6,12 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:06:24 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 21:25:18 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 23:57:54 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
+#include "redirect.h"
 
 t_expand	*init_expand(size_t total_len)
 {
