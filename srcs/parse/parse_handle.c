@@ -67,7 +67,6 @@ static int	handle_heredoc_redirection(t_cmd *cmd, t_token *target)
 	delim_copy = ft_strdup(target->value);
 	if (!delim_copy)
 		return (-1);
-
 	new_node = ft_lstnew(delim_copy);
 	if (!new_node)
 	{
@@ -119,7 +118,6 @@ int	handle_redirection(t_cmd *cmd, t_token **curr_ptr, t_shell *shell)
 		ret = handle_heredoc_redirection(cmd, target_copy);
 		if (ret != 0)
 			free_token_list(target_copy);
-
 		return (ret);
 	}
 	ret = process_io_redirection(cmd, redir, target_copy);

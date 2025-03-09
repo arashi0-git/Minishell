@@ -137,15 +137,12 @@ int	append_to_content(char **content, char *line)
 	return (1);
 }
 
-
-
-
 // ヒアドキュメント処理関数
 /*
 int	handle_heredoc(t_redirect *redir)
 {
-	int	pipe_fd[2];
-	char *content;
+	int		pipe_fd[2];
+	char	*content;
 
 	if (pipe(pipe_fd) == -1)
 	{
@@ -165,23 +162,22 @@ int	handle_heredoc(t_redirect *redir)
 }
 */
 
-int handle_heredoc(t_redirect *redir)
+int	handle_heredoc(t_redirect *redir)
 {
-    int pipe_fd[2];
+	int	pipe_fd[2];
 
-    if (pipe(pipe_fd) == -1)
-    {
-        print_error(strerror(errno), NULL, "heredoc");
-        return (-1);
-    }
-    if (redir->here_doc_content)
-    {
-        ft_putstr_fd(redir->here_doc_content, pipe_fd[1]);
-    }
-    close(pipe_fd[1]);
-    return (pipe_fd[0]);
+	if (pipe(pipe_fd) == -1)
+	{
+		print_error(strerror(errno), NULL, "heredoc");
+		return (-1);
+	}
+	if (redir->here_doc_content)
+	{
+		ft_putstr_fd(redir->here_doc_content, pipe_fd[1]);
+	}
+	close(pipe_fd[1]);
+	return (pipe_fd[0]);
 }
-
 
 // パイプのクローズ処理を分離
 void	close_pipe_fds(int pipe_fd[2])
@@ -325,7 +321,6 @@ t_bool	dup_redirects(t_cmd *command, t_bool is_parent)
 	return (TRUE);
 }
 */
-
 
 static t_bool	backup_redirects(t_redirect *redir)
 {

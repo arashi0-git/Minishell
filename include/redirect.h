@@ -47,6 +47,6 @@ int						append_to_content(char **content, char *line);
 int						handle_heredoc(t_redirect *redir);
 void					close_pipe_fds(int pipe_fd[2]);
 t_bool					check_redirect(t_redirect *redir);
-t_bool 					process_all_heredocs(t_cmd *cmd_list);
-t_bool setup_heredoc_content(t_cmd *cmd, char *delimiter);
+t_bool					process_all_heredocs(t_cmd *cmd_list);
+t_bool					setup_heredoc_content(t_cmd *cmd, char *delimiter);
 #endif
