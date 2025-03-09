@@ -6,22 +6,26 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 20:18:05 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 20:21:42 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 08:05:43 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "redirect.h"
 
-int	copy_filename(char **dest, const char *src)
+int	copy_filename(char **dest, const char *value)
 {
-	*dest = malloc(ft_strlen(src) + 1);
+	if (*dest)
+	{
+		free(*dest);
+		*dest = NULL;
+	}
+	*dest = ft_strdup(value);
 	if (!*dest)
 	{
-		printf("malloc filename failed\n");
+		printf("malloc dest failed\n");
 		return (-1);
 	}
-	ft_strcpy(*dest, src);
 	return (0);
 }
 
