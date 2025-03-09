@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:49:25 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 23:56:37 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 14:23:49 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ static int	handle_input_redirection(t_cmd *cmd, t_token *target)
 	{
 		if (redir)
 			free_redirect(redir);
+		else
+			free_token_list(target);
 		return (-1);
 	}
 	add_redirect_to_list(cmd, redir);
@@ -62,6 +64,8 @@ static int	handle_output_redirection(t_cmd *cmd, t_token *target,
 	{
 		if (redir)
 			free_redirect(redir);
+		else
+			free_token_list(target);
 		return (-1);
 	}
 	add_redirect_to_list(cmd, redir);
@@ -112,7 +116,7 @@ int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
 		ret = handle_input_redirection(cmd, target_copy);
 	else
 		ret = handle_output_redirection(cmd, target_copy, redir->redirtype);
-	if (ret != 0)
-		free_token_list(target_copy);
+	// if (ret != 0)
+	// 	free_token_list(target_copy);
 	return (ret);
 }
