@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/10 06:21:36 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 07:41:04 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,9 @@ char	*read_until_delimiter(char *delimiter, t_shell *shell)
 		}
 		if (!append_to_content(&content, line))
 		{
-			free(line);
 			free(content);
 			return (NULL);
 		}
-		free(line);
 	}
 	return (content);
 }
