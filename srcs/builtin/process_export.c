@@ -6,7 +6,11 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:18:21 by retoriya          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/03/08 23:25:22 by aryamamo         ###   ########.fr       */
+=======
+/*   Updated: 2025/03/09 15:26:52 by aryamamo         ###   ########.fr       */
+>>>>>>> 6ce31a0 (add)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +104,10 @@ int	exec_export(char **cmd_and_args, t_shell *shell)
 		{
 			printf("minishell: export: `%s': not a valid identifier\n",
 				cmd_and_args[i]);
+<<<<<<< HEAD
+=======
+			shell->exit_status = 1;
+>>>>>>> 6ce31a0 (add)
 			ret = 1;
 		}
 		else
