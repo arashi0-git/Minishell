@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strndup.c                                       :+:      :+:    :+:   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: retoriya <retoriya@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/01 11:19:33 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 18:05:59 by retoriya         ###   ########.fr       */
+/*   Created: 2024/04/18 11:06:31 by retoriya          #+#    #+#             */
+/*   Updated: 2025/03/09 18:56:27 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strndup(const char *str, size_t n)
+t_list	*ft_lstlast(t_list *lst)
 {
-	size_t	i;
-	char	*copy;
-
-	i = 0;
-	if (str == NULL)
+	if (lst == NULL)
 		return (NULL);
-	copy = (char *)malloc((n + 1) * sizeof(char));
-	if (copy == NULL)
-		return (NULL);
-	while (i < n)
+	while (lst->next != NULL)
 	{
-		copy[i] = str[i];
-		i++;
+		lst = lst->next;
 	}
-	copy[i] = '\0';
-	return (copy);
+	return (lst);
 }
+

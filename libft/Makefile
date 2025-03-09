@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/06 17:15:23 by aryamamo          #+#    #+#              #
-#    Updated: 2025/03/07 04:27:09 by retoriya         ###   ########.fr        #
+#    Updated: 2025/03/09 18:59:04 by retoriya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,10 @@ SRC = ft_strlen.c \
 	ft_isspace.c \
 	ft_strcpy.c \
 	ft_strcmp.c \
+	ft_lstnew.c \
+	ft_lstadd_back.c \
+	ft_lstlast.c \
+	ft_lstclear.c \
 	ft_get_next_line.c\
 	ft_get_next_line_utils.c
 	

@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:59:33 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 23:02:10 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/09 18:53:46 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_cmd
 	char				*infile;
 	char				*outfile;
 	int					heredoc_flag;
+	t_list*				heredoc_delims;
 	int					append;
 	struct s_cmd		*next;
 	struct s_cmd		*prev;

@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strndup.c                                       :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/01 11:19:33 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 18:05:59 by retoriya         ###   ########.fr       */
+/*   Created: 2025/03/09 19:01:53 by retoriya          #+#    #+#             */
+/*   Updated: 2025/03/09 19:01:56 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strndup(const char *str, size_t n)
+t_list	*ft_lstnew(void *content)
 {
-	size_t	i;
-	char	*copy;
+	t_list	*new_node;
 
-	i = 0;
-	if (str == NULL)
+	new_node = malloc(sizeof(t_list));
+	if (new_node == NULL)
 		return (NULL);
-	copy = (char *)malloc((n + 1) * sizeof(char));
-	if (copy == NULL)
-		return (NULL);
-	while (i < n)
-	{
-		copy[i] = str[i];
-		i++;
-	}
-	copy[i] = '\0';
-	return (copy);
+	new_node->content = content;
+	new_node->next = NULL;
+	return (new_node);
 }
+
