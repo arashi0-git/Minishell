@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:05:32 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 23:24:05 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 13:57:36 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	exec_builtin(char **args, t_shell *shell)
 {
 	if (ft_strcmp(args[0], "exit") == 0)
-		return (exec_exit(args));
+		return (exec_exit(args, shell));
 	if (ft_strcmp(args[0], "cd") == 0)
 		return (exec_cd(args, shell));
 	if (ft_strcmp(args[0], "echo") == 0)

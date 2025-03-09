@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:38:14 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/01/12 15:01:02 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 13:56:53 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,16 @@ static int	ft_skip_and_sign(const char **nptr)
 	int	sign;
 
 	sign = 1;
-	while (**nptr == 32 || (**nptr >= 9 && **nptr <= 13))
+	while (**nptr == ' ' || (**nptr >= 9 && **nptr <= 13))
 		(*nptr)++;
-	if (**nptr == '-')
+	if (**nptr == '-' || **nptr == '+')
 	{
-		sign = -1;
+		if (**nptr == '-')
+			sign = -1;
 		(*nptr)++;
+		if (**nptr == '-' || **nptr == '+')
+			return (0);
 	}
-	else if (**nptr == '+')
-		(*nptr)++;
 	return (sign);
 }
 
@@ -37,18 +38,16 @@ int	ft_atoi(const char *nptr)
 
 	result = 0;
 	sign = ft_skip_and_sign(&nptr);
+	if (sign == 0)
+		return (0);
 	while (*nptr >= '0' && *nptr <= '9')
 	{
 		if (result > (LONG_MAX - (*nptr - '0')) / 10)
-		{
-			if (sign == 1)
-				return ((int)LONG_MAX);
-			return ((int)LONG_MIN);
-		}
+			return (0);
 		result = result * 10 + (*nptr - '0');
 		nptr++;
 	}
-	return (result * sign);
+	return (int)(result * sign);
 }
 
 // #include <limits.h>
@@ -63,7 +62,7 @@ int	ft_atoi(const char *nptr)
 
 // 	const char *test_cases[] = {"0",
 // 								"42",
-// 								"-42",
+// 								"--42",
 // 								"2147483647",            // INT_MAX
 // 								"-2147483648",           // INT_MIN
 // 								"9223372036854775808",   // LONG_MAX
