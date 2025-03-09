@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_commond_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:58:24 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/28 18:04:41 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/09 00:11:14 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,17 @@ static char	*check_dir_path(char *dir_start, const char *cmd)
 {
 	char	*temp_path;
 	int		j;
+	char	orig;
 
 	j = 0;
 	while (dir_start[j] && dir_start[j] != ':')
 		j++;
-	if (dir_start[j])
+	orig = dir_start[j];
+	if (orig == ':')
 		dir_start[j] = '\0';
 	temp_path = create_path(dir_start, cmd);
-	dir_start[j] = ':';
+	if (orig == ':')
+		dir_start[j] = orig;
 	if (temp_path && access(temp_path, X_OK) == 0)
 		return (temp_path);
 	free(temp_path);

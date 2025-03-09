@@ -12,7 +12,7 @@
 
 #include "parse.h"
 
-t_cmd	*new_cmd(void)
+static t_cmd	*allocate_cmd(void)
 {
 	t_cmd	*cmd;
 
@@ -22,7 +22,6 @@ t_cmd	*new_cmd(void)
 		printf("malloc cmd failed\n");
 		return (NULL);
 	}
-	cmd->command = NULL;
 	cmd->max_args = 4;
 	cmd->args = malloc(sizeof(char *) * cmd->max_args);
 	if (!cmd->args)
@@ -31,17 +30,27 @@ t_cmd	*new_cmd(void)
 		free(cmd);
 		return (NULL);
 	}
-    for (int i = 0; i < cmd->max_args; i++)
+  for (int i = 0; i < cmd->max_args; i++)
 		cmd->args[i] = NULL;
+	return (cmd);
+}
+
+t_cmd	*new_cmd(void)
+{
+	t_cmd	*cmd;
+
+	cmd = allocate_cmd();
+	if (!cmd)
+		return (NULL);
+	cmd->command = NULL;
 	cmd->argc = 0;
 	cmd->outfile = NULL;
 	cmd->infile = NULL;
 	cmd->append = 0;
-	cmd->next = NULL;
-	cmd->prev = NULL;
-	cmd->heredoc_flag = 0;
 	cmd->redirects = NULL;
 	cmd->pid = 0;
+	cmd->next = NULL;
+	cmd->prev = NULL;
 	return (cmd);
 }
 

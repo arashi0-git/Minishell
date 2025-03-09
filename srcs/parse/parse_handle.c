@@ -14,127 +14,6 @@
 #include "redirect.h"
 
 extern t_shell	*g_shell;
-/*
-static int	handle_input_redirection(t_cmd *cmd, t_token *target)
-{
-	cmd->infile = malloc(ft_strlen(target->value) + 1);
-	if (!cmd->infile)
-	{
-		printf("malloc infile failed\n");
-		return (-1);
-	}
-	ft_strcpy(cmd->infile, target->value);
-	return (0);
-}
-
-static int	handle_output_redirection(t_cmd *cmd, t_token *target,
-		t_redirecttype redirtype)
-{
-	cmd->outfile = malloc(ft_strlen(target->value) + 1);
-	if (cmd->outfile == NULL)
-	{
-		printf("malloc outfile failed\n");
-		return (-1);
-	}
-	ft_strcpy(cmd->outfile, target->value);
-	if (redirtype == REDIRECT_APPEND)
-		cmd->append = 1;
-	else
-		cmd->append = 0;
-	return (0);
-}
-
-*/
-
-/*
-static int	handle_input_redirection(t_cmd *cmd, t_token *target)
-{
-	t_redirect	*redir;
-
-	// 既存のコードは残しておく（互換性のため）
-	cmd->infile = malloc(ft_strlen(target->value) + 1);
-	if (!cmd->infile)
-	{
-		printf("malloc infile failed\n");
-		return (-1);
-	}
-	ft_strcpy(cmd->infile, target->value);
-	// 新しいリダイレクト構造体を作成
-	redir = create_redirect(REDIRECT_IN, target, STDIN_FILENO);
-	if (!redir)
-		return (-1);
-	if (!check_redirect(redir))
-	{
-		free_redirect(redir);
-		return (-1);
-	}
-	// コマンドの redirects リンクリストに追加
-	redir->next = (t_redirect *)cmd->redirects;
-	cmd->redirects = redir;
-	return (0);
-}
-
-static int	handle_output_redirection(t_cmd *cmd, t_token *target,
-		t_redirecttype redirtype)
-{
-	t_redirect	*redir;
-
-	// 既存のコードは残しておく（互換性のため）
-	cmd->outfile = malloc(ft_strlen(target->value) + 1);
-	if (cmd->outfile == NULL)
-	{
-		printf("malloc outfile failed\n");
-		return (-1);
-	}
-	ft_strcpy(cmd->outfile, target->value);
-	if (redirtype == REDIRECT_APPEND)
-		cmd->append = 1;
-	else
-		cmd->append = 0;
-	// 新しいリダイレクト構造体を作成
-	redir = create_redirect(redirtype, target, STDOUT_FILENO);
-	if (!redir)
-		return (-1);
-	if (!check_redirect(redir))
-	{
-		free_redirect(redir);
-		return (-1);
-	}
-	// コマンドの redirects リンクリストに追加
-	redir->next = (t_redirect *)cmd->redirects;
-	cmd->redirects = redir;
-	return (0);
-}
-
-int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
-{
-	int		ret;
-	t_token	*redir;
-
-	redir = *curr_ptr;
-	*curr_ptr = (*curr_ptr)->next;
-	if (*curr_ptr == NULL || (*curr_ptr)->type != TOKEN_COMMAND)
-	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
-		g_shell->exit_status = 2;
-		return (-1);
-	}
-	if (redir->redirtype == REDIRECT_IN || redir->redirtype == REDIRECT_HEREDOC)
-	{
-		ret = handle_input_redirection(cmd, *curr_ptr);
-		if (ret != 0)
-			return (ret);
-	}
-	else if (redir->redirtype == REDIRECT_OUT
-		|| redir->redirtype == REDIRECT_APPEND)
-	{
-		ret = handle_output_redirection(cmd, *curr_ptr, redir->redirtype);
-		if (ret != 0)
-			return (ret);
-	}
-	return (0);
-}
-*/
 
 static int	copy_filename(char **dest, const char *src)
 {
@@ -147,26 +26,6 @@ static int	copy_filename(char **dest, const char *src)
 	ft_strcpy(*dest, src);
 	return (0);
 }
-
-// リダイレクトをリストの末尾に追加する関数
-void	add_redirect_to_list(t_cmd *cmd, t_redirect *new_redir)
-{
-	t_redirect	*current;
-
-	if (cmd->redirects == NULL)
-	{
-		cmd->redirects = new_redir;
-		return ;
-	}
-	current = (t_redirect *)cmd->redirects;
-	while (current->next)
-	{
-		current = current->next;
-	}
-	current->next = new_redir;
-	new_redir->prev = current;
-}
-
 // 入力リダイレクション処理
 static int	handle_input_redirection(t_cmd *cmd, t_token *target)
 {
@@ -179,6 +38,8 @@ static int	handle_input_redirection(t_cmd *cmd, t_token *target)
 	{
 		if (redir)
 			free_redirect(redir);
+		else
+			free_token_list(target);
 		return (-1);
 	}
 	add_redirect_to_list(cmd, redir);
@@ -193,12 +54,17 @@ static int	handle_output_redirection(t_cmd *cmd, t_token *target,
 
 	if (copy_filename(&cmd->outfile, target->value) < 0)
 		return (-1);
-	cmd->append = (redirtype == REDIRECT_APPEND) ? 1 : 0;
+	if (redirtype == REDIRECT_APPEND)
+		cmd->append = 1;
+	else
+		cmd->append = 0;
 	redir = create_redirect(redirtype, target, STDOUT_FILENO);
 	if (!redir || !check_redirect(redir))
 	{
 		if (redir)
 			free_redirect(redir);
+		else
+			free_token_list(target);
 		return (-1);
 	}
 	add_redirect_to_list(cmd, redir);
@@ -277,7 +143,5 @@ int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
 		ret = handle_input_redirection(cmd, target_copy);
 	else
 		ret = handle_output_redirection(cmd, target_copy, redir->redirtype);
-	if (ret != 0)
-		free_token_list(target_copy);
 	return (ret);
 }

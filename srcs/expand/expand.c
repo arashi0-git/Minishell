@@ -27,6 +27,7 @@ t_expand	*init_expand(size_t total_len)
 	}
 	exp->i = 0;
 	exp->out_index = 0;
+	exp->max = total_len;
 	return (exp);
 }
 
@@ -47,21 +48,8 @@ int	expand_length(const char *str, t_shell *shell)
 	}
 	while (str[i] != '\0')
 	{
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			if (process_quote_expand(str, shell, &i, &len) < 0)
-				return (-1);
-		}
-		else if (str[i] == '$')
-		{
-			if (process_dollar_length(str, shell, &i, &len) < 0)
-				return (-1);
-		}
-		else
-		{
-			len++;
-			i++;
-		}
+		if (process_character(str, shell, &i, &len) < 0)
+			return (-1);
 	}
 	return (len);
 }
@@ -83,7 +71,10 @@ char	*perform_expansion(const char *str, t_shell *shell, size_t total_len)
 			return (NULL);
 		}
 	}
-	exp->out[exp->out_index] = '\0';
+	if (exp->out_index < exp->max + 1)
+		exp->out[exp->out_index] = '\0';
+	else
+		exp->out[exp->max] = '\0';
 	result = exp->out;
 	free(exp);
 	return (result);

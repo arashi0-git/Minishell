@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_export_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:23:55 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/28 16:07:02 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/08 23:26:31 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,19 @@ int	print_sorted_env(t_env *env)
 	}
 	free_array(sorted_env);
 	return (0);
+}
+
+int	get_env_size(t_env *env)
+{
+	int		size;
+	t_env	*current;
+
+	size = 0;
+	current = env;
+	while (current)
+	{
+		size++;
+		current = current->next;
+	}
+	return (size);
 }

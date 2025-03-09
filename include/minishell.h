@@ -6,23 +6,14 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/04 20:09:47 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/08 23:35:46 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define _POSIX_C_SOURCE 200809L
 
-/*---module---*/
-typedef struct s_cmd	t_cmd;
-typedef struct s_token	t_token;
-
-/*
-# include "builtin.h"
-# include "expand.h"
-# include "parse.h"
-# include "tokenize.h"
-*/
 /*---library---*/
 # include <errno.h>
 # include <libft.h>
@@ -37,6 +28,9 @@ typedef struct s_token	t_token;
 # include <sys/stat.h>
 # include <unistd.h>
 
+/*---module---*/
+typedef struct s_cmd	t_cmd;
+typedef struct s_token	t_token;
 # define PATH_MAX 4096
 
 typedef struct stat		t_stat;
@@ -89,6 +83,7 @@ void					free_env(t_env *env);
 char					*get_env(t_env *env, const char *name);
 int						set_env(t_env **env, const char *key,
 							const char *value);
+char					*get_env_value(t_env *env, const char *key);
 
 /*---signal func---*/
 void					set_signal_handlers(void);
@@ -98,6 +93,10 @@ void					process_input(t_shell *shell, char *input);
 void					free_cmd_list(t_cmd *cmd_list);
 void					free_token_list(t_token *list);
 int						is_valid_identifier(const char *str);
+void					execute_commands(t_shell *shell, t_cmd *cmd_list,
+							pid_t *last_pid);
+void					wait_last_command(t_shell *shell, t_cmd *cmd_list,
+							pid_t last_pid);
 
 /*---error func---*/
 void					print_error(char *message, char *command,
@@ -109,5 +108,8 @@ void					error_exit(char *command);
 /*---execution func---*/
 void					process_input(t_shell *shell, char *input);
 void					free_cmd_list(t_cmd *cmd_list);
+
+/*---utils---*/
+void					minishell_pipe(t_shell *shell);
 
 #endif

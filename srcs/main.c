@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:05:10 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/03 16:23:06 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 13:06:52 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,6 @@ void	free_shell(t_shell *shell)
 void	init_shell(t_shell *shell, char **envp)
 {
 	shell->env = init_env(envp);
-	if (!shell->env)
-	{
-		printf("initialize shell failed\n");
-		exit(EXIT_FAILURE);
-	}
 	shell->pwd = getcwd(NULL, 0);
 	if (!shell->pwd)
 	{
@@ -50,6 +45,8 @@ void	minishell(t_shell *shell)
 		input = readline("minishell$ ");
 		if (!input)
 		{
+			if (!shell->interactive)
+				minishell_pipe(shell);
 			write(STDERR_FILENO, "exit\n", 5);
 			shell->exit_status = 130;
 			break ;

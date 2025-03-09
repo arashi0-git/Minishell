@@ -1,4 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   process_exit.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/08 23:52:43 by aryamamo          #+#    #+#             */
+/*   Updated: 2025/03/09 14:02:54 by aryamamo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
+
+void	print_exit_message(char **args)
+{
+	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+	ft_putstr_fd(args[1], STDERR_FILENO);
+	ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+	exit(2);
+}
 
 int	exec_exit(char **args, t_shell *shell)
 {
@@ -11,11 +31,11 @@ int	exec_exit(char **args, t_shell *shell)
 		exit_code = shell->exit_status;
 		exit(exit_code);
 	}
-	// 数値として解析できる場合
 	if (ft_isdigit(args[1][0]) || args[1][0] == '-' || args[1][0] == '+')
 	{
 		exit_code = ft_atoi(args[1]);
-		// 複数の引数がある場合はエラー
+		if (exit_code == 0 && strcmp(args[1], "0") != 0)
+			print_exit_message(args);
 		if (args[2])
 		{
 			ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
@@ -23,9 +43,6 @@ int	exec_exit(char **args, t_shell *shell)
 		}
 		exit(exit_code);
 	}
-	// 数値として解析できない場合
-	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-	ft_putstr_fd(args[1], STDERR_FILENO);
-	ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-	exit(255);
+	print_exit_message(args);
+	return (0);
 }

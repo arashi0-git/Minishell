@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   process_export_utils2.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:51:11 by retoriya          #+#    #+#             */
-/*   Updated: 2025/02/09 17:53:48 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/08 23:26:52 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/builtin.h"
 #include "../../include/minishell.h"
 
 t_env		*set_env_helper(const char *key, const char *value);
@@ -30,21 +31,6 @@ static char	*create_env_string(const char *key, const char *value)
 	ft_strlcat(result, "=", len);
 	ft_strlcat(result, value, len);
 	return (result);
-}
-
-static int	get_env_size(t_env *env)
-{
-	int		size;
-	t_env	*current;
-
-	size = 0;
-	current = env;
-	while (current)
-	{
-		size++;
-		current = current->next;
-	}
-	return (size);
 }
 
 static void	selection_sort_part(char **arr, int size, int start)
@@ -94,7 +80,8 @@ static char	**env_to_array(t_env *env, int size)
 	i = 0;
 	while (current && i < size)
 	{
-		if (!(arr[i] = create_env_string(current->key, current->value)))
+		arr[i] = create_env_string(current->key, current->value);
+		if (!arr[i])
 		{
 			while (--i >= 0)
 				free(arr[i]);

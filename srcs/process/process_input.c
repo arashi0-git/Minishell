@@ -17,35 +17,36 @@
 #include "../../include/parse.h"
 #include <sys/wait.h>
 
-void	print_cmd_list(t_cmd *cmd_list)
-{
-	int	i;
-	int	j;
 
-	i = 0;
-	while (cmd_list)
-	{
-		j = 0;
-		printf("Command %d:\n", i);
-		if (cmd_list->command)
-			printf("  Command: %s\n", cmd_list->command);
-		if (cmd_list->argc > 0)
-		{
-			while (j < cmd_list->argc)
-			{
-				printf("  Arg[%d]: %s\n", j, cmd_list->args[j]);
-				j++;
-			}
-		}
-		if (cmd_list->infile)
-			printf(" Infile: %s\n", cmd_list->infile);
-		if (cmd_list->outfile)
-			printf(" Outfile: %s(%s)\n", cmd_list->outfile,
-				(cmd_list->append ? "append" : "overwrite"));
-		cmd_list = cmd_list->next;
-		i++;
-	}
-}
+// void	print_cmd_list(t_cmd *cmd_list)
+// {
+// 	int	i;
+// 	int	j;
+
+// 	i = 0;
+// 	while (cmd_list)
+// 	{
+// 		j = 0;
+// 		printf("Command %d:\n", i);
+// 		if (cmd_list->command)
+// 			printf("  Command: %s\n", cmd_list->command);
+// 		if (cmd_list->argc > 0)
+// 		{
+// 			while (j < cmd_list->argc)
+// 			{
+// 				printf("  Arg[%d]: %s\n", j, cmd_list->args[j]);
+// 				j++;
+// 			}
+// 		}
+// 		if (cmd_list->infile)
+// 			printf(" Infile: %s\n", cmd_list->infile);
+// 		if (cmd_list->outfile)
+// 			printf(" Outfile: %s(%s)\n", cmd_list->outfile,
+// 				(cmd_list->append ? "append" : "overwrite"));
+// 		cmd_list = cmd_list->next;
+// 		i++;
+// 	}
+// }
 
 void	free_cmd_list(t_cmd *cmd_list)
 {
@@ -59,6 +60,7 @@ void	free_cmd_list(t_cmd *cmd_list)
 		cmd_list = cmd_list->next;
 		if (tmp->args)
 		{
+			i = 0;
 			while (i < tmp->argc)
 				free(tmp->args[i++]);
 			free(tmp->args);
@@ -86,21 +88,6 @@ void	free_token_list(t_token *list)
 	}
 }
 
-void	print_tokens(t_token *head)
-{
-	t_token	*current;
-
-	current = head;
-	fprintf(stderr, "DEBUG TOKENS:\n");
-	while (current)
-	{
-		fprintf(stderr, "Token: '%s' | Type: %d | RedirType: %d\n",
-			current->value, current->type, current->redirtype);
-		current = current->next;
-	}
-	fprintf(stderr, "END TOKENS\n");
-}
-
 t_cmd	*tokenize_and_parse(char *input)
 {
 	t_token	*token_list;
@@ -108,15 +95,10 @@ t_cmd	*tokenize_and_parse(char *input)
 
 	token_list = tokenize_list(input);
 	if (!token_list)
-	{
-		printf("Tokenization error\n");
 		return (NULL);
-	}
-	print_tokens(token_list);
 	cmd_list = parse_tokens(token_list);
 	if (!cmd_list)
 	{
-		printf("Parsing error\n");
 		free_token_list(token_list);
 		return (NULL);
 	}
@@ -126,30 +108,10 @@ t_cmd	*tokenize_and_parse(char *input)
 
 void	process_output(t_shell *shell, t_cmd *cmd_list)
 {
-	t_cmd			*cmd;
-	int				status;
-	t_pipe_state	state;
-	pid_t			last_pid;
-	int				pipeline_pipe[2] = {-1, -1};
+	pid_t	last_pid;
 
-	cmd = cmd_list;
-	last_pid = -1;
-	while (cmd != NULL)
-	{
-		init_pipe_state(&state, cmd);
-		status = execute_command(shell, cmd, state, pipeline_pipe);
-		if (state == PIPE_READ_ONLY)
-			last_pid = cmd->pid;
-		cmd = cmd->next;
-	}
-	if (cmd_list && cmd_list->next && last_pid > 0)
-	{
-		if (waitpid(last_pid, NULL, WNOHANG) == 0)
-		{
-			status = wait_for_command(last_pid);
-			shell->exit_status = status;
-		}
-	}
+	execute_commands(shell, cmd_list, &last_pid);
+	wait_last_command(shell, cmd_list, last_pid);
 }
 
 void	process_input(t_shell *shell, char *input)
@@ -170,7 +132,6 @@ void	process_input(t_shell *shell, char *input)
 		expand_redirects(cmd, shell);
 		cmd = cmd->next;
 	}
-	print_cmd_list(cmd_list);
 	process_output(shell, cmd_list);
 	free_cmd_list(cmd_list);
 }

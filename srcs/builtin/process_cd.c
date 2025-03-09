@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:06:14 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/03 15:06:31 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:46:08 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,29 @@ static char	*resolve_path(char *path, t_shell *shell)
 static int	update_pwd_env(t_shell *shell, char *oldpwd)
 {
 	char	newpwd[PATH_MAX];
+	char	*oldpwd_dup;
+	char	*pwd_dup;
 
 	if (getcwd(newpwd, sizeof(newpwd)) == NULL)
 		return (1);
-	if (set_env(&(shell->env), "OLDPWD", oldpwd) != 0 || set_env(&(shell->env),
-			"PWD", newpwd) != 0)
+	oldpwd_dup = ft_strdup(oldpwd);
+	if (!oldpwd_dup)
 		return (1);
+	pwd_dup = ft_strdup(newpwd);
+	if (!pwd_dup)
+	{
+		free(oldpwd_dup);
+		return (1);
+	}
+	if (set_env(&(shell->env), "OLDPWD", oldpwd_dup) != 0
+		|| set_env(&(shell->env), "PWD", pwd_dup) != 0)
+	{
+		free(oldpwd_dup);
+		free(pwd_dup);
+		return (1);
+	}
+	free(oldpwd_dup);
+	free(pwd_dup);
 	return (0);
 }
 

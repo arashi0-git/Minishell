@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/02/10 14:03:27 by aryamamo          #+#    #+#              #
-#    Updated: 2025/03/04 19:18:38 by retoriya         ###   ########.fr        #
+#    Created: 2025/03/08 23:08:08 by aryamamo          #+#    #+#              #
+#    Updated: 2025/03/08 23:20:19 by aryamamo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ SRCDIR = ./srcs
 SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/signal/signal.c \
 		$(SRCDIR)/process/process_input.c \
+		$(SRCDIR)/process/process_utils.c \
 		$(SRCDIR)/env/env.c \
 		$(SRCDIR)/parse/parse.c \
 		$(SRCDIR)/parse/parse_handle.c \
@@ -45,7 +46,9 @@ SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/execution/utils.c \
 		$(SRCDIR)/utils/free_array.c \
 		$(SRCDIR)/utils/print_error.c\
-		$(SRCDIR)/utils/valid_identifier.c
+		$(SRCDIR)/utils/valid_identifier.c\
+		$(SRCDIR)/utils/ft_getline.c\
+
 
 ##リリンク確認！
 
@@ -53,7 +56,7 @@ LIBFTDIR = ./libft
 LIBFT = $(LIBFTDIR)/libft.a
 
 OBJDIR = ./OBJ
-OBJ = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
+OBJ = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
 
 CC = cc
@@ -75,8 +78,9 @@ $(LIBFT):
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-$(OBJDIR)/%.o: | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $(filter %/$*.c, $(SRCS)) -o $@
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJ)

@@ -15,6 +15,7 @@
 
 typedef struct s_token	t_token;
 # include "./minishell.h"
+# include "redirect.h"
 # include <errno.h>
 # include <libft.h>
 # include <limits.h>
@@ -38,9 +39,9 @@ typedef struct s_cmd
 	int					heredoc_flag;
 	int					append;
 	struct s_cmd		*next;
-	struct s_cmd *prev;           // パイプライン用
-	pid_t pid;                    // プロセス管理用
-	struct s_redirect *redirects; // リダイレクト管理用
+	struct s_cmd		*prev;
+	pid_t				pid;
+	struct s_redirect	*redirects;
 }						t_cmd;
 
 /*---parse func---*/
@@ -48,5 +49,6 @@ t_cmd					*parse_tokens(t_token *tokens);
 int						handle_redirection(t_cmd *cmd, t_token **curr_ptr);
 int						add_arg(t_cmd *cmd, const char *arg);
 t_cmd					*new_cmd(void);
+void					add_redirect_to_list(t_cmd *cmd, t_redirect *new_redir);
 
 #endif

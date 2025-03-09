@@ -172,8 +172,6 @@ static int	open_file(t_redirect *redir)
 	if (redir->type == REDIRECT_HEREDOC)
 		return (handle_heredoc(redir));
 	filename = redir->filename->value;
-	fprintf(stderr, "Debug: Attempting to open file '%s'\n", filename);
-	fprintf(stderr, "Debug: Redirect type: %d\n", redir->type);
 	filename = redir->filename->value;
 	if (redir->type == REDIRECT_IN)
 		return (open(filename, O_RDONLY));
@@ -199,9 +197,6 @@ t_bool	check_redirect(t_redirect *redir)
 		// Changed from data to value
 		return (FALSE);
 	}
-	// debug
-	fprintf(stderr, "Debug: Successfully opened file '%s', fd_file = %d\n",
-		redir->filename->value, redir->fd_file);
 	return (TRUE);
 }
 
@@ -273,19 +268,6 @@ t_bool	dup_redirects(t_cmd *command, t_bool is_parent)
 {
 	t_redirect	*redir;
 
-	fprintf(stderr, "Debug: Before dup_redirects\n");
-	// 全てのリダイレクトのバックアップを先に取る
-	if (is_parent) {
-		redir = (t_redirect *)command->redirects;
-		while (redir) {
-			if ((redir->fd_backup = dup(redir->fd_io)) < 0) {
-				print_bad_fd_error(redir->fd_io);
-				return (FALSE);
-			}
-			fprintf(stderr, "Debug: Backup fd created for fd_io %d: fd_backup =
-				%d\n",
-					redir->fd_io, redir->fd_backup);
-			redir = redir->next;
 		}
 	}
 	// リダイレクトを実際に適用
@@ -318,6 +300,7 @@ t_bool	dup_redirects(t_cmd *command, t_bool is_parent)
 	return (TRUE);
 }
 */
+
 
 static t_bool	backup_redirects(t_redirect *redir)
 {
