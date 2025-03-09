@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/08 23:49:57 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 17:33:37 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,34 +47,6 @@ void	reset_signal_in_child(void)
 	}
 }
 
-void	handle_command_file_args(t_cmd *cmd)
-{
-	t_token		*token;
-	t_redirect	*redir;
-
-	if (!cmd->args[0] || !cmd->args[1] || cmd->infile)
-		return ;
-	if (ft_strcmp(cmd->args[0], "cat") != 0)
-		return ;
-	token = malloc(sizeof(t_token));
-	if (!token)
-		return ;
-	token->value = ft_strdup(cmd->args[1]);
-	token->type = TOKEN_COMMAND;
-	token->next = NULL;
-	redir = create_redirect(REDIRECT_IN, token, STDIN_FILENO);
-	if (!redir || !check_redirect(redir))
-	{
-		if (redir)
-			free_redirect(redir);
-		else
-			free_token_list(token);
-		return ;
-	}
-	redir->next = (t_redirect *)cmd->redirects;
-	cmd->redirects = redir;
-}
-
 static int	exec_builtin_parent(t_shell *shell, t_cmd *command, char **args)
 {
 	int	result;
@@ -93,8 +65,6 @@ static void	execute_in_child(t_shell *shell, t_cmd *cmd, t_pipe_state state,
 		int old_pipe[2], int new_pipe[2])
 {
 	reset_signal_in_child();
-	// 他のケースは通常の実行を続行
-	handle_command_file_args(cmd);
 	if (!setup_redirects(cmd))
 		exit(EXIT_FAILURE);
 	if (!dup_redirects(cmd, FALSE))

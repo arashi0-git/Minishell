@@ -6,11 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 11:09:19 by aryamamo          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/03/07 04:34:06 by retoriya         ###   ########.fr       */
-=======
-/*   Updated: 2025/03/09 16:03:55 by aryamamo         ###   ########.fr       */
->>>>>>> 6ce31a0 (add)
+/*   Updated: 2025/03/09 17:31:24 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +59,7 @@ char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char		*ft_strtrim(char const *s1, char const *set);
 size_t		ft_count_words(char const *s, char c);
 char		**split_free(char **tab);
-<<<<<<< HEAD
-char		*ft_strndup(char *str, size_t n);
-=======
 char		*ft_strndup(const char *str, size_t n);
->>>>>>> 6ce31a0 (add)
 char		*ft_strcpy(char *dest, const char *src);
 int			ft_strcmp(const char *s1, const char *s2);
 

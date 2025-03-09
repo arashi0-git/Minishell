@@ -6,11 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:49:25 by aryamamo          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/03/09 14:23:49 by aryamamo         ###   ########.fr       */
-=======
-/*   Updated: 2025/03/09 16:06:01 by aryamamo         ###   ########.fr       */
->>>>>>> 6ce31a0 (add)
+/*   Updated: 2025/03/09 17:32:37 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +116,5 @@ int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
 		ret = handle_input_redirection(cmd, target_copy);
 	else
 		ret = handle_output_redirection(cmd, target_copy, redir->redirtype);
-<<<<<<< HEAD
-	// if (ret != 0)
-	// 	free_token_list(target_copy);
-=======
->>>>>>> 6ce31a0 (add)
 	return (ret);
 }
