@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/10 04:51:41 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 06:21:36 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,23 +83,29 @@ t_bool	process_all_heredocs(t_cmd *cmd_list, t_shell *shell)
 
 char	*read_until_delimiter(char *delimiter, t_shell *shell)
 {
-	char	*line;
 	char	*content;
+	char	*line;
 
 	content = ft_strdup("");
 	if (!content)
 		return (NULL);
 	while (1)
 	{
-		ft_putstr_fd("> ", STDOUT_FILENO);
-		line = get_next_line(STDIN_FILENO);
+		line = get_expanded_line(shell);
 		if (!line)
 			break ;
-		line = expand(line, shell);
 		if (process_delimiter(line, delimiter, &content))
+		{
+			free(line);
 			break ;
+		}
 		if (!append_to_content(&content, line))
+		{
+			free(line);
+			free(content);
 			return (NULL);
+		}
+		free(line);
 	}
 	return (content);
 }

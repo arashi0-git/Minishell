@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 20:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/10 04:55:43 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 06:20:03 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,28 @@ void	wait_last_command(t_shell *shell, t_cmd *cmd_list, pid_t last_pid)
 			shell->exit_status = status;
 		}
 	}
+}
+
+void	free_cmd(t_cmd *cmd)
+{
+	int	i;
+
+	if (cmd->args)
+	{
+		i = 0;
+		while (i < cmd->argc)
+			free(cmd->args[i++]);
+		free(cmd->args);
+	}
+	if (cmd->command)
+		free(cmd->command);
+	if (cmd->infile)
+		free(cmd->infile);
+	if (cmd->outfile)
+		free(cmd->outfile);
+	if (cmd->heredoc_delims)
+		ft_lstclear(&cmd->heredoc_delims, free);
+	if (cmd->redirects)
+		free_redirect(cmd->redirects);
+	free(cmd);
 }
