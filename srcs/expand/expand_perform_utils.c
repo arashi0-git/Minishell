@@ -20,7 +20,7 @@ int	expand_dollar_question(t_shell *shell, t_expand *exp)
 	status_str = ft_itoa(shell->exit_status);
 	if (!status_str)
 		return (-1);
-	t_len = strlen(status_str);
+	t_len = ft_strlen(status_str);
 	ft_memcpy(&exp->out[exp->out_index], status_str, t_len);
 	exp->out_index += t_len;
 	free(status_str);
@@ -58,7 +58,7 @@ int	expand_dollar_variable(const char *str, t_shell *shell, t_expand *exp)
 		exp->out[exp->out_index++] = '$';
 		return (0);
 	}
-	var_name = strndup(&str[var_start], var_len);
+	var_name = ft_strndup(&str[var_start], var_len);
 	if (!var_name)
 		return (-1);
 	value = get_env_value(shell->env, var_name);
