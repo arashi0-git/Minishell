@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:51:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/07 03:19:03 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/09 17:12:10 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,15 @@ t_cmd	*new_cmd(void)
 		free(cmd);
 		return (NULL);
 	}
+    for (int i = 0; i < cmd->max_args; i++)
+		cmd->args[i] = NULL;
 	cmd->argc = 0;
 	cmd->outfile = NULL;
 	cmd->infile = NULL;
 	cmd->append = 0;
 	cmd->next = NULL;
 	cmd->prev = NULL;
+	cmd->heredoc_flag = 0;
 	cmd->redirects = NULL;
 	cmd->pid = 0;
 	return (cmd);

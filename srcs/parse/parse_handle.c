@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:49:25 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 20:38:04 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/09 16:20:09 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
 }
 */
 
-
 static int	copy_filename(char **dest, const char *src)
 {
 	*dest = malloc(ft_strlen(src) + 1);
@@ -150,22 +149,22 @@ static int	copy_filename(char **dest, const char *src)
 }
 
 // リダイレクトをリストの末尾に追加する関数
-void add_redirect_to_list(t_cmd *cmd, t_redirect *new_redir)
+void	add_redirect_to_list(t_cmd *cmd, t_redirect *new_redir)
 {
-    t_redirect *current;
-    
-    if (cmd->redirects == NULL) {
-        cmd->redirects = new_redir;
-        return;
-    }
-    
-    current = (t_redirect *)cmd->redirects;
-    while (current->next) {
-        current = current->next;
-    }
-    
-    current->next = new_redir;
-    new_redir->prev = current;
+	t_redirect	*current;
+
+	if (cmd->redirects == NULL)
+	{
+		cmd->redirects = new_redir;
+		return ;
+	}
+	current = (t_redirect *)cmd->redirects;
+	while (current->next)
+	{
+		current = current->next;
+	}
+	current->next = new_redir;
+	new_redir->prev = current;
 }
 
 // 入力リダイレクション処理
@@ -182,9 +181,7 @@ static int	handle_input_redirection(t_cmd *cmd, t_token *target)
 			free_redirect(redir);
 		return (-1);
 	}
-    add_redirect_to_list(cmd, redir);
-	//redir->next = (t_redirect *)cmd->redirects;
-	//cmd->redirects = redir;
+	add_redirect_to_list(cmd, redir);
 	return (0);
 }
 
@@ -204,9 +201,24 @@ static int	handle_output_redirection(t_cmd *cmd, t_token *target,
 			free_redirect(redir);
 		return (-1);
 	}
-    add_redirect_to_list(cmd, redir);
-	//redir->next = (t_redirect *)cmd->redirects;
-	//cmd->redirects = redir;
+	add_redirect_to_list(cmd, redir);
+	return (0);
+}
+
+// ヒアドキュメント処理用の新しい関数
+static int	handle_heredoc_redirection(t_cmd *cmd, t_token *target)
+{
+	t_redirect	*redir;
+
+	// ヒアドキュメントの区切り文字をコマンドに保存
+	if (copy_filename(&cmd->infile, target->value) < 0)
+		return (-1);
+	// REDIRECT_HEREDOCタイプでリダイレクト構造体を作成
+	redir = create_redirect(REDIRECT_HEREDOC, target, STDIN_FILENO);
+	if (!redir)
+		return (-1);
+	// リダイレクトリストに追加
+	add_redirect_to_list(cmd, redir);
 	return (0);
 }
 
@@ -247,10 +259,21 @@ int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
 		g_shell->exit_status = 2;
 		return (-1);
 	}
+	if (redir->redirtype == REDIRECT_HEREDOC)
+	{
+		cmd->heredoc_flag = 1;
+		target_copy = duplicate_token(*curr_ptr);
+		if (!target_copy)
+			return (-1);
+		ret = handle_heredoc_redirection(cmd, target_copy);
+		if (ret != 0)
+			free_token_list(target_copy);
+		return (ret);
+	}
 	target_copy = duplicate_token(*curr_ptr);
 	if (!target_copy)
 		return (-1);
-	if (redir->redirtype == REDIRECT_IN || redir->redirtype == REDIRECT_HEREDOC)
+	if (redir->redirtype == REDIRECT_IN)
 		ret = handle_input_redirection(cmd, target_copy);
 	else
 		ret = handle_output_redirection(cmd, target_copy, redir->redirtype);
@@ -258,5 +281,3 @@ int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
 		free_token_list(target_copy);
 	return (ret);
 }
-
-

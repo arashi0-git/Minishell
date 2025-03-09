@@ -16,7 +16,8 @@ typedef enum e_pipe_state
 	PIPE_READ_WRITE
 }		t_pipe_state;
 
-int		execute_command(t_shell *shell, t_cmd *cmd, t_pipe_state state, int shared_pipe[2]);
+int		execute_command(t_shell *shell, t_cmd *cmd, t_pipe_state state,
+			int shared_pipe[2]);
 void	exec_binary(t_shell *shell, char **args);
 void	handle_execve_error(char *path);
 char	**create_environ(t_env *env);
@@ -33,7 +34,7 @@ size_t	get_environ_size(t_env *envs);
 t_bool	can_generate_environ(t_env *env);
 int		wait_for_command(pid_t pid);
 
-void handle_command_file_args(t_cmd *cmd);
+void	handle_command_file_args(t_cmd *cmd);
 void	process_input(t_shell *shell, char *input);
 void	free_cmd_list(t_cmd *cmd_list);
 #endif

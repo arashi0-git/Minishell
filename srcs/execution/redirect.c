@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/08 20:28:59 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/09 15:44:06 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,8 @@ t_bool	check_redirect(t_redirect *redir)
 		// Changed from data to value
 		return (FALSE);
 	}
+	if (redir->type == REDIRECT_HEREDOC)
+		return (TRUE);
 	if ((redir->fd_file = open_file(redir)) < 0)
 	{
 		print_error(strerror(errno), NULL, redir->filename->value);
@@ -267,23 +269,79 @@ void	cleanup_redirects(t_cmd *command)
 }
 
 /*
-// リダイレクトの複製処理
 t_bool	dup_redirects(t_cmd *command, t_bool is_parent)
 {
 	t_redirect	*redir;
 
-	redir = (t_redirect *)command->redirects; // キャスト追加
-	while (redir)
-	{
-		fprintf(stderr, "Debug: In dup_redirects - type: %d, fd_io: %d, fd_file: %d\n", redir->type, redir->fd_io, redir->fd_file);
-		if (is_parent)
-		{
-			if ((redir->fd_backup = dup(redir->fd_io)) < 0)
-			{
+	fprintf(stderr, "Debug: Before dup_redirects\n");
+	// 全てのリダイレクトのバックアップを先に取る
+	if (is_parent) {
+		redir = (t_redirect *)command->redirects;
+		while (redir) {
+			if ((redir->fd_backup = dup(redir->fd_io)) < 0) {
 				print_bad_fd_error(redir->fd_io);
 				return (FALSE);
 			}
-			fprintf(stderr, "Debug: Backup fd created: fd_backup = %d\n", redir->fd_backup);
+			fprintf(stderr, "Debug: Backup fd created for fd_io %d: fd_backup =
+				%d\n",
+					redir->fd_io, redir->fd_backup);
+			redir = redir->next;
+		}
+	}
+	// リダイレクトを実際に適用
+	redir = (t_redirect *)command->redirects;
+	while (redir) {
+		fprintf(stderr, "Debug: Applying redirect - type: %d, fd_io: %d,
+			fd_file: %d\n",
+				redir->type, redir->fd_io, redir->fd_file);
+		if (redir->type == REDIRECT_HEREDOC && redir->fd_file == -1)
+		{
+			redir->fd_file = handle_heredoc(redir);
+			if (redir->fd_file < 0)
+			{
+				return (FALSE);
+			}
+		}
+		if (dup2(redir->fd_file, redir->fd_io) < 0) {
+			print_bad_fd_error(redir->fd_io);
+			return (FALSE);
+		}
+		// 子プロセスの場合、元のファイルディスクリプタを閉じる
+		if (!is_parent && redir->fd_file > 2) {
+			fprintf(stderr, "Debug: Closing original fd_file = %d\n",
+				redir->fd_file);
+			close(redir->fd_file);
+		}
+		redir = redir->next;
+	}
+	fprintf(stderr, "Debug: After dup_redirects\n");
+	return (TRUE);
+}
+*/
+
+static t_bool	backup_redirects(t_redirect *redir)
+{
+	while (redir)
+	{
+		if ((redir->fd_backup = dup(redir->fd_io)) < 0)
+		{
+			print_bad_fd_error(redir->fd_io);
+			return (FALSE);
+		}
+		redir = redir->next;
+	}
+	return (TRUE);
+}
+
+static t_bool	apply_redirects(t_redirect *redir)
+{
+	while (redir)
+	{
+		if (redir->type == REDIRECT_HEREDOC)
+		{
+			redir->fd_file = handle_heredoc(redir);
+			if (redir->fd_file < 0)
+				return (FALSE);
 		}
 		if (dup2(redir->fd_file, redir->fd_io) < 0)
 		{
@@ -294,112 +352,13 @@ t_bool	dup_redirects(t_cmd *command, t_bool is_parent)
 	}
 	return (TRUE);
 }
-*/
 
-/*
-// リダイレクトの複製処理
-t_bool dup_redirects(t_cmd *command, t_bool is_parent)
+t_bool	dup_redirects(t_cmd *command, t_bool is_parent)
 {
-    t_redirect *redir;
-    int saved_stdin = -1;
-    int saved_stdout = -1;
-
-    if (is_parent) {
-        // 親プロセスの場合は標準入出力をバックアップ
-        saved_stdin = dup(STDIN_FILENO);
-        saved_stdout = dup(STDOUT_FILENO);
-        if (saved_stdin < 0 || saved_stdout < 0) {
-            if (saved_stdin >= 0) close(saved_stdin);
-            if (saved_stdout >= 0) close(saved_stdout);
-            return (FALSE);
-        }
-    }
-
-    redir = (t_redirect *)command->redirects;
-    while (redir)
-    {
-        fprintf(stderr, "Debug: Applying redirect - type: %d, fd_io: %d, fd_file: %d\n", 
-                redir->type, redir->fd_io, redir->fd_file);
-        
-        if (is_parent)
-        {
-            // 親プロセスの場合はバックアップを取っておく
-            redir->fd_backup = (redir->fd_io == STDIN_FILENO) ? saved_stdin : 
-                              ((redir->fd_io == STDOUT_FILENO) ? saved_stdout : dup(redir->fd_io));
-            
-            if (redir->fd_backup < 0)
-            {
-                print_bad_fd_error(redir->fd_io);
-                return (FALSE);
-            }
-            fprintf(stderr, "Debug: Backup fd created: fd_backup = %d\n", redir->fd_backup);
-        }
-        
-        // リダイレクトを適用
-        if (dup2(redir->fd_file, redir->fd_io) < 0)
-        {
-            print_bad_fd_error(redir->fd_io);
-            return (FALSE);
-        }
-        
-        // 子プロセスでは、dup2の後に元のfd_fileを閉じる
-        if (!is_parent && redir->fd_file > 2)
-        {
-            fprintf(stderr, "Debug: Closing original fd_file = %d\n", redir->fd_file);
-            close(redir->fd_file);
-        }
-        
-        redir = redir->next;
-    }
-    
-    return (TRUE);
+	if (is_parent && !backup_redirects((t_redirect *)command->redirects))
+		return (FALSE);
+	return (apply_redirects((t_redirect *)command->redirects));
 }
-
-*/
-t_bool dup_redirects(t_cmd *command, t_bool is_parent)
-{
-    t_redirect *redir;
-    
-    fprintf(stderr, "Debug: Before dup_redirects\n");
-    
-    // 全てのリダイレクトのバックアップを先に取る
-    if (is_parent) {
-        redir = (t_redirect *)command->redirects;
-        while (redir) {
-            if ((redir->fd_backup = dup(redir->fd_io)) < 0) {
-                print_bad_fd_error(redir->fd_io);
-                return (FALSE);
-            }
-            fprintf(stderr, "Debug: Backup fd created for fd_io %d: fd_backup = %d\n", 
-                   redir->fd_io, redir->fd_backup);
-            redir = redir->next;
-        }
-    }
-    
-    // リダイレクトを実際に適用
-    redir = (t_redirect *)command->redirects;
-    while (redir) {
-        fprintf(stderr, "Debug: Applying redirect - type: %d, fd_io: %d, fd_file: %d\n", 
-               redir->type, redir->fd_io, redir->fd_file);
-        
-        if (dup2(redir->fd_file, redir->fd_io) < 0) {
-            print_bad_fd_error(redir->fd_io);
-            return (FALSE);
-        }
-        
-        // 子プロセスの場合、元のファイルディスクリプタを閉じる
-        if (!is_parent && redir->fd_file > 2) {
-            fprintf(stderr, "Debug: Closing original fd_file = %d\n", redir->fd_file);
-            close(redir->fd_file);
-        }
-        
-        redir = redir->next;
-    }
-    
-    fprintf(stderr, "Debug: After dup_redirects\n");
-    return (TRUE);
-}
-
 
 // リダイレクト構造体の作成
 t_redirect	*create_redirect(t_redirecttype type, t_token *filename, int fd_io)

@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 19:18:24 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/08 23:28:40 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include "../../include/minishell.h"
 #include "../../include/parse.h"
 #include <sys/wait.h>
-
 
 void	print_cmd_list(t_cmd *cmd_list)
 {
@@ -87,17 +86,19 @@ void	free_token_list(t_token *list)
 	}
 }
 
-void print_tokens(t_token *head)
+void	print_tokens(t_token *head)
 {
-    t_token *current = head;
-    fprintf(stderr, "DEBUG TOKENS:\n");
-    while (current)
-    {
-        fprintf(stderr, "Token: '%s' | Type: %d | RedirType: %d\n", 
-                current->value, current->type, current->redirtype);
-        current = current->next;
-    }
-    fprintf(stderr, "END TOKENS\n");
+	t_token	*current;
+
+	current = head;
+	fprintf(stderr, "DEBUG TOKENS:\n");
+	while (current)
+	{
+		fprintf(stderr, "Token: '%s' | Type: %d | RedirType: %d\n",
+			current->value, current->type, current->redirtype);
+		current = current->next;
+	}
+	fprintf(stderr, "END TOKENS\n");
 }
 
 t_cmd	*tokenize_and_parse(char *input)
@@ -166,6 +167,7 @@ void	process_input(t_shell *shell, char *input)
 	while (cmd != NULL)
 	{
 		expand_cmd(cmd, shell);
+		expand_redirects(cmd, shell);
 		cmd = cmd->next;
 	}
 	print_cmd_list(cmd_list);
