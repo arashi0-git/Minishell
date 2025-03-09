@@ -106,7 +106,7 @@ void	process_input(t_shell *shell, char *input)
 	if (!process_all_heredocs(cmd_list))
 	{
 		free_cmd_list(cmd_list);
-    	return;
+		return ;
 	}
 	process_output(shell, cmd_list);
 	free_cmd_list(cmd_list);
