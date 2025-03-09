@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_command.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
+/*   Updated: 2025/03/09 22:16:19 by aryamamo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/execution.h"
 #include "../../include/minishell.h"
 #include "../../include/parse.h"
@@ -39,7 +51,6 @@ void	init_pipe_state(t_pipe_state *state, t_cmd *cmd)
 
 void	cleanup_pipe(t_pipe_state state, int old_pipe[2], int new_pipe[2])
 {
-	// READ_ONLYまたはREAD_WRITEの場合、古いパイプはもう不要なので閉じる
 	if (state == PIPE_READ_ONLY || state == PIPE_READ_WRITE)
 	{
 		if (old_pipe[PIPE_IN] != -1)
@@ -47,14 +58,11 @@ void	cleanup_pipe(t_pipe_state state, int old_pipe[2], int new_pipe[2])
 		if (old_pipe[PIPE_OUT] != -1)
 			close(old_pipe[PIPE_OUT]);
 	}
-	// WRITE_ONLYまたはREAD_WRITEの場合、新しいパイプの書き込み側を閉じ、読み取り側を次の処理用に保存
 	if (state == PIPE_WRITE_ONLY || state == PIPE_READ_WRITE)
 	{
-		// 書き込み側を閉じる（子プロセスがこれを使うため）
 		if (new_pipe[PIPE_OUT] != -1)
 			close(new_pipe[PIPE_OUT]);
-		// 次のコマンドのために、新しいパイプの情報を古いパイプとして保存
 		old_pipe[PIPE_IN] = new_pipe[PIPE_IN];
-		old_pipe[PIPE_OUT] = -1; // 不要なので-1に設定
+		old_pipe[PIPE_OUT] = -1;
 	}
 }

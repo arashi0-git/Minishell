@@ -37,7 +37,7 @@ typedef struct s_cmd
 	char				*infile;
 	char				*outfile;
 	int					heredoc_flag;
-	t_list*				heredoc_delims;
+	t_list				*heredoc_delims;
 	int					append;
 	struct s_cmd		*next;
 	struct s_cmd		*prev;

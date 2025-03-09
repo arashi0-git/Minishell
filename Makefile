@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/08 23:08:08 by aryamamo          #+#    #+#              #
-#    Updated: 2025/03/09 20:22:04 by aryamamo         ###   ########.fr        #
+#    Updated: 2025/03/10 01:54:43 by retoriya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,11 +39,16 @@ SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/builtin/process_env.c\
 		$(SRCDIR)/builtin/process_exit.c\
 		$(SRCDIR)/execution/execute_command.c \
+		$(SRCDIR)/execution/execute_command_utils.c \
 		$(SRCDIR)/execution/execute_binary.c \
 		$(SRCDIR)/execution/execute_pipe.c \
+		$(SRCDIR)/execution/redirect_create.c \
+		$(SRCDIR)/execution/redirect_operation.c \
+		$(SRCDIR)/execution/redirect_operation2.c \
+		$(SRCDIR)/execution/redirect_utils.c \
 		$(SRCDIR)/execution/heredoc.c \
 		$(SRCDIR)/execution/find_commond_path.c \
-		$(SRCDIR)/execution/redirect.c \
+		$(SRCDIR)/execution/heredoc_utils.c \
 		$(SRCDIR)/execution/wait_for_commond.c\
 		$(SRCDIR)/execution/utils.c \
 		$(SRCDIR)/utils/free_array.c \

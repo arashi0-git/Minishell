@@ -35,7 +35,7 @@ int	exec_exit(char **args, t_shell *shell)
 		|| (args[1][0] == ' ' && ft_isdigit(args[1][1])))
 	{
 		exit_code = ft_atoi(args[1]);
-		if (exit_code == 0 && strcmp(args[1], "0") != 0)
+		if (exit_code == 0 && ft_strcmp(args[1], "0") != 0)
 			print_exit_message(args);
 		if (args[2])
 		{

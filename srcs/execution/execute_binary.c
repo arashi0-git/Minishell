@@ -16,24 +16,24 @@ char	**create_environ(t_env *env)
 {
 	char	**environ;
 	char	*tmp;
-	size_t	env_size;
 	size_t	i;
 
-	env_size = get_environ_size(env);
 	i = 0;
-	if (!(environ = (char **)malloc(sizeof(char *) * (env_size + 1))))
+	environ = (char **)malloc(sizeof(char *) * (get_environ_size(env) + 1));
+	if (!environ)
 		error_exit(NULL);
-	while (env && i < env_size)
+	while (env && i < get_environ_size(env))
 	{
 		if (can_generate_environ(env))
 		{
-			if (!(environ[i] = ft_strjoin(env->key, "=")))
+			environ[i] = ft_strjoin(env->key, "=");
+			if (!environ[i])
 				error_exit(NULL);
 			tmp = environ[i];
-			if (!(environ[i] = ft_strjoin(environ[i], env->value)))
-				error_exit(NULL);
+			environ[i] = ft_strjoin(tmp, env->value);
 			free(tmp);
-			i++;
+			if (!environ[i++])
+				error_exit(NULL);
 		}
 		env = env->next;
 	}
@@ -41,12 +41,13 @@ char	**create_environ(t_env *env)
 	return (environ);
 }
 
-// executor_binary.c
 void	exec_binary(t_shell *shell, char **args)
 {
 	char	*path;
 	char	**envp;
 
+	if (!args[0] || !args)
+		return ;
 	envp = create_environ(shell->env);
 	path = find_command_path(args[0], envp);
 	if (!path)
