@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:18:21 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/09 17:33:04 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 19:05:57 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static char	*parse_env_argument(char *args, char **value, int *append_mode)
 	}
 	else
 	{
-		*value = "";
+		*value = NULL;
 	}
 	return (args_copy);
 }
@@ -96,6 +96,11 @@ int	exec_export(char **cmd_and_args, t_shell *shell)
 	i = 1;
 	while (cmd_and_args[i])
 	{
+		if (cmd_and_args[i][0] == '\0')
+		{
+			i++;
+			continue ;
+		}
 		if (!is_valid_identifier(cmd_and_args[i]))
 		{
 			printf("minishell: export: `%s': not a valid identifier\n",

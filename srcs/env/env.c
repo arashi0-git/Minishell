@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: retoriya <retoriya@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 14:56:27 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/11 11:36:47 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 18:59:40 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,10 @@ static t_env	*set_env_helper(const char *key, const char *value)
 	if (!new_env)
 		return (NULL);
 	new_env->key = ft_strdup(key);
-	new_env->value = ft_strdup(value);
-	if (!new_env->key || !new_env->value)
-	{
-		free_env(new_env);
-		return (NULL);
-	}
+	if (value)
+		new_env->value = ft_strdup(value);
+	else
+		new_env->value = NULL;
 	return (new_env);
 }
 

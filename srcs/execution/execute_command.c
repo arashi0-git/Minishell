@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/09 16:23:02 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/09 18:09:53 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ static int	exec_builtin_parent(t_shell *shell, t_cmd *command, char **args)
 static void	execute_in_child(t_shell *shell, t_cmd *cmd, t_pipe_state state,
 		int old_pipe[2], int new_pipe[2])
 {
-	t_redirect	*debug_redir;
-
 	reset_signal_in_child();
 	if (!setup_redirects(cmd))
 		exit(EXIT_FAILURE);
