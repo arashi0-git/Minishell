@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/09 20:49:02 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 22:10:02 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int	finalize_command(t_shell *shell, pid_t pid, struct sigaction *old_sa)
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		write(STDOUT_FILENO, "\n", 1);
 	return (status);
-	return (1);
 }
 
 void	cleanup_pipe_ext(t_pipe_state state, int shared_pipe[2],
