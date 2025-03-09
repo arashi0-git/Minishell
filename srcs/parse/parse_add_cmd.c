@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:51:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 17:12:10 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/09 21:04:34 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 static t_cmd	*allocate_cmd(void)
 {
 	t_cmd	*cmd;
+	int		i;
 
+	i = 0;
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 	{
@@ -30,8 +32,11 @@ static t_cmd	*allocate_cmd(void)
 		free(cmd);
 		return (NULL);
 	}
-  for (int i = 0; i < cmd->max_args; i++)
+	while (i < cmd->max_args)
+	{
 		cmd->args[i] = NULL;
+		i++;
+	}
 	return (cmd);
 }
 
@@ -48,6 +53,7 @@ t_cmd	*new_cmd(void)
 	cmd->infile = NULL;
 	cmd->append = 0;
 	cmd->redirects = NULL;
+	cmd->heredoc_flag = 0;
 	cmd->pid = 0;
 	cmd->next = NULL;
 	cmd->prev = NULL;

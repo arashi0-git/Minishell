@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:59:33 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 23:02:10 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:20:57 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,20 @@ typedef struct s_cmd
 }						t_cmd;
 
 /*---parse func---*/
-t_cmd					*parse_tokens(t_token *tokens);
-int						handle_redirection(t_cmd *cmd, t_token **curr_ptr);
+t_cmd					*parse_tokens(t_token *tokens, t_shell *shell);
+int						handle_redirection(t_cmd *cmd, t_token **curr_ptr,
+							t_shell *shell);
 int						add_arg(t_cmd *cmd, const char *arg);
 t_cmd					*new_cmd(void);
 void					add_redirect_to_list(t_cmd *cmd, t_redirect *new_redir);
+int						process_io_redirection(t_cmd *cmd, t_token *redir,
+							t_token *target_copy);
+int						check_and_dup_token(t_token **curr_ptr, t_shell *shell,
+							t_token **dup_token);
+int						copy_filename(char **dest, const char *src);
+int						handle_input_redirection(t_cmd *cmd, t_token *target);
+int						handle_output_redirection(t_cmd *cmd, t_token *target,
+							t_redirecttype redirtype);
+t_token					*duplicate_token(t_token *src);
 
 #endif

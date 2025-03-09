@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/08 23:08:08 by aryamamo          #+#    #+#              #
-#    Updated: 2025/03/08 23:20:19 by aryamamo         ###   ########.fr        #
+#    Updated: 2025/03/09 20:22:04 by aryamamo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/process/process_utils.c \
 		$(SRCDIR)/env/env.c \
 		$(SRCDIR)/parse/parse.c \
+		$(SRCDIR)/parse/parse_utils.c \
 		$(SRCDIR)/parse/parse_handle.c \
 		$(SRCDIR)/parse/parse_add_cmd.c \
 		$(SRCDIR)/tokenize/tokenize.c\

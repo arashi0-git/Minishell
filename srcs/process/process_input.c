@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 23:28:40 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/09 21:22:21 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,37 +16,6 @@
 #include "../../include/minishell.h"
 #include "../../include/parse.h"
 #include <sys/wait.h>
-
-
-// void	print_cmd_list(t_cmd *cmd_list)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	while (cmd_list)
-// 	{
-// 		j = 0;
-// 		printf("Command %d:\n", i);
-// 		if (cmd_list->command)
-// 			printf("  Command: %s\n", cmd_list->command);
-// 		if (cmd_list->argc > 0)
-// 		{
-// 			while (j < cmd_list->argc)
-// 			{
-// 				printf("  Arg[%d]: %s\n", j, cmd_list->args[j]);
-// 				j++;
-// 			}
-// 		}
-// 		if (cmd_list->infile)
-// 			printf(" Infile: %s\n", cmd_list->infile);
-// 		if (cmd_list->outfile)
-// 			printf(" Outfile: %s(%s)\n", cmd_list->outfile,
-// 				(cmd_list->append ? "append" : "overwrite"));
-// 		cmd_list = cmd_list->next;
-// 		i++;
-// 	}
-// }
 
 void	free_cmd_list(t_cmd *cmd_list)
 {
@@ -88,7 +57,7 @@ void	free_token_list(t_token *list)
 	}
 }
 
-t_cmd	*tokenize_and_parse(char *input)
+t_cmd	*tokenize_and_parse(char *input, t_shell *shell)
 {
 	t_token	*token_list;
 	t_cmd	*cmd_list;
@@ -96,7 +65,7 @@ t_cmd	*tokenize_and_parse(char *input)
 	token_list = tokenize_list(input);
 	if (!token_list)
 		return (NULL);
-	cmd_list = parse_tokens(token_list);
+	cmd_list = parse_tokens(token_list, shell);
 	if (!cmd_list)
 	{
 		free_token_list(token_list);
@@ -119,7 +88,7 @@ void	process_input(t_shell *shell, char *input)
 	t_cmd	*cmd_list;
 	t_cmd	*cmd;
 
-	cmd_list = tokenize_and_parse(input);
+	cmd_list = tokenize_and_parse(input, shell);
 	if (!cmd_list)
 	{
 		free_cmd_list(cmd_list);

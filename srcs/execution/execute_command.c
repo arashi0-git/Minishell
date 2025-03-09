@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/09 18:09:53 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:49:02 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,16 @@ static void	execute_in_child(t_shell *shell, t_cmd *cmd, t_pipe_state state,
 		exec_binary(shell, cmd->args);
 }
 
-int	finalize_command(t_shell *shell, t_pipe_state state, pid_t pid,
-		struct sigaction *old_sa)
+int	finalize_command(t_shell *shell, pid_t pid, struct sigaction *old_sa)
 {
 	int	status;
 
-	if (state == NO_PIPE || state == PIPE_READ_ONLY)
-	{
-		status = wait_for_command(pid);
-		shell->exit_status = status;
-		sigaction(SIGINT, old_sa, NULL);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-			write(STDOUT_FILENO, "\n", 1);
-		return (status);
-	}
+	status = wait_for_command(pid);
+	shell->exit_status = status;
+	sigaction(SIGINT, old_sa, NULL);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		write(STDOUT_FILENO, "\n", 1);
+	return (status);
 	return (1);
 }
 
@@ -137,5 +133,5 @@ int	execute_command(t_shell *shell, t_cmd *cmd, t_pipe_state state,
 	sigaction(SIGINT, &new_sa, &old_sa);
 	cleanup_pipe_ext(state, shared_pipe, new_pipe);
 	cmd->pid = pid;
-	return (finalize_command(shell, state, pid, &old_sa));
+	return (finalize_command(shell, pid, &old_sa));
 }

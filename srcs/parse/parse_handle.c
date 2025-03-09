@@ -6,28 +6,14 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:49:25 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 16:20:09 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:20:49 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "redirect.h"
 
-extern t_shell	*g_shell;
-
-static int	copy_filename(char **dest, const char *src)
-{
-	*dest = malloc(ft_strlen(src) + 1);
-	if (!*dest)
-	{
-		printf("malloc filename failed\n");
-		return (-1);
-	}
-	ft_strcpy(*dest, src);
-	return (0);
-}
-// 入力リダイレクション処理
-static int	handle_input_redirection(t_cmd *cmd, t_token *target)
+int	handle_input_redirection(t_cmd *cmd, t_token *target)
 {
 	t_redirect	*redir;
 
@@ -46,8 +32,7 @@ static int	handle_input_redirection(t_cmd *cmd, t_token *target)
 	return (0);
 }
 
-// 出力リダイレクション処理
-static int	handle_output_redirection(t_cmd *cmd, t_token *target,
+int	handle_output_redirection(t_cmd *cmd, t_token *target,
 		t_redirecttype redirtype)
 {
 	t_redirect	*redir;
@@ -71,25 +56,20 @@ static int	handle_output_redirection(t_cmd *cmd, t_token *target,
 	return (0);
 }
 
-// ヒアドキュメント処理用の新しい関数
 static int	handle_heredoc_redirection(t_cmd *cmd, t_token *target)
 {
 	t_redirect	*redir;
 
-	// ヒアドキュメントの区切り文字をコマンドに保存
 	if (copy_filename(&cmd->infile, target->value) < 0)
 		return (-1);
-	// REDIRECT_HEREDOCタイプでリダイレクト構造体を作成
 	redir = create_redirect(REDIRECT_HEREDOC, target, STDIN_FILENO);
 	if (!redir)
 		return (-1);
-	// リダイレクトリストに追加
 	add_redirect_to_list(cmd, redir);
 	return (0);
 }
 
-// トークン複製関数（新規追加）
-static t_token	*duplicate_token(t_token *src)
+t_token	*duplicate_token(t_token *src)
 {
 	t_token	*new_token;
 	char	*value_copy;
@@ -110,8 +90,7 @@ static t_token	*duplicate_token(t_token *src)
 	return (new_token);
 }
 
-// リダイレクト処理メイン関数
-int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
+int	handle_redirection(t_cmd *cmd, t_token **curr_ptr, t_shell *shell)
 {
 	int		ret;
 	t_token	*redir;
@@ -119,29 +98,16 @@ int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
 
 	redir = *curr_ptr;
 	*curr_ptr = (*curr_ptr)->next;
-	if (*curr_ptr == NULL || (*curr_ptr)->type != TOKEN_COMMAND)
-	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
-		g_shell->exit_status = 2;
+	if (check_and_dup_token(curr_ptr, shell, &target_copy) < 0)
 		return (-1);
-	}
 	if (redir->redirtype == REDIRECT_HEREDOC)
 	{
 		cmd->heredoc_flag = 1;
-		target_copy = duplicate_token(*curr_ptr);
-		if (!target_copy)
-			return (-1);
 		ret = handle_heredoc_redirection(cmd, target_copy);
 		if (ret != 0)
 			free_token_list(target_copy);
 		return (ret);
 	}
-	target_copy = duplicate_token(*curr_ptr);
-	if (!target_copy)
-		return (-1);
-	if (redir->redirtype == REDIRECT_IN)
-		ret = handle_input_redirection(cmd, target_copy);
-	else
-		ret = handle_output_redirection(cmd, target_copy, redir->redirtype);
+	ret = process_io_redirection(cmd, redir, target_copy);
 	return (ret);
 }

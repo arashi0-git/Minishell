@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 16:54:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 11:26:38 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:24:19 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,30 @@ int	process_expansion_char(const char *str, t_shell *shell, t_expand *exp)
 		exp->i++;
 	}
 	return (0);
+}
+
+char	*perform_expansion(const char *str, t_shell *shell, size_t total_len)
+{
+	t_expand	*exp;
+	char		*result;
+
+	exp = init_expand(total_len);
+	if (!exp || !str)
+		return (NULL);
+	while (str[exp->i] != '\0')
+	{
+		if (process_expansion_char(str, shell, exp) < 0)
+		{
+			free(exp->out);
+			free(exp);
+			return (NULL);
+		}
+	}
+	if (exp->out_index < exp->max + 1)
+		exp->out[exp->out_index] = '\0';
+	else
+		exp->out[exp->max] = '\0';
+	result = exp->out;
+	free(exp);
+	return (result);
 }

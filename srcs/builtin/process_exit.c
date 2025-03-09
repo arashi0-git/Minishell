@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 23:52:43 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 14:02:54 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:35:13 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	exec_exit(char **args, t_shell *shell)
 		exit_code = shell->exit_status;
 		exit(exit_code);
 	}
-	if (ft_isdigit(args[1][0]) || args[1][0] == '-' || args[1][0] == '+')
+	if (ft_isdigit(args[1][0]) || args[1][0] == '-' || args[1][0] == '+'
+		|| (args[1][0] == ' ' && ft_isdigit(args[1][1])))
 	{
 		exit_code = ft_atoi(args[1]);
 		if (exit_code == 0 && strcmp(args[1], "0") != 0)

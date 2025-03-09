@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:05:35 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 23:27:52 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:24:15 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,7 @@ int						expand_dollar_variable(const char *str, t_shell *shell,
 							t_expand *exp);
 int						process_character(const char *str, t_shell *shell,
 							size_t *i, size_t *len);
+char					*perform_expansion(const char *str, t_shell *shell,
+							size_t total_len);
 
 #endif
