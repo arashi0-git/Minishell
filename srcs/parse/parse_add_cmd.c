@@ -47,6 +47,8 @@ t_cmd	*new_cmd(void)
 	cmd->outfile = NULL;
 	cmd->infile = NULL;
 	cmd->append = 0;
+	cmd->heredoc_flag = 0;
+	cmd->heredoc_delims = NULL;
 	cmd->redirects = NULL;
 	cmd->pid = 0;
 	cmd->next = NULL;

@@ -75,11 +75,20 @@ static int	handle_output_redirection(t_cmd *cmd, t_token *target,
 static int	handle_heredoc_redirection(t_cmd *cmd, t_token *target)
 {
 	t_redirect	*redir;
+	char		*delim_copy;
+	t_list		*new_node;
 
-	// ヒアドキュメントの区切り文字をコマンドに保存
-	if (copy_filename(&cmd->infile, target->value) < 0)
+	delim_copy = ft_strdup(target->value);
+	if (!delim_copy)
 		return (-1);
-	// REDIRECT_HEREDOCタイプでリダイレクト構造体を作成
+
+	new_node = ft_lstnew(delim_copy);
+	if (!new_node)
+	{
+		free(delim_copy);
+		return (-1);
+	}
+	ft_lstadd_back(&cmd->heredoc_delims, new_node);
 	redir = create_redirect(REDIRECT_HEREDOC, target, STDIN_FILENO);
 	if (!redir)
 		return (-1);
@@ -134,6 +143,7 @@ int	handle_redirection(t_cmd *cmd, t_token **curr_ptr)
 		ret = handle_heredoc_redirection(cmd, target_copy);
 		if (ret != 0)
 			free_token_list(target_copy);
+
 		return (ret);
 	}
 	target_copy = duplicate_token(*curr_ptr);
