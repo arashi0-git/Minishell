@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/09 23:59:37 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 03:30:50 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,6 @@ static int	open_file(t_redirect *redir)
 
 	if (redir->type == REDIRECT_HEREDOC)
 		return (handle_heredoc(redir));
-	filename = redir->filename->value;
 	filename = redir->filename->value;
 	if (redir->type == REDIRECT_IN)
 		return (open(filename, O_RDONLY));
