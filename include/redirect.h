@@ -53,7 +53,6 @@ t_redirect				*create_out_redirect(t_cmd *command);
 t_bool					process_all_heredocs(t_cmd *cmd_list, t_shell *shell);
 t_bool					setup_heredoc_content(t_cmd *cmd, char *delimiter,
 							t_shell *shell);
-void					print_bad_fd_error(int fd);
 int						open_file(t_redirect *redir);
 void					close_pipe_fds(int pipe_fd[2]);
 #endif

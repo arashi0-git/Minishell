@@ -26,7 +26,6 @@ static t_bool	backup_redirects(t_redirect *redir)
 		backup_fd = dup(redir->fd_io);
 		if (backup_fd < 0)
 		{
-			print_bad_fd_error(redir->fd_io);
 			return (FALSE);
 		}
 		redir->fd_backup = backup_fd;
@@ -47,7 +46,6 @@ static t_bool	apply_redirects(t_redirect *redir)
 		}
 		if (dup2(redir->fd_file, redir->fd_io) < 0)
 		{
-			print_bad_fd_error(redir->fd_io);
 			return (FALSE);
 		}
 		redir = redir->next;

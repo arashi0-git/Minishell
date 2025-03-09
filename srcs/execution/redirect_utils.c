@@ -32,14 +32,6 @@ int	append_to_content(char **content, char *line)
 	return (1);
 }
 
-void	print_bad_fd_error(int fd)
-{
-	char	fd_str[12];
-
-	sprintf(fd_str, "%d", fd);
-	print_error("Bad file descriptor", NULL, fd_str);
-}
-
 // リダイレクト構造体の解放
 void	free_redirect(t_redirect *redir)
 {
