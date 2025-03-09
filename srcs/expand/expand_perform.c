@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 16:54:02 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 23:27:56 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:26:38 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static int	expand_single_quote(const char *str, t_expand *exp)
 	exp->i++;
 	while (str[exp->i] && str[exp->i] != '\'')
 	{
+		if (exp->out_index >= exp->max)
+			return (-1);
 		exp->out[exp->out_index++] = str[exp->i];
 		exp->i++;
 	}
@@ -53,6 +55,8 @@ static int	expand_double_quote(const char *str, t_shell *shell, t_expand *exp)
 		}
 		else
 		{
+			if (exp->out_index >= exp->max)
+				return (-1);
 			exp->out[exp->out_index++] = str[exp->i];
 			exp->i++;
 		}
@@ -84,6 +88,11 @@ int	process_expansion_char(const char *str, t_shell *shell, t_expand *exp)
 			return (-1);
 	}
 	else
-		exp->out[exp->out_index++] = str[(exp->i)++];
+	{
+		if (exp->out_index >= exp->max)
+			return (-1);
+		exp->out[exp->out_index++] = str[exp->i];
+		exp->i++;
+	}
 	return (0);
 }

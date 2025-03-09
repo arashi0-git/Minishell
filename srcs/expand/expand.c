@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:06:24 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 23:10:19 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:25:30 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_expand	*init_expand(size_t total_len)
 	}
 	exp->i = 0;
 	exp->out_index = 0;
+	exp->max = total_len;
 	return (exp);
 }
 
@@ -64,7 +65,10 @@ char	*perform_expansion(const char *str, t_shell *shell, size_t total_len)
 			return (NULL);
 		}
 	}
-	exp->out[exp->out_index] = '\0';
+	if (exp->out_index < exp->max + 1)
+		exp->out[exp->out_index] = '\0';
+	else
+		exp->out[exp->max] = '\0';
 	result = exp->out;
 	free(exp);
 	return (result);

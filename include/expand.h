@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:05:35 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 23:35:21 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:24:57 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_expand
 	char				*out;
 	size_t				i;
 	size_t				out_index;
+	size_t				max;
 }						t_expand;
 
 /*---expand func---*/

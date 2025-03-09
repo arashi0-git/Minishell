@@ -6,11 +6,30 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:42:53 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 19:15:28 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/08 23:54:51 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
+#include "redirect.h"
+
+void	add_redirect_to_list(t_cmd *cmd, t_redirect *new_redir)
+{
+	t_redirect	*current;
+
+	if (cmd->redirects == NULL)
+	{
+		cmd->redirects = new_redir;
+		return ;
+	}
+	current = (t_redirect *)cmd->redirects;
+	while (current->next)
+	{
+		current = current->next;
+	}
+	current->next = new_redir;
+	new_redir->prev = current;
+}
 
 t_cmd	*create_new_command(t_cmd **cmd_list, t_cmd **current_cmd)
 {
