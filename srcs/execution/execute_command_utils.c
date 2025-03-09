@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_command.c                                  :+:      :+:    :+:   */
+/*   execute_command_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/09 22:16:19 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 05:26:22 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,22 @@
 #include "../../include/expand.h"
 #include "../../include/parse.h"
 #include "../../include/redirect.h"
+
+char	*generate_env_line(t_env *env)
+{
+	char	*env_line;
+	char	*tmp;
+
+	env_line = ft_strjoin(env->key, "=");
+	if (!env_line)
+		error_exit(NULL);
+	tmp = env_line;
+	env_line = ft_strjoin(env_line, env->value);
+	if (!env_line)
+		error_exit(NULL);
+	free(tmp);
+	return (env_line);
+}
 
 void	cleanup_pipe_ext(t_pipe_info *pipe_info, int shared_pipe[2])
 {

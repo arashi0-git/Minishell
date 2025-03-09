@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirect.c                                         :+:      :+:    :+:   */
+/*   redirect_operation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/09 15:44:06 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/10 05:17:32 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_bool	dup_redirects(t_cmd *command, t_bool is_parent)
 }
 
 static void	link_redirects(t_cmd *command, t_redirect *in_redir,
-	t_redirect *out_redir)
+		t_redirect *out_redir)
 {
 	if (in_redir && out_redir)
 	{

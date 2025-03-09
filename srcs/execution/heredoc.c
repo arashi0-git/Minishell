@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirect.c                                         :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/09 15:44:06 by retoriya         ###   ########.fr       */
+/*   Updated: 2025/03/10 04:51:41 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/expand.h"
 #include "../../include/minishell.h"
 #include "../../include/parse.h"
 #include "../../include/redirect.h"
-#include "../../include/expand.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
@@ -70,7 +70,8 @@ t_bool	process_all_heredocs(t_cmd *cmd_list, t_shell *shell)
 			delim_node = cmd->heredoc_delims;
 			while (delim_node)
 			{
-				if (!setup_heredoc_content(cmd, (char *)delim_node->content, shell))
+				if (!setup_heredoc_content(cmd, (char *)delim_node->content,
+						shell))
 					return (FALSE);
 				delim_node = delim_node->next;
 			}

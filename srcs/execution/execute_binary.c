@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:37:04 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/10 03:23:31 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/10 05:25:56 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,20 @@
 char	**create_environ(t_env *env)
 {
 	char	**environ;
-	char	*tmp;
+	size_t	env_size;
 	size_t	i;
 
+	env_size = get_environ_size(env);
 	i = 0;
-	environ = (char **)malloc(sizeof(char *) * (get_environ_size(env) + 1));
+	environ = (char **)malloc(sizeof(char *) * (env_size + 1));
 	if (!environ)
 		error_exit(NULL);
-	while (env && i < get_environ_size(env))
+	while (env && i < env_size)
 	{
 		if (can_generate_environ(env))
 		{
-			environ[i] = ft_strjoin(env->key, "=");
-			if (!environ[i])
-				error_exit(NULL);
-			tmp = environ[i];
-			environ[i] = ft_strjoin(tmp, env->value);
-			free(tmp);
-			if (!environ[i++])
-				error_exit(NULL);
+			environ[i] = generate_env_line(env);
+			i++;
 		}
 		env = env->next;
 	}
