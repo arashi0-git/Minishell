@@ -1,9 +1,13 @@
 {
   "files.associations": {
+<<<<<<< HEAD
     "execution.h": "c",
     "minishell.h": "c",
     "types.h": "c",
     "stat.h": "c",
     "parse.h": "c"
+=======
+    "libft.h": "c"
+>>>>>>> wait-improvement
   }
 }

@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/08 23:08:08 by aryamamo          #+#    #+#              #
-#    Updated: 2025/03/10 01:54:43 by retoriya         ###   ########.fr        #
+#    Updated: 2025/03/10 08:21:35 by aryamamo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,6 @@ SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/utils/ft_getline.c 
 
 
-##リリンク確認！
 
 LIBFTDIR = ./libft
 LIBFT = $(LIBFTDIR)/libft.a
