@@ -29,11 +29,13 @@ void	setup_pipes(t_pipe_state state, int old_pipe[2], int new_pipe[2])
 	{
 		if (dup2(old_pipe[PIPE_IN], STDIN_FILENO) < 0)
 			error_exit(NULL);
+		close(old_pipe[PIPE_IN]);
 	}
 	if (state == PIPE_WRITE_ONLY || state == PIPE_READ_WRITE)
 	{
 		if (dup2(new_pipe[PIPE_OUT], STDOUT_FILENO) < 0)
 			error_exit(NULL);
+		close(new_pipe[PIPE_IN]);
 	}
 }
 

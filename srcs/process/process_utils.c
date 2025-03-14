@@ -38,6 +38,7 @@ void	execute_commands(t_shell *shell, t_cmd *cmd_list, pid_t *last_pid)
 	}
 }
 
+/*
 void	wait_last_command(t_shell *shell, t_cmd *cmd_list, pid_t last_pid)
 {
 	int	status;
@@ -49,6 +50,25 @@ void	wait_last_command(t_shell *shell, t_cmd *cmd_list, pid_t last_pid)
 			status = wait_for_command(last_pid);
 			shell->exit_status = status;
 		}
+	}
+}
+*/
+
+void	wait_last_command(t_shell *shell, t_cmd *cmd_list, pid_t last_pid)
+{
+	t_cmd	*current;
+	int		status;
+
+	current = cmd_list;
+	while (current)
+	{
+		if (current->pid > 0)
+		{
+			status = wait_for_command(current->pid);
+			if (current->pid == last_pid)
+				shell->exit_status = status;
+		}
+		current = current->next;
 	}
 }
 
