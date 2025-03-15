@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 20:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/10 06:20:03 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 12:35:05 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	execute_commands(t_shell *shell, t_cmd *cmd_list, pid_t *last_pid)
 	{
 		init_pipe_state(&state, cmd);
 		status = execute_command(shell, cmd, state, pipeline_pipe);
-		if (state == PIPE_READ_ONLY)
+		if (state == PIPE_READ_ONLY || state == NO_PIPE)
 			*last_pid = cmd->pid;
 		cmd = cmd->next;
 	}

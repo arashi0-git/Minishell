@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/09 22:24:04 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 12:05:18 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "../../include/expand.h"
 #include "../../include/parse.h"
 #include "../../include/redirect.h"
+#include <sys/wait.h>
 
 static int	exec_builtin_parent(t_shell *shell, t_cmd *command, char **args)
 {
@@ -63,6 +64,7 @@ int	execute_command(t_shell *shell, t_cmd *cmd, t_pipe_state state,
 		execute_in_child(shell, cmd, &pipe_info);
 	setup_signal_handler(&new_sa, &old_sa);
 	cleanup_pipe_ext(&pipe_info, shared_pipe);
+	sigaction(SIGINT, &old_sa, NULL);
 	cmd->pid = pid;
 	return (EXIT_SUCCESS);
 }
