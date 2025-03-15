@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 23:18:26 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/15 11:35:25 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:09:39 by retoriya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	count_words(const char *s)
 	in_word = 0;
 	while (*s)
 	{
-		if (isspace((unsigned char)*s))
+		if (ft_isspace((unsigned char)*s))
 			in_word = 0;
 		else if (!in_word)
 		{
@@ -40,8 +40,7 @@ static char	*alloc_word(const char *start, size_t len)
 	word = malloc(len + 1);
 	if (!word)
 		return (NULL);
-	strncpy(word, start, len);
-	word[len] = '\0';
+	ft_strlcpy(word, start, len + 1);
 	return (word);
 }
 
