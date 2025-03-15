@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:03:31 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/08 23:53:17 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 11:25:24 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ int	exec_unset(char **args, t_shell *shell)
 			remove_env_unset(shell, args[i]);
 		i++;
 	}
+	shell->exit_status = 0;
 	return (status);
 }

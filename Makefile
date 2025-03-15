@@ -6,7 +6,7 @@
 #    By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/08 23:08:08 by aryamamo          #+#    #+#              #
-#    Updated: 2025/03/10 08:21:35 by aryamamo         ###   ########.fr        #
+#    Updated: 2025/03/15 11:37:41 by aryamamo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS = $(SRCDIR)/main.c \
 		$(SRCDIR)/expand/expand_length_utils.c \
 		$(SRCDIR)/expand/expand_perform.c \
 		$(SRCDIR)/expand/expand_perform_utils.c \
+		$(SRCDIR)/expand/expand_split.c \
 		$(SRCDIR)/builtin/builtin.c \
 		$(SRCDIR)/builtin/process_cd.c \
 		$(SRCDIR)/builtin/process_echo.c \

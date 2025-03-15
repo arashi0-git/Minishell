@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:06:14 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 11:46:08 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 11:25:05 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static char	*resolve_path(char *path, t_shell *shell)
 			write(STDOUT_FILENO, oldpwd, ft_strlen(oldpwd));
 		return (oldpwd);
 	}
+	shell->exit_status = 0;
 	return (path);
 }
 

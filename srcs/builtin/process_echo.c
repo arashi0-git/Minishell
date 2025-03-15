@@ -6,13 +6,13 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:06:22 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 23:37:10 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 10:17:15 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtin.h"
 
-int	print_echo(char **args, int i, int opt_n)
+int	print_echo(char **args, int i, int opt_n, t_shell *shell)
 {
 	{
 		while (args[i])
@@ -25,10 +25,11 @@ int	print_echo(char **args, int i, int opt_n)
 		if (!opt_n)
 			write(STDOUT_FILENO, "\n", 1);
 	}
+	shell->exit_status = 0;
 	return (0);
 }
 
-int	exec_echo(char **args)
+int	exec_echo(char **args, t_shell *shell)
 {
 	int	i;
 	int	j;
@@ -52,5 +53,5 @@ int	exec_echo(char **args)
 		}
 		break ;
 	}
-	return (print_echo(args, i, opt_n));
+	return (print_echo(args, i, opt_n, shell));
 }

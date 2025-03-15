@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:58:24 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/10 00:36:05 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 11:29:28 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,7 @@ char	*find_command_path(const char *cmd, char **envp)
 	int		j;
 
 	if (cmd[0] == '/' || cmd[0] == '.')
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
+		return (ft_strdup(cmd));
 	path = get_env_path(envp);
 	if (!path)
 		return (NULL);

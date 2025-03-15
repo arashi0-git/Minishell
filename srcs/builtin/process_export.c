@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:18:21 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/09 21:43:57 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 10:19:06 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,6 @@ int	exec_export(char **cmd_and_args, t_shell *shell)
 			ret = 1;
 		i++;
 	}
+	shell->exit_status = 0;
 	return (ret);
 }

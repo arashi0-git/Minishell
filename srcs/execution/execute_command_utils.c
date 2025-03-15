@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:12:30 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/10 05:26:22 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 11:26:35 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,21 @@
 #include "../../include/parse.h"
 #include "../../include/redirect.h"
 
-char	*generate_env_line(t_env *env)
+char	*create_exec_env_string(const char *key, const char *value)
 {
-	char	*env_line;
-	char	*tmp;
+	char	*result;
+	size_t	len;
 
-	env_line = ft_strjoin(env->key, "=");
-	if (!env_line)
-		error_exit(NULL);
-	tmp = env_line;
-	env_line = ft_strjoin(env_line, env->value);
-	if (!env_line)
-		error_exit(NULL);
-	free(tmp);
-	return (env_line);
+	if (!value)
+		value = "";
+	len = ft_strlen(key) + ft_strlen(value) + 2;
+	result = malloc(len);
+	if (!result)
+		return (NULL);
+	ft_strlcpy(result, key, len);
+	ft_strlcat(result, "=", len);
+	ft_strlcat(result, value, len);
+	return (result);
 }
 
 void	cleanup_pipe_ext(t_pipe_info *pipe_info, int shared_pipe[2])

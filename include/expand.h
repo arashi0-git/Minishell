@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:05:35 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/10 00:01:49 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 11:35:45 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,7 @@ int						process_character(const char *str, t_shell *shell,
 							size_t *i, size_t *len);
 char					*perform_expansion(const char *str, t_shell *shell,
 							size_t total_len);
+char					**split_words(const char *s);
+void					free_words(char **words);
 
 #endif

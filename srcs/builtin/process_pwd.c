@@ -6,13 +6,13 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:16:43 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/02/28 16:16:53 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 11:23:39 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-int	exec_pwd(void)
+int	exec_pwd(t_shell *shell)
 {
 	char	*str;
 
@@ -22,6 +22,7 @@ int	exec_pwd(void)
 		return (1);
 	ft_putendl_fd(str, STDOUT_FILENO);
 	free(str);
+	shell->exit_status = 0;
 	return (0);
 }
 /*

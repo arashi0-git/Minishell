@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:10:31 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/04 18:09:09 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 11:36:34 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static char	*process_word(char **p)
 
 char	*get_token(char **p, t_tokentype *token_type)
 {
-	while (**p && **p == ' ')
+	while (**p && (**p == ' ' || **p == '\t'))
 		(*p)++;
 	if (**p == '\0')
 		return (NULL);

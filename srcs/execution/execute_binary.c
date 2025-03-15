@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:37:04 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/10 05:25:56 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 11:27:12 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**create_environ(t_env *env)
 	{
 		if (can_generate_environ(env))
 		{
-			environ[i] = generate_env_line(env);
+			environ[i] = create_exec_env_string(env->key, env->value);
 			i++;
 		}
 		env = env->next;

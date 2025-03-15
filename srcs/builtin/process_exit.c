@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 23:52:43 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/10 02:39:48 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 11:41:17 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ int	exec_exit(char **args, t_shell *shell)
 		exit(exit_code);
 	}
 	print_exit_message(args);
+	shell->exit_status = 0;
 	return (0);
 }

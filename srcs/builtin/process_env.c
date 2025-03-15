@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 23:52:07 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/08 23:52:18 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 10:17:47 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ int	exec_env(char **args, t_shell *shell)
 		}
 		env = env->next;
 	}
+	shell->exit_status = 0;
 	return (0);
 }

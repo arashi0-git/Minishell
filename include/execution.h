@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 23:34:57 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/10 06:22:25 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 11:26:47 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,6 @@ int					wait_for_command(pid_t pid);
 
 void				process_input(t_shell *shell, char *input);
 void				free_cmd_list(t_cmd *cmd_list);
-char				*generate_env_line(t_env *env);
+char				*create_exec_env_string(const char *key, const char *value);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 11:05:10 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/09 19:56:26 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 11:36:54 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_shell	*g_shell = NULL;
+int		g_signal = 0;
 
 void	free_shell(t_shell *shell)
 {
@@ -43,6 +43,11 @@ void	minishell(t_shell *shell)
 	while (1)
 	{
 		input = readline("minishell$ ");
+		if (g_signal == 130)
+		{
+			shell->exit_status = 130;
+			g_signal = 0;
+		}
 		if (!input)
 		{
 			if (!shell->interactive)
@@ -71,7 +76,6 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	init_shell(&shell, envp);
-	g_shell = &shell;
 	set_signal_handlers();
 	minishell(&shell);
 	free_shell(&shell);

@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:15:55 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/10 06:05:33 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/15 11:34:57 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,41 @@ static int	copy_variable(const char *value, t_expand *exp)
 	return (0);
 }
 
+int	process_word_splitting(const char *value, t_expand *exp)
+{
+	char	**words;
+	int		ret;
+	int		i;
+
+	if (!value)
+		return (0);
+	words = split_words(value);
+	if (!words)
+		return (-1);
+	i = 0;
+	while (words[i])
+	{
+		ret = copy_variable(words[i], exp);
+		if (ret != 0)
+		{
+			free_words(words);
+			return (ret);
+		}
+		if (words[i + 1])
+			exp->out[exp->out_index++] = ' ';
+		i++;
+	}
+	free_words(words);
+	return (0);
+}
+
 int	expand_dollar_variable(const char *str, t_shell *shell, t_expand *exp)
 {
 	size_t	var_start;
 	size_t	var_len;
 	char	*var_name;
 	char	*value;
+	int		ret;
 
 	exp->i++;
 	var_start = exp->i;
@@ -63,5 +92,6 @@ int	expand_dollar_variable(const char *str, t_shell *shell, t_expand *exp)
 		return (-1);
 	value = get_env_value(shell->env, var_name);
 	free(var_name);
-	return (copy_variable(value, exp));
+	ret = process_word_splitting(value, exp);
+	return (ret);
 }
