@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 20:31:20 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/10 06:22:37 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/22 19:59:59 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,9 @@ t_bool					setup_heredoc_content(t_cmd *cmd, char *delimiter,
 int						open_file(t_redirect *redir);
 void					close_pipe_fds(int pipe_fd[2]);
 char					*get_expanded_line(t_shell *shell);
+t_bool					process_cmd_heredocs(t_cmd *cmd, int original_signal,
+							t_shell *shell);
+int						process_single_line(char *delimiter, t_shell *shell,
+							int original_signal, char **content);
 
 #endif
