@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:23:30 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/15 11:36:09 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/22 17:24:15 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 extern int	g_signal;
 
+
 void	handle_sigint(int sig)
 {
 	(void)sig;
 	write(STDOUT_FILENO, "\n", 1);
 	g_signal = 130;
+	
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();

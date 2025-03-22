@@ -20,9 +20,7 @@
 void	free_cmd_list(t_cmd *cmd_list)
 {
 	t_cmd	*tmp;
-	int		i;
 
-	i = 0;
 	while (cmd_list)
 	{
 		tmp = cmd_list;

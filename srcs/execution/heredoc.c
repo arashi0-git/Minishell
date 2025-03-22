@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/10 07:41:04 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/22 16:54:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,26 @@ t_bool	process_all_heredocs(t_cmd *cmd_list, t_shell *shell)
 {
 	t_cmd	*cmd;
 	t_list	*delim_node;
+	int	original_signal;
 
+	original_signal = g_signal;  // 元のシグナル状態を保存
 	cmd = cmd_list;
 	while (cmd)
 	{
+		if (g_signal != original_signal)  // シグナル検出
+			return (FALSE);
+		
 		if (cmd->heredoc_flag && cmd->heredoc_delims)
 		{
 			delim_node = cmd->heredoc_delims;
 			while (delim_node)
 			{
-				if (!setup_heredoc_content(cmd, (char *)delim_node->content,
-						shell))
+				if (!setup_heredoc_content(cmd, (char *)delim_node->content, shell))
+				{
+					if (g_signal != original_signal)  // シグナルで中断された場合
+						return (FALSE);
 					return (FALSE);
+				}
 				delim_node = delim_node->next;
 			}
 		}
@@ -85,19 +93,24 @@ char	*read_until_delimiter(char *delimiter, t_shell *shell)
 {
 	char	*content;
 	char	*line;
+	int	original_signal;
 
 	content = ft_strdup("");
 	if (!content)
 		return (NULL);
+	original_signal = g_signal;  // 元のシグナル状態を保存
 	while (1)
 	{
 		line = get_expanded_line(shell);
-		if (!line)
-			break ;
+		if (!line || g_signal != original_signal)  // シグナル検出
+		{
+			free(content);
+			return (NULL);
+		}
 		if (process_delimiter(line, delimiter, &content))
 		{
 			free(line);
-			break ;
+			break;
 		}
 		if (!append_to_content(&content, line))
 		{
