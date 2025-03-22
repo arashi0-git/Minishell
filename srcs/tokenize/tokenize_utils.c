@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:10:31 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/15 11:36:34 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/23 01:10:07 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	*get_token(char **p, t_tokentype *token_type)
 {
 	while (**p && (**p == ' ' || **p == '\t'))
 		(*p)++;
-	if (**p == '\0')
+	if (**p == '\0' || ft_isascii(**p) == 0)
 		return (NULL);
 	if (**p == '<' || **p == '>')
 	{

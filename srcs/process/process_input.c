@@ -6,7 +6,7 @@
 /*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:27:41 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/10 06:19:58 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/23 01:11:03 by aryamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,18 @@ t_cmd	*tokenize_and_parse(char *input, t_shell *shell)
 {
 	t_token	*token_list;
 	t_cmd	*cmd_list;
+	int		i;
 
+	i = 0;
+	while (input[i])
+	{
+		if (ft_isascii(input[i]) == 0)
+		{
+			printf("minishell: syntax error near unexpected token\n");
+			exit(1);
+		}
+		i++;
+	}
 	token_list = tokenize_list(input);
 	if (!token_list)
 		return (NULL);
