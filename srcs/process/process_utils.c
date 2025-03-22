@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 20:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/15 12:35:05 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/22 16:32:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	execute_commands(t_shell *shell, t_cmd *cmd_list, pid_t *last_pid)
 {
 	t_cmd			*cmd;
 	t_pipe_state	state;
-	int				status;
 	int				pipeline_pipe[2];
 
 	pipeline_pipe[0] = -1;
@@ -31,7 +30,7 @@ void	execute_commands(t_shell *shell, t_cmd *cmd_list, pid_t *last_pid)
 	while (cmd != NULL)
 	{
 		init_pipe_state(&state, cmd);
-		status = execute_command(shell, cmd, state, pipeline_pipe);
+		execute_command(shell, cmd, state, pipeline_pipe);
 		if (state == PIPE_READ_ONLY || state == NO_PIPE)
 			*last_pid = cmd->pid;
 		cmd = cmd->next;

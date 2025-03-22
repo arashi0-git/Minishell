@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:23:48 by aryamamo          #+#    #+#             */
-/*   Updated: 2025/03/10 06:20:15 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/22 16:54:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_shell
 	char				*pwd;
 	int					exit_status;
 	int					interactive;
+	int					sigint_received;  // SIGINT受信フラグ
 }						t_shell;
 
 typedef struct s_builtin
@@ -115,4 +116,7 @@ void					free_cmd_list(t_cmd *cmd_list);
 void					minishell_pipe(t_shell *shell);
 void					cleanup_all_fds(t_cmd *cmd_list);
 void					cleanup_cmd_fds(t_cmd *cmd);
+
+extern int g_signal;
+
 #endif
