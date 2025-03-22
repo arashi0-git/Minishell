@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aryamamo <aryamamo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:26:46 by retoriya          #+#    #+#             */
-/*   Updated: 2025/03/10 06:23:06 by aryamamo         ###   ########.fr       */
+/*   Updated: 2025/03/22 20:37:35 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,24 @@ char	*get_expanded_line(t_shell *shell)
 {
 	char	*line;
 	char	*expanded;
+	int	original_signal;
 
+	original_signal = g_signal;
 	ft_putstr_fd("> ", STDOUT_FILENO);
 	line = get_next_line(STDIN_FILENO);
 	if (!line)
 		return (NULL);
+	if (g_signal != original_signal)
+	{
+		free(line);
+		return (NULL);
+	}
 	expanded = expand(line, shell);
 	free(line);
+	if (g_signal != original_signal)
+	{
+		free(expanded);
+		return (NULL);
+	}
 	return (expanded);
 }
