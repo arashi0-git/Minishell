@@ -75,3 +75,28 @@ export unset
 export TES^T=123
 export TEST+=100
 ```
+
+## valgrind
+in .suppresion
+```
+{
+   exclude_readline_library
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:rl_*
+}
+
+{
+   exclude_readline_library
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:add_history
+}
+```
+
+use
+```
+valgrind --leak-check=full --show-leak-kinds=all --suppressions=.suppression ./minishell
+```
